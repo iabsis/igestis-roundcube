@@ -1,3 +1,9 @@
+igestis-roundcube (1.0.0) karmic; urgency=low
+
+  * Version 1.0 - Pas de mise à jour du code source.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Thu, 28 Jan 2010 19:52:45 +0100
+
 igestis-roundcube (0.20.4) jaunty; urgency=low
 
   * Problème du SSL dans les test de mail
