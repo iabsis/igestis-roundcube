@@ -1,0 +1,29 @@
+igestis-roundcube (0.20.4) jaunty; urgency=low
+
+  * Problème du SSL dans les test de mail
+
+ -- Olivier Bitsch <olivierb@olivierb-desktop>  Fri, 08 Jan 2010 17:50:33 +0100
+
+igestis-roundcube (0.20.3) jaunty; urgency=low
+
+  * Problème de rafraichissement des email lors de la première connexion sur roundcube - Anomalie #350
+
+ -- Olivier Bitsch <olivierb@olivierb-desktop>  Fri, 08 Jan 2010 17:09:02 +0100
+
+igestis-roundcube (0.20.2) jaunty; urgency=low
+
+  * Correction mineures.
+
+ -- root <root@ishare.homelinux.com>  Thu, 26 Nov 2009 15:47:36 +0100
+
+igestis-roundcube (0.20.1) jaunty; urgency=low
+
+  * Beaucoup de petites corrections.
+
+ -- root <root@ishare.homelinux.com>  Thu, 26 Nov 2009 14:43:28 +0100
+
+igestis-roundcube (0.20.0) jaunty; urgency=low
+
+  * Version initiale iGestis-roundcube version modifiée pour Ldap
+
+ -- root <root@olivierb-desktop>  Fri, 02 Oct 2009 13:16:20 +0200

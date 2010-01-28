@@ -1,0 +1,14 @@
+Source: igestis-roundcube
+Section: web
+Priority: extra
+Maintainer: Olivier Bitsch <olivier.b@iabsis.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: igestis-roundcube
+Architecture: any
+Depends: libapache2-mod-php5 | libapache-mod-php5, mysql-server-5.0, php5-gd, php5-mysql, netpbm, libjpeg-progs, php5-mcrypt, dbconfig-common, igestis-ldap
+Suggests: sane-utils, hylafax-client
+Conflicts: roundcube, roundcube-core
+Description: Manage your entire company by web.
+ Module used for having mail into iGestis.

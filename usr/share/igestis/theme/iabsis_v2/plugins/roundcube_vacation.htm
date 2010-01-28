@@ -1,0 +1,27 @@
+<!-- IF vacation_message_activated -->
+<div style="display:none" id="roundcube_unable_vacation_message">
+	<p style="text-align:center;">{LANG_ROUNDCUBE_Unable_your_vacation_message}</p>
+	<p style="text-align:center;">
+		<a href="javascript:roundcube_unable_vacation_message()"><img src="{TEMPLATE_URL}images/{LANG_IMG_FOLDER}/disable.png"/></a>
+		<a href="javascript:messageObj.close()"><img src="{TEMPLATE_URL}images/{LANG_IMG_FOLDER}/cancel.png" /></a>
+	</p>
+</div>
+
+
+
+<script type="text/javascript">
+
+function roundcube_unable_vacation_message() {
+	xajax_unable_vacation_message();
+	messageObj.close();
+}
+
+var messageContent = document.getElementById('roundcube_unable_vacation_message').innerHTML;
+messageObj.setHtmlContent(messageContent);
+messageObj.setSize(350,90);
+messageObj.setCssClassMessageBox(false);
+messageObj.setSource(false);	// no html source since we want to use a static message here.
+messageObj.setShadowDivVisible(true);	
+messageObj.display();
+</script>
+<!-- ENDIF vacation_message_activated -->

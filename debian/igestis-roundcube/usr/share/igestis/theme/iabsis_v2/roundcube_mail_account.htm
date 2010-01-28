@@ -1,0 +1,170 @@
+<!--INCLUDE overall_popup_header.htm -->
+<script type="text/javascript">
+ 
+function p_focused(field)
+{
+	document.getElementById("p_" + field).className = "p_focused";
+}
+
+var message_ok = '<img src="{TEMPLATE_URL}/images/valide_ok.png" />';
+
+function p_blur(name)
+{
+	var p = document.getElementById("p_" + name);
+	var span = document.getElementById("span_" + name);
+	var field = document.getElementById(name);
+
+	p.className = "";
+	
+	if(name == "server_name") {
+		if(field.value == "") {
+			span.innerHTML = "{LANG_ROUNDCUBE_Cannot_be_empty}";
+		}
+		else {
+			span.innerHTML = message_ok;
+		}
+	}
+	
+	if(name == "server_username") {
+		if(field.value == "") {
+			span.innerHTML = "{LANG_ROUNDCUBE_Cannot_be_empty}";
+		}
+		else {
+			span.innerHTML = message_ok;
+		}
+	}
+	
+	if(name == "server_password") {
+		if(field.value == "") {
+			span.innerHTML = "{LANG_ROUNDCUBE_Cannot_be_empty}";
+		}
+		else {
+			span.innerHTML = message_ok;
+		}
+	}
+	
+}
+
+var valid_auto = false;
+
+function valid_form()
+{/* Test function before the form submit */
+	
+	if(document.getElementById('server_name').value == "") {
+		p_blur('server_name');
+		document.getElementById('server_name').select();
+		return false;
+	}
+	
+	if(document.getElementById('server_username').value == "") {
+		p_blur('server_username');
+		document.getElementById('server_username').select();
+		return false;
+	}
+	
+	if(document.getElementById('server_password').value == "") {
+		p_blur('server_password');
+		document.getElementById('server_password').select();
+		return false;
+	}
+	
+	return true;
+}
+
+function roundcube_test_this_mail() {
+	messageObj.setHtmlContent('<div style="text-align:center"><br /><br /><img src="{TEMPLATE_URL}images/waiting.gif"><br /><br /><br />{LANG_ROUNDCUBE_Mail_account_test_in_progress}</div>');
+	messageObj.setSize(450,150);
+	messageObj.setCssClassMessageBox(false);
+	messageObj.setSource(false);	// no html source since we want to use a static message here.
+	messageObj.setShadowDivVisible(true);	
+	messageObj.display();
+	
+	var ssl = 0;
+	if(document.getElementById('server_ssl').checked == true) ssl = 1;
+	
+	xajax_roundcube_test_mail_account(
+		document.getElementById('server_protocol').value,
+		document.getElementById('server_name').value,
+		document.getElementById('server_username').value,
+		document.getElementById('server_password').value,
+		ssl
+	);
+}
+
+</script>
+
+<div id="popup-header">
+	<h3>{LANG_ROUNDCUBE_New_ROUNDCUBE_mail_account_description_short}</h3>
+	<h4>{LANG_ROUNDCUBE_New_ROUNDCUBE_mail_account_description}</h4>
+</div>
+
+<form name="report" action="updatedb.php" method="post" class="popup_form" enctype="multipart/form-data" onsubmit="return valid_form()">
+<input name="section" type="hidden" id="section" value="roundcube_mail_account" />
+<input name="action" type="hidden" id="from2" value="{action}" />
+<input name="current_server_name" type="hidden" value="{server_name}" />
+<input name="current_server_username" type="hidden" value="{server_username}" />
+
+<fieldset>
+<div class="upperleft">
+	<div class="upperright">
+		<div class="lowerleft">
+			<div class="lowerright">
+				<h5>{LANG_ROUNDCUBE_Mail_account}</h5>			
+				<p id="p_server_protocol">
+					<label for="server_protocol">{LANG_ROUNDCUBE_server_protocol_label}</label>
+					<select name="server_protocol" id="server_protocol" onFocus="javascript:p_focused(this.name)" onBlur="javascript:p_blur(this.name)">					         
+						<option value="AUTO" <!-- IF protocol_AUTO -->selected="selected"<!-- END -->>AUTO</option>
+						<option value="POP2" <!-- IF protocol_POP2 -->selected="selected"<!-- END -->>POP2</option>
+						<option value="POP3" <!-- IF protocol_POP3 -->selected="selected"<!-- END -->>POP3</option>
+						<option value="APOP" <!-- IF protocol_APOP -->selected="selected"<!-- END -->>APOP</option>
+						<option value="RPOP" <!-- IF protocol_RPOP -->selected="selected"<!-- END -->>RPOP</option>
+						<option value="KPOP" <!-- IF protocol_KPOP -->selected="selected"<!-- END -->>KPOP</option>
+						<option value="SDPS" <!-- IF protocol_SDPS -->selected="selected"<!-- END -->>SDPS</option>
+						<option value="IMAP" <!-- IF protocol_IMAP -->selected="selected"<!-- END -->>IMAP</option>
+						<option value="ETRN" <!-- IF protocol_ETRN -->selected="selected"<!-- END -->>ETRN</option>
+						<option value="ODMR" <!-- IF protocol_ODMR -->selected="selected"<!-- END -->>ODMR</option>
+					</select>
+					<span class="error_message" id="span_server_protocol"></span>
+				</p>	
+				<p id="p_server_name">
+					<label for="server_name">{LANG_ROUNDCUBE_server_name_label} *</label>
+					<input name="server_name" type="text" id="server_name" value="{server_name}" onFocus="javascript:p_focused(this.name)" onBlur="javascript:p_blur(this.name)" />
+					<span class="error_message" id="span_server_name"></span>
+				</p>
+				
+				<p id="p_server_username">
+					<label for="server_username">{LANG_ROUNDCUBE_server_username_label} *</label>
+					<input name="server_username" type="text" id="server_username" value="{server_username}" onFocus="javascript:p_focused(this.name)" onBlur="javascript:p_blur(this.name)" />
+					<span class="error_message" id="span_server_username"></span>
+				</p>
+				
+				<p id="p_server_password">
+					<label for="server_password">{LANG_ROUNDCUBE_server_password_label} *</label>
+					<input name="server_password" type="password" id="server_password" value="{server_password}" onFocus="javascript:p_focused(this.name)" onBlur="javascript:p_blur(this.name)" />
+					<span class="error_message" id="span_server_password"></span>
+				</p>
+				
+				<p id="p_server_keep">
+					<label for="server_keep">{LANG_ROUNDCUBE_server_keep_label}</label>
+					<input name="server_keep" type="checkbox" id="server_keep" value="1" onFocus="javascript:p_focused(this.name)" onBlur="javascript:p_blur(this.name)" <!-- IF server_keep -->checked="checked"<!-- ENDIF --> />
+					<span class="error_message" id="span_server_keep"></span>
+				</p>
+				
+				<p id="p_server_ssl">
+					<label for="server_ssl">{LANG_ROUNDCUBE_server_ssl_label}</label>
+					<input name="server_ssl" type="checkbox" id="server_ssl" value="1" onFocus="javascript:p_focused(this.name)" onBlur="javascript:p_blur(this.name)" <!-- IF server_ssl -->checked="checked"<!-- ENDIF --> />
+					<span class="error_message" id="span_server_ssl"></span>
+				</p>
+				<p style="text-align:center">
+					<a href="#" onclick="javascript:roundcube_test_this_mail()"><img src="{TEMPLATE_URL}images/{LANG_IMG_FOLDER}/roundcube_testing.png" alt="Tester" /></a>
+					<input type="image" src="{TEMPLATE_URL}images/bt_valider.gif" class="img" />
+				</p>
+				<script type="text/javascript">p_blur("server_name");p_blur("server_username");p_blur("server_password");</script>
+			</div>
+		</div>
+	</div>
+</fieldset>
+<br />
+<br />
+</form>
+<!--INCLUDE overall_popup_footer.htm -->
