@@ -10,7 +10,7 @@ include "../../includes/common_librairie.php";
 $application = new application();
 
 $_GET = _mysql_real_escape_string($_GET);
-$_POST = _mysql_real_escape_string($_POST);
+$_POST = _mysql_real_escape_string($_POST, array("action_argument", "rule_text"));
 $_COOKIE = _mysql_real_escape_string($_COOKIE);
 
 if(!$application->is_loged)

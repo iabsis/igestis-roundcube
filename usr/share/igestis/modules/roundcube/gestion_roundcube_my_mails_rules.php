@@ -13,7 +13,6 @@ if($roundcube_access != "ADMIN" && $roundcube_access != "EMP")
 }
 
 $BASE_FOLDER = mount_user_folder("main");
-
 $parser = new MailRules($BASE_FOLDER . "/.procmail-roundcube");
 
 
@@ -23,9 +22,9 @@ while($block = $parser->next_block()) {
 		"ID" => $cpt,
 		"WHAT_" . strtoupper($block['options']['what']) => true,
 		"RULE_TYPE_" . strtoupper($block['options']['rule_type']) => true,
-		"rule_text" => $block['options']['rule_text'],
+		"rule_text" => htmlentities($block['options']['rule_text'], ENT_COMPAT, "UTF-8"),
 		"ACTION_TYPE_" . strtoupper($block['options']['action_type']) => true,
-		"action_argument" => $block['options']['action_argument']
+		"action_argument" => htmlentities($block['options']['action_argument'], ENT_COMPAT, "UTF-8")
 	));
 }
 
@@ -35,7 +34,7 @@ if(!$CONTENT) $application->message_die("Unable to find the html page");
 
 
 
-exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
+//exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
 ################## Create the content of the page #################################
 		
 $replace = array("MENU" => $application->generate_menu(), "GENERAL_TITLE" => $GENERAL_TITLE);
