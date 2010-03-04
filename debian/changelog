@@ -1,3 +1,9 @@
+igestis-roundcube (1.0.2) karmic; urgency=low
+
+  * Suppression d'un script inutile.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Thu, 04 Mar 2010 10:56:25 +0100
+
 igestis-roundcube (1.0.1) karmic; urgency=low
 
   * Décommentage d'une ligne qui avait été commencté pour les tests
