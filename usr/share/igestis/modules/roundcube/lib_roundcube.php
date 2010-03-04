@@ -104,11 +104,8 @@ class MailRules {
                         if(substr($this->block_list[$i]['options']['rule_text'], strlen($this->block_list[$i]['options']['rule_text']) - 2) == ".*") {
                             $this->block_list[$i]['options']['rule_text'] = substr($this->block_list[$i]['options']['rule_text'], 0, strlen($this->block_list[$i]['options']['rule_text']) - 2);
                         }
-                        // Suppresion des " autour du texte
-                        if(preg_match('#^"[\W\w]*"$#', $this->block_list[$i]['options']['rule_text'])) {
-                            $this->block_list[$i]['options']['rule_text'] = substr($this->block_list[$i]['options']['rule_text'], 1, strlen($this->block_list[$i]['options']['rule_text']) - 2);
-                            $this->block_list[$i]['options']['rule_text'] = str_replace('\\"', '"', $this->block_list[$i]['options']['rule_text']);
-                        }
+                        // Ajout des \ devant les caractères spéciaux ...
+                        $this->block_list[$i]['options']['rule_text'] = $this->decode_regex($this->block_list[$i]['options']['rule_text']);
                     }
 
                     if($j == count($this->block_list[$i]["lines"]) - 1) {
@@ -189,9 +186,9 @@ class MailRules {
                 if(!$block['options']) continue;
 
                 $file_content .= ":0\n";
-                $file_content .= "* ^" . ucfirst(strtolower($block['options']['what'])) . ":";
+                $file_content .= "* ^" . ucfirst(strtolower($block['options']['what'])) . ": ";
                 if($block['options']['rule_type'] == "has") $file_content .= ".*";
-                $file_content .= '"' . str_replace('"', '\\"', $block['options']['rule_text']) . '"';
+                $file_content .= $this->encode_regex($block['options']['rule_text']);
                 if($block['options']['rule_type'] == "has") $file_content .= ".*";
                 $file_content .= "\n";
                 if($block['options']['action_type'] == "forward") {
@@ -225,6 +222,23 @@ class MailRules {
                         $this->block_list[$i]['options']['action_argument'] == $action_argument ) $this->block_list[$i]['options'] = NULL;
             }
         }
+    }
+
+    private function encode_regex($string) {
+        $entities = array("\\", "[", "^", '$', ".", '|', '?', '*', '+', '(', ')');
+        $replacement = array();
+        foreach($entities as $entity) $replacement[] = "\\" . $entity;
+
+        return str_replace($entities, $replacement, $string);
+    }
+
+    private function decode_regex($string) {
+        $entities = array("[", "^", '$', ".", '|', '?', '*', '+', '(', ')', "\\");
+        $replacement = array();
+        
+        foreach($entities as $entity) $replacement[] = "\\" . $entity;
+
+        return str_replace($replacement, $entities, $string);
     }
 
 } ####################################################################################################################################
