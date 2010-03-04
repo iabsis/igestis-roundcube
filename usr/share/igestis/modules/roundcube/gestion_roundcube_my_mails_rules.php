@@ -34,7 +34,7 @@ if(!$CONTENT) $application->message_die("Unable to find the html page");
 
 
 
-//exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
+exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
 ################## Create the content of the page #################################
 		
 $replace = array("MENU" => $application->generate_menu(), "GENERAL_TITLE" => $GENERAL_TITLE);
