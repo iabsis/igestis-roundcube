@@ -1,7 +1,7 @@
 <?
 $LANG['LANG_ROUNDCUBE_MODULE_NAME'] = "Gestion des emails";
 
-$LANG['LANG_ROUNDCUBE_RIGHT_NONE'] = "Désactivé";
+$LANG['LANG_ROUNDCUBE_RIGHT_NONE'] = "Aucun";
 $LANG['LANG_ROUNDCUBE_RIGHT_ADMIN'] = "Administrateur";
 $LANG['LANG_ROUNDCUBE_RIGHT_EMP'] = "Employé";
 
