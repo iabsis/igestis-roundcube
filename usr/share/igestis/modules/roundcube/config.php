@@ -7,9 +7,11 @@ $roundcube['module_name'] = "{LANG_ROUNDCUBE_MODULE_NAME}";
 
 $roundcube['rights_list'][0]['RIGHT_NAME'] = "{LANG_ROUNDCUBE_RIGHT_NONE}";
 $roundcube['rights_list'][0]['RIGHT_CODE'] = "NONE";
+$roundcube['rights_list'][0]['RIGHT_HELP'] = "{LANG_ROUNDCUBE_Help_none}";
 
 $roundcube['rights_list'][1]['RIGHT_NAME'] = "{LANG_ROUNDCUBE_RIGHT_EMP}";
 $roundcube['rights_list'][1]['RIGHT_CODE'] = "EMP";
+$roundcube['rights_list'][1]['RIGHT_HELP'] = "{LANG_ROUNDCUBE_Help_emp}";
 
 
 $roundcube['module_menu_name']['title'][0] = "{LANG_ROUNDCUBE_My_mails_account}";

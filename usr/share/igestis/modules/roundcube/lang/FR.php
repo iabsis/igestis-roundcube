@@ -81,7 +81,8 @@ $LANG['LANG_ROUNDCUBE_Open_a_popup'] = "Ouvrir dans un popup";
 $LANG['LANG_ROUNDCUBE_MESSAGE_My_mails'] = "Mes emails";
 $LANG['LANG_ROUNDCUBE_DESCRIPTION_My_mails'] = "Vous pouvez voir vos mails directement depuis le webmail ci-dessous. Ainsi, même en déplacement vous avez toujours la possibilité de consulter vos emails.<br /> Cliquez sur \"Ouvrir dans un popup\" afin d'ouvrir le webmail dans une autre fenêtre.";
 
-
+$LANG['LANG_ROUNDCUBE_Help_none'] = "Ne permet pas l'accès au menu email";
+$LANG['LANG_ROUNDCUBE_Help_emp'] = "Permet de voir ses mails, ajouter des comptes mails, créer des règles de message et gérer un message d'abscence";
 
 
 
