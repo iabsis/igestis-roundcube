@@ -1,3 +1,9 @@
+igestis-roundcube (1.0.5) karmic; urgency=low
+
+  * Evolution #18 : Correction des fichiers de langues afin d'ajouter l'aide par droits.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 09 Mar 2010 14:39:45 +0100
+
 igestis-roundcube (1.0.4) karmic; urgency=low
 
   * Corrige Anomalie #11 - Mauvaise écriture du fichier .procmail-rouncube lors de la suppression d'une règle.
