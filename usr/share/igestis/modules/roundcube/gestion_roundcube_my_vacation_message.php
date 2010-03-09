@@ -32,7 +32,8 @@ $message = "";
 if(is_file($BASE_FOLDER . "/.Maildir/.message.txt")) {
 	$message = file_get_contents($BASE_FOLDER . "/.Maildir/.message.txt");
 }
-$application->add_var("vacation_message", htmlentities($message, ENT_COMPAT, "UTF-8"));
+
+$application->add_var("vacation_message", htmlentities($message, ENT_NOQUOTES, "UTF-8"));
 
 // Create content :
 $CONTENT = $application->get_html_content("roundcube_gestion_my_vacation_message.htm");

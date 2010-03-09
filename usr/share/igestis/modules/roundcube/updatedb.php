@@ -9,9 +9,11 @@ include "../../includes/common_librairie.php";
 // Initialization of the application
 $application = new application();
 
+/*
 $_GET = _mysql_real_escape_string($_GET);
 $_POST = _mysql_real_escape_string($_POST, array("action_argument", "rule_text"));
 $_COOKIE = _mysql_real_escape_string($_COOKIE);
+*/
 
 if(!$application->is_loged)
 {// Loged or not loged, that's the question.
@@ -111,6 +113,8 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
 } ############################################################################################################
 
 if($_POST['section'] == "vacation_message") {
+        if($_POST['email'] && !is_email($_POST['email'])) $application->message_die("Format d'email incorrect");
+
 	$BASE_FOLDER = mount_user_folder("main");
 	
 	$f = fopen($BASE_FOLDER . "/.Maildir/.message.txt", "w");
