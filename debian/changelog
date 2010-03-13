@@ -1,3 +1,9 @@
+igestis-roundcube (1.0.6) karmic; urgency=low
+
+  * Correction de bugs divers (notemment des guillements qui s'escapaient inutilisement dans le champ de message d'absence).
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Sat, 13 Mar 2010 14:11:34 +0100
+
 igestis-roundcube (1.0.5) karmic; urgency=low
 
   * Evolution #18 : Correction des fichiers de langues afin d'ajouter l'aide par droits.
