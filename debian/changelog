@@ -1,3 +1,9 @@
+igestis-roundcube (1.0.7) karmic; urgency=low
+
+  * Evolution #4 : Envoi d'un mail d'erreur lors de la seconde erreur fetchmail.
+
+ -- Olivier Bitsch <olivierb@olivierb-desktop>  Mon, 15 Mar 2010 21:51:37 +0100
+
 igestis-roundcube (1.0.6) karmic; urgency=low
 
   * Correction de bugs divers (notemment des guillements qui s'escapaient inutilisement dans le champ de message d'absence).
