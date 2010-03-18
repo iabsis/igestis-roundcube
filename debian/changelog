@@ -1,3 +1,9 @@
+igestis-roundcube (1.0.8) karmic; urgency=low
+
+  * Evolution #26 : Ajouter des titres aux pages.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Thu, 18 Mar 2010 16:52:40 +0100
+
 igestis-roundcube (1.0.7) karmic; urgency=low
 
   * Anomalie #24 : Problème de suppression de compte mail.
