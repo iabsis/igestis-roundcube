@@ -31,13 +31,13 @@ while($block = $parser->next_block()) {
 // Create content :
 $CONTENT = $application->get_html_content("roundcube_gestion_my_mails_rules.htm");
 if(!$CONTENT) $application->message_die("Unable to find the html page");
-
+$application->set_page_title("{LANG_ROUNDCUBE_MESSAGE_Mail_Rules}");
 
 
 exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
 ################## Create the content of the page #################################
 		
-$replace = array("MENU" => $application->generate_menu(), "GENERAL_TITLE" => $GENERAL_TITLE);
+$replace = array("MENU" => $application->generate_menu());
 $application->add_vars($replace);
 $application->show_content($CONTENT);
 

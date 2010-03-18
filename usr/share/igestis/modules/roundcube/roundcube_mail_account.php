@@ -25,6 +25,7 @@ if($roundcube_access != "ADMIN" && $roundcube_access != "EMP")
 ###################################################################################
 
 $BASE_FOLDER = mount_user_folder("popup");
+$application->set_page_title("{LANG_ROUNDCUBE_New_ROUNDCUBE_mail_account_description_short}");
 
 switch($_GET['action'])
 {
@@ -77,7 +78,7 @@ exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
 
 ################## Create the content of the page #################################
 
-$application->add_vars(array("MENU" => $application->generate_menu(), "GENERAL_TITLE" => $GENERAL_TITLE, "XAJAX" => $script_xajax));
+$application->add_vars(array("MENU" => $application->generate_menu(), "XAJAX" => $script_xajax));
 $application->show_content($CONTENT);
 
 

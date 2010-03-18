@@ -50,12 +50,12 @@ $application->add_vars(array(
 // Create content :
 $CONTENT = $application->get_html_content("roundcube_gestion_my_mails.htm");
 if(!$CONTENT) $application->message_die("Unable to find the html page");
-
+$application->set_page_title("{LANG_ROUNDCUBE_MESSAGE_My_mails}");
 
 
 ################## Create the content of the page #################################
 		
-$replace = array("MENU" => $application->generate_menu(), "GENERAL_TITLE" => $GENERAL_TITLE);
+$replace = array("MENU" => $application->generate_menu());
 $application->add_vars($replace);
 $application->show_content($CONTENT);
 

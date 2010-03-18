@@ -39,7 +39,7 @@ if(!$CONTENT) $application->message_die("Unable to find the html page");
 
 ################## Create the content of the page #################################
 		
-$replace = array("MENU" => $application->generate_menu(), "GENERAL_TITLE" => $GENERAL_TITLE);
+$replace = array("MENU" => $application->generate_menu());
 $application->add_vars($replace);
 $application->show_content($CONTENT);
 
