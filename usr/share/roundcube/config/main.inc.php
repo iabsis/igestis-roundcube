@@ -281,9 +281,11 @@ $rcmail_config['ldap_public'] = array();
 /* 
  * example config for Verisign directory
  *
-$rcmail_config['ldap_public']['Verisign'] = array(
-  'name'          => 'Verisign.com',
-  'hosts'         => array('directory.verisign.com'),
+
+*/
+$rcmail_config['ldap_public']['Clients'] = array(
+  'name'          => 'Clients',
+  'hosts'         => array('127.0.0.1'),
   'port'          => 389,
   'use_tls'	    => false,
   'user_specific' => false,   // If true the base_dn, bind_dn and bind_pass default to the user's IMAP login.
@@ -291,7 +293,7 @@ $rcmail_config['ldap_public']['Verisign'] = array(
   //       address, uses the username_domain value if not an email address.
   // %u  - The username prior to the '@'.
   // %d  - The domain name after the '@'.
-  'base_dn'       => '',
+  'base_dn'       => 'ou=Customers,dc=domaine,dc=local',
   'bind_dn'       => '',
   'bind_pass'     => '',
   'writable'      => false,   // Indicates if we can write to the LDAP directory or not.
@@ -310,11 +312,41 @@ $rcmail_config['ldap_public']['Verisign'] = array(
   'scope'         => 'sub',   // search mode: sub|base|list
   'filter'        => '',      // used for basic listing (if not empty) and will be &'d with search queries. example: status=act
   'fuzzy_search'  => true);   // server allows wildcard search
-*/
+
+$rcmail_config['ldap_public']['Employés'] = array(
+  'name'          => 'Employés',
+  'hosts'         => array('127.0.0.1'),
+  'port'          => 389,
+  'use_tls'         => false,
+  'user_specific' => false,   // If true the base_dn, bind_dn and bind_pass default to the user's IMAP login.
+  // %fu - The full username provided, assumes the username is an email
+  //       address, uses the username_domain value if not an email address.
+  // %u  - The username prior to the '@'.
+  // %d  - The domain name after the '@'.
+  'base_dn'       => 'ou=Users,dc=domaine,dc=local',
+  'bind_dn'       => '',
+  'bind_pass'     => '',
+  'writable'      => false,   // Indicates if we can write to the LDAP directory or not.
+  // If writable is true then these fields need to be populated:
+  // LDAP_Object_Classes, required_fields, LDAP_rdn
+  'LDAP_Object_Classes' => array("top", "inetOrgPerson"), // To create a new contact these are the object classes to specify (or any other classes you wish to use).
+  'required_fields'     => array("cn", "sn", "mail"),     // The required fields needed to build a new contact as required by the object classes (can include additional fields not required by the object classes).
+  'LDAP_rdn'      => 'mail', // The RDN field that is used for new entries, this field needs to be one of the search_fields, the base of base_dn is appended to the RDN to insert into the LDAP directory.
+  'ldap_version'  => 3,       // using LDAPv3
+  'search_fields' => array('mail', 'cn'),  // fields to search in
+  'name_field'    => 'cn',    // this field represents the contact's name
+  'email_field'   => 'mail',  // this field represents the contact's e-mail
+  'surname_field' => 'sn',    // this field represents the contact's last name
+  'firstname_field' => 'gn',  // this field represents the contact's first name
+  'sort'          => 'cn',    // The field to sort the listing by.
+  'scope'         => 'sub',   // search mode: sub|base|list
+  'filter'        => '',      // used for basic listing (if not empty) and will be &'d with search queries. example: status=act
+  'fuzzy_search'  => true);   // server allows wildcard search
+
 
 // An ordered array of the ids of the addressbooks that should be searched
 // when populating address autocomplete fields server-side. ex: array('sql','Verisign');
-$rcmail_config['autocomplete_addressbooks'] = array('sql');
+$rcmail_config['autocomplete_addressbooks'] = array('sql', 'Clients', 'Employés' );
 
 // don't allow these settings to be overriden by the user
 $rcmail_config['dont_override'] = array();
