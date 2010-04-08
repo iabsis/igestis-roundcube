@@ -1,3 +1,9 @@
+igestis-roundcube (1.0.9) karmic; urgency=low
+
+  * Ajout de la fonctionnalité de LDAP pour la recherche des clients et des employés directement dans roundcube.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Thu, 08 Apr 2010 12:59:17 +0200
+
 igestis-roundcube (1.0.8) karmic; urgency=low
 
   * Evolution #26 : Ajouter des titres aux pages.
