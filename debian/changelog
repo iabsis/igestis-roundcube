@@ -2,7 +2,7 @@ igestis-roundcube (1.0.10) karmic; urgency=low
 
   * Correction du problème de dépendance.
 
- -- Olivier Bitsch <olivierb@olivierb-desktop>  Sun, 06 Jun 2010 19:01:06 +0200
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Sun, 06 Jun 2010 19:11:14 +0200
 
 igestis-roundcube (1.0.9) karmic; urgency=low
 
