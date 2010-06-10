@@ -4,6 +4,7 @@ define("ROUNDCUBE_FOLDERS", "/home/samba/data/");
 $MODULE_NAME = "roundcube"; 
 
 $roundcube['module_name'] = "{LANG_ROUNDCUBE_MODULE_NAME}";
+$roundcube['icon_file'] = "roundcube.png";
 
 $roundcube['rights_list'][0]['RIGHT_NAME'] = "{LANG_ROUNDCUBE_RIGHT_NONE}";
 $roundcube['rights_list'][0]['RIGHT_CODE'] = "NONE";
