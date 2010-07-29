@@ -13,5 +13,5 @@ Conflicts: roundcube, roundcube-core
 Description:  iGestis module : Email client for iShare server.
  This module permit to see and manager your mail stored on the
  server.
- 
+ .
  You need a iShare server to use this module !
