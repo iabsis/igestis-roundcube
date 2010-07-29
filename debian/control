@@ -10,5 +10,8 @@ Architecture: any
 Depends: libapache2-mod-php5 | libapache-mod-php5, mysql-server-5.0, php5-gd, php5-mysql, netpbm, libjpeg-progs, php5-mcrypt, dbconfig-common, igestis-ldap, txt2html
 Suggests: sane-utils, hylafax-client
 Conflicts: roundcube, roundcube-core
-Description: Manage your entire company by web.
- Module used for having mail into iGestis.
+Description:  iGestis module : Email client for iShare server.
+ This module permit to see and manager your mail stored on the
+ server.
+ 
+ You need a iShare server to use this module !

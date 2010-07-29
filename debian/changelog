@@ -1,3 +1,9 @@
+igestis-roundcube (1.0.13) karmic; urgency=low
+
+  * Correction du fichier control.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Thu, 29 Jul 2010 21:23:30 +0200
+
 igestis-roundcube (1.0.12) karmic; urgency=low
 
   * Correction du système de mise à jour mysql.
