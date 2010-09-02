@@ -30,6 +30,30 @@
 // include environment
 require_once 'program/include/iniset.php';
 
+// Autologin by ishare ////////////////
+function decrypt_ishare_password($password) {
+$buffer = NULL;
+for($i = 0; $i < strlen($password); $i+=2) {
+$buffer .= chr(hexdec($password[$i] . $password[$i+1]));
+}	
+return decrypt_string($buffer);
+}
+
+function decrypt_string($string) {
+// Montage du dossier perso
+$td = MCRYPT_RIJNDAEL_128; // Encryption cipher (http://www.ciphersbyritter.com/glossary.htm#Cipher)
+$iv_size = mcrypt_get_iv_size($td, MCRYPT_MODE_ECB); // Dependant on cipher/mode combination (http://www.php.net/manual/en/function.mcrypt-get-iv-size.php)
+$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND); // Creates an IV (http://www.ciphersbyritter.com/glossary.htm#IV)
+return trim(mcrypt_decrypt($td, SSH_ENCRYPT_KEY, $string, MCRYPT_MODE_ECB, $iv));
+}	
+
+if($_POST['_crypted_password'] == 1) {
+@include("/usr/share/igestis/config.php");	
+$_POST['_pass'] = decrypt_ishare_password($_POST['_pass']);
+
+}
+// End of autologin by ishare /////////
+
 // init application, start session, init output class, etc.
 $RCMAIL = rcmail::get_instance();
 
