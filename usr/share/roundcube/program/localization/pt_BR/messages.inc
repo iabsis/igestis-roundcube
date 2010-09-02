@@ -6,7 +6,7 @@
 | language/pt_BR/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,9 +15,10 @@
 |         Alessandro Lenzi <alessandro@mistymountain.com.br>            |
 |         Gervasio Antonio <gdsa32-translations@yahoo.com.br>           |
 |         Victor Benincasa <vbenincasa@gmail.com>                       |
+|         Jarbas Peixoto Junior <jarbas.peixoto@gmail.com>              |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3061 2009-10-26 21:42:58Z yllar $
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -51,6 +52,7 @@ $messages['senttooquickly'] = 'Aguarde $sec s para enviar a mensagem';
 $messages['errorsavingsent'] = 'Ocorreu um erro ao salvar a mensagem enviada';
 $messages['errorsaving'] = 'Ocorreu um erro ao salvar';
 $messages['errormoving'] = 'Não foi possível mover a mensagem';
+$messages['errorcopying'] = 'Não foi possível copiar a(s) mensagem(ns)';
 $messages['errordeleting'] = 'Não foi possível apagar a mensagem';
 $messages['errormarking'] = 'Não foi possível marcar a mensagem';
 $messages['deletecontactconfirm'] = 'Deseja realmente excluir o(s) contato(s) selecionado(s)?';
@@ -90,6 +92,7 @@ $messages['copyerror'] = 'Não foi possível copiar os endereços';
 $messages['sourceisreadonly'] = 'Esta fonte de endereço é somente leitura';
 $messages['errorsavingcontact'] = 'Não foi possível salvar o endereço de contato';
 $messages['movingmessage'] = 'Movendo mensagem...';
+$messages['copyingmessage'] = 'Copiando mensagem...';
 $messages['receiptsent'] = 'Confirmação de recebimento enviada com sucesso';
 $messages['errorsendingreceipt'] = 'Não foi possível enviar a confirmação de recebimento';
 $messages['nodeletelastidentity'] = 'Você não pode excluir a única identidade';
@@ -97,6 +100,8 @@ $messages['addsubfolderhint'] = 'Esta pasta será criada como uma sub-pasta da q
 $messages['forbiddencharacter'] = 'O nome da pasta contém um caractere não permitido';
 $messages['selectimportfile'] = 'Selecione o arquivo para envio';
 $messages['addresswriterror'] = 'O catálogo de endereços selecionado não tem permissão de modificação';
+$messages['contactaddedtogroup'] = 'Adicionado os contatos a este grupo com sucesso';
+$messages['contactremovedfromgroup'] = 'Removido contatos deste grupo com sucesso';
 $messages['importwait'] = 'Importando, aguarde por favor...';
 $messages['importerror'] = 'Falha na importação! O arquivo enviado não é um arquivo vCard válido.';
 $messages['importconfirm'] = '<b>Foram importados com sucesso $inserted contatos, e $skipped contatos foram ignorados</b>:<p><em>$names</em></p>';
@@ -106,10 +111,12 @@ $messages['editorwarning'] = 'Mudar para o editor de texto simples elimina toda 
 $messages['httpreceivedencrypterror'] = 'Ocorreu um erro de configuração. Informe ao administrador do sistema imediatamente. <b>Sua mensagem não pode ser enviada.</b>';
 $messages['smtpconnerror'] = 'Erro SMTP ($code): Conexão ao servidor falhou';
 $messages['smtpautherror'] = 'Erro SMTP ($code): Falha na autenticação';
-$messages['smtpfromerror'] = 'Erro SMTP ($code): Falha ao definir o remetente "$from"';
-$messages['smtptoerror'] = 'Erro SMTP ($code): Falha ao adicionar o destinatário "$to"';
+$messages['smtpfromerror'] = 'Erro SMTP ($code): Falha ao definir o remetente "$from" ($msg)';
+$messages['smtptoerror'] = 'Erro SMTP ($code): Falha ao adicionar o destinatário "$to" ($msg)';
 $messages['smtprecipientserror'] = 'Erro SMTP: Não é possível analisar a lista destinatários';
 $messages['smtperror'] = 'Erro SMTP: $msg';
 $messages['emailformaterror'] = 'Endereço de Email incorreto: $email';
+$messages['toomanyrecipients'] = 'Muitos destinatários. Reduza o número de destinatários para $max.';
+$messages['maxgroupmembersreached'] = 'O número de membros do grupo excede o máximo de $max';
 
 ?>

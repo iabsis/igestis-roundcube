@@ -5,7 +5,7 @@
 | language/cy_GB/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2008-2009, RoundQube Dev. - Switzerland                 |
+| Copyright (C) 2008-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -44,6 +44,7 @@ $messages['senttooquickly'] = 'Arhoswch $sec eiliad cyn danfon y neges';
 $messages['errorsavingsent'] = 'Fe gafwyd gwall wrth cadw\'r neges ddanfonwyd';
 $messages['errorsaving'] = 'Fe gafwyd gwall wrth gadw';
 $messages['errormoving'] = 'Methwyd symud y neges';
+$messages['errorcopying'] = 'Methwyd copïo\'r neges(euon)';
 $messages['errordeleting'] = 'Methwyd dileu y neges';
 $messages['errormarking'] = 'Methwyd nodi y neges';
 $messages['deletecontactconfirm'] = 'Ydych chi wir am ddileu y cysylltiadau ddewiswyd?';
@@ -83,6 +84,7 @@ $messages['copyerror'] = 'Methwyd copïo unrhyw gyfeiriad';
 $messages['sourceisreadonly'] = 'Mae ffynhonnell y cyfeiriadau i\'w ddarllen yn unig';
 $messages['errorsavingcontact'] = 'Methwyd cadw cyfeiriad y cyswllt';
 $messages['movingmessage'] = 'Yn symud neges...';
+$messages['copyingmessage'] = 'Yn copïo\'r neges';
 $messages['receiptsent'] = 'Danfonwyd cadarnhad derbyn yn llwyddiannus';
 $messages['errorsendingreceipt'] = 'Methwyd danfon cadarnhad derbyn';
 $messages['nodeletelastidentity'] = 'Allwch chi ddim dileu\'r personoliaeth yma, hwn yw\'r un olaf.';
@@ -90,6 +92,8 @@ $messages['addsubfolderhint'] = 'Mi fydd y ffolder yma\'n cael ei greu fel is-ff
 $messages['forbiddencharacter'] = 'Mae enw\'r ffolder yn cynnwys llythyren annerbynniol';
 $messages['selectimportfile'] = 'Dewiswch ffeil i\'w lwytho fyny';
 $messages['addresswriterror'] = 'Nid yw\'n bosib ysgrifennu i\'r llyfr cyfeiriadau ';
+$messages['contactaddedtogroup'] = 'Ychwanegwyd y cysylltiadau i\'r grŵp yma yn llwyddiannus';
+$messages['contactremovedfromgroup'] = 'Dilëwyd y cysylltiadau o\'r grŵp yma yn llwyddiannus';
 $messages['importwait'] = 'Yn mewnforio, arhoswch os gwelwch yn dda...';
 $messages['importerror'] = 'Methwyd a mewnforio! Nid yw\'r ffeil a lwythwyd fyny yn ffeil vCard dilys.';
 $messages['importconfirm'] = '<b>Fe mewnforiwyd $inserted cyswllt yn llwyddiannus, anwybyddwyd $skipped cofnod presennol</b>:<p><em>$names</em></p>';
@@ -99,10 +103,13 @@ $messages['editorwarning'] = 'Mi fydd newid i\'r golygydd testun plaen yn golygu
 $messages['httpreceivedencrypterror'] = 'Fe gafwyd gwall angheuol yn y ffurfweddiad. Cysylltwch â\'ch gweinyddwr ar unwaith. <b>Nid oedd yn bosib dangos eich neges.</b>';
 $messages['smtpconnerror'] = 'Gwall SMTP ($code): Methwyd cysylltu a\'r gweinydd';
 $messages['smtpautherror'] = 'Gwall SMTP ($code): Methwyd dilysu\'r cyfrif';
-$messages['smtpfromerror'] = 'Gwall SMTP ($code): Methwyd gosod y danfonwr "$from"';
-$messages['smtptoerror'] = 'Gwall SMTP ($code): Methwyd ychwanegu derbynwr "$to"';
+$messages['smtpfromerror'] = 'Gwall SMTP ($code): Methwyd gosod y danfonwr "$from" ($msg)';
+$messages['smtptoerror'] = 'Gwall SMTP ($code): Methwyd ychwanegu derbynwr "$to" ($msg)';
 $messages['smtprecipientserror'] = 'Gwall SMTP: Nid oedd yn bosib darllen y rhestr o dderbynnwyr';
 $messages['smtperror'] = 'Gwall SMTP: $msg';
 $messages['emailformaterror'] = 'Cyfeiriad e-bost anghywir: $email';
+$messages['toomanyrecipients'] = 'Gormod o dderbynnwyr. Lleihewch y nifer i $max';
+$messages['maxgroupmembersreached'] = 'Mae nifer o aelodau\'r grŵp yn fwy na\'r uchafswm o $max';
+$messages['internalerror'] = 'Fe gafwyd gwall mewnol. Rhowch gynnig arni eto.';
 
 ?>

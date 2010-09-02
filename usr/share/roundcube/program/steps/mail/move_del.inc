@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: move_del.inc 2960 2009-09-17 12:36:32Z alec $
+ $Id: move_del.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -24,7 +24,7 @@ if (!$OUTPUT->ajax_call)
   return;
 
 // count messages before changing anything
-$old_count = $IMAP->messagecount();
+$old_count = $IMAP->messagecount(NULL, $IMAP->threading ? 'THREADS' : 'ALL');
 $old_pages = ceil($old_count / $IMAP->page_size);
 
 // move messages
@@ -34,11 +34,11 @@ if ($RCMAIL->action=='moveto' && !empty($_POST['_uid']) && !empty($_POST['_targe
     $mbox = get_input_value('_mbox', RCUBE_INPUT_POST);
 
     $moved = $IMAP->move_message($uids, $target, $mbox);
-  
+
     if (!$moved) {
         // send error message
-	if ($_POST['_from'] != 'show')
-          $OUTPUT->command('list_mailbox');
+	    if ($_POST['_from'] != 'show')
+            $OUTPUT->command('list_mailbox');
         $OUTPUT->show_message('errormoving', 'error');
         $OUTPUT->send();
         exit;
@@ -50,12 +50,13 @@ if ($RCMAIL->action=='moveto' && !empty($_POST['_uid']) && !empty($_POST['_targe
 else if ($RCMAIL->action=='delete' && !empty($_POST['_uid'])) {
     $count = sizeof(explode(',', ($uids = get_input_value('_uid', RCUBE_INPUT_POST))));
     $mbox = get_input_value('_mbox', RCUBE_INPUT_POST);
+
     $del = $IMAP->delete_message($uids, $mbox);
   
     if (!$del) {
         // send error message
-	if ($_POST['_from'] != 'show')
-          $OUTPUT->command('list_mailbox');
+	    if ($_POST['_from'] != 'show')
+            $OUTPUT->command('list_mailbox');
         $OUTPUT->show_message('errordeleting', 'error');
         $OUTPUT->send();
         exit;
@@ -82,13 +83,13 @@ if ($_POST['_from'] == 'show')
 }
 else
 {
-  $msg_count      = $IMAP->messagecount();
+  $msg_count      = $IMAP->messagecount(NULL, $IMAP->threading ? 'THREADS' : 'ALL');
   $pages          = ceil($msg_count / $IMAP->page_size);
   $nextpage_count = $old_count - $IMAP->page_size * $IMAP->list_page;
   $remaining      = $msg_count - $IMAP->page_size * ($IMAP->list_page - 1);
 
   // jump back one page (user removed the whole last page)
-  if ($IMAP->list_page > 1 && $nextpage_count <= 0 && $remaining == 0) {
+  if ($IMAP->list_page > 1 && $remaining == 0) {
     $IMAP->set_page($IMAP->list_page-1);
     $_SESSION['page'] = $IMAP->list_page;
     $jump_back = true;
@@ -113,21 +114,25 @@ else
     rcmail_send_unread_count($target, true);
   }
 
-  $OUTPUT->command('set_quota', rcmail_quota_content($IMAP->get_quota()));
+  $OUTPUT->command('set_quota', rcmail_quota_content());
   $OUTPUT->command('set_rowcount', rcmail_get_messagecount_text($msg_count));
 
+  if ($IMAP->threading)
+    $count = get_input_value('_count', RCUBE_INPUT_POST);
+
   // add new rows from next page (if any)
-  if ($addrows && ($jump_back || $nextpage_count > 0)) {
+  if ($addrows && $count && $uids != '*' && ($jump_back || $nextpage_count > 0)) {
     $sort_col   = isset($_SESSION['sort_col'])   ? $_SESSION['sort_col']   : $CONFIG['message_sort_col'];
     $sort_order = isset($_SESSION['sort_order']) ? $_SESSION['sort_order'] : $CONFIG['message_sort_order'];
 
-    $a_headers = $IMAP->list_headers($mbox, NULL, $sort_col, $sort_order, $count);
+    $a_headers = $IMAP->list_headers($mbox, NULL, $sort_col, $sort_order,
+      $jump_back ? NULL : $count);
 
-    rcmail_js_message_list($a_headers, false, false);
+    rcmail_js_message_list($a_headers, false);
   }
 }
 
 // send response
 $OUTPUT->send();
 
-?>
+

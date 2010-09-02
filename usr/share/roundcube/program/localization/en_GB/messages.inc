@@ -2,18 +2,18 @@
 
 /*
 
- +-----------------------------------------------------------------------+
- | language/en_GB/messages.inc                                           |
- |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
- | Licensed under the GNU GPL                                            |
- |                                                                       |
- +-----------------------------------------------------------------------+
- | Author: Weiran Zhang (weiran@weiran.co.uk)                            |
- +-----------------------------------------------------------------------+
++-----------------------------------------------------------------------+
+| language/en_GB/messages.inc                                           |
+|                                                                       |
+| Language file of the RoundCube Webmail client                         |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Licensed under the GNU GPL                                            |
+|                                                                       |
++-----------------------------------------------------------------------+
+| Author: Weiran Zhang (weiran@weiran.co.uk)                            |
++-----------------------------------------------------------------------+
 
- @version $Id: messages.inc 2713 2009-07-06 09:13:10Z alec $
+@version $Id: messages.inc 3770 2010-06-19 12:46:51Z yllar $
 
 */
 
@@ -23,10 +23,12 @@ $messages['cookiesdisabled'] = 'Your browser does not accept cookies';
 $messages['sessionerror'] = 'Your session is invalid or has expired';
 $messages['imaperror'] = 'Connection to IMAP server failed';
 $messages['servererror'] = 'Server Error!';
+$messages['invalidrequest'] = 'Invalid request! No data was saved.';
 $messages['nomessagesfound'] = 'No messages found in this mailbox';
 $messages['loggedout'] = 'You have successfully terminated the session. Good bye!';
 $messages['mailboxempty'] = 'Mailbox is empty';
 $messages['loading'] = 'Loading...';
+$messages['uploading'] = 'Uploading file...';
 $messages['loadingdata'] = 'Loading data...';
 $messages['checkingmail'] = 'Checking for new messages...';
 $messages['sendingmessage'] = 'Sending message...';
@@ -45,6 +47,7 @@ $messages['senttooquickly'] = 'Please wait $sec sec(s). before sending this mess
 $messages['errorsavingsent'] = 'An error occurred while saving sent message';
 $messages['errorsaving'] = 'An error occurred while saving';
 $messages['errormoving'] = 'Could not move the message';
+$messages['errorcopying'] = 'Could not copy the message(s)';
 $messages['errordeleting'] = 'Could not delete the message';
 $messages['errormarking'] = 'Could not mark the message';
 $messages['deletecontactconfirm'] = 'Do you really want to delete the selected contact(s)?';
@@ -67,6 +70,7 @@ $messages['notsentwarning'] = 'Your message has not been sent. Do you want to di
 $messages['noldapserver'] = 'Please select an LDAP server to search';
 $messages['nocontactsreturned'] = 'No contacts were found';
 $messages['nosearchname'] = 'Please enter a contact name or email address';
+$messages['notuploadedwarning'] = 'Not all attachments have been uploaded yet. Please wait or cancel the upload.';
 $messages['searchsuccessful'] = '$nr messages found';
 $messages['searchnomatch'] = 'Search found no matches';
 $messages['searching'] = 'Searching...';
@@ -83,6 +87,7 @@ $messages['copyerror'] = 'Could not copy any addresses';
 $messages['sourceisreadonly'] = 'This address source is read-only';
 $messages['errorsavingcontact'] = 'Could not save the contact address';
 $messages['movingmessage'] = 'Moving message...';
+$messages['copyingmessage'] = 'Copying message...';
 $messages['receiptsent'] = 'Successfully sent a read receipt';
 $messages['errorsendingreceipt'] = 'Could not send the receipt';
 $messages['nodeletelastidentity'] = 'You cannot delete this identity, it\'s your last one.';
@@ -90,6 +95,8 @@ $messages['addsubfolderhint'] = 'This folder will be created as subfolder of the
 $messages['forbiddencharacter'] = 'Folder name contains a forbidden character';
 $messages['selectimportfile'] = 'Please select a file to upload';
 $messages['addresswriterror'] = 'The selected address book is not writeable';
+$messages['contactaddedtogroup'] = 'Successfully added the contacts to this group';
+$messages['contactremovedfromgroup'] = 'Successfully remove contacts from this group';
 $messages['importwait'] = 'Importing, please wait...';
 $messages['importerror'] = 'Import failed! The uploaded file is not a valid vCard file.';
 $messages['importconfirm'] = '<b>Successfully imported $inserted contacts, $skipped existing entries skipped</b>:<p><em>$names</em></p>';
@@ -99,9 +106,13 @@ $messages['editorwarning'] = 'Switching to the plain text editor will cause all 
 $messages['httpreceivedencrypterror'] = 'A fatal configuration error occurred. Contact your administrator immediately. <b>Your message can not be sent.</b>';
 $messages['smtpconnerror'] = 'SMTP Error ($code): Connection to server failed';
 $messages['smtpautherror'] = 'SMTP Error ($code): Authentication failed';
-$messages['smtpfromerror'] = 'SMTP Error ($code): Failed to set sender "$from"';
-$messages['smtptoerror'] = 'SMTP Error ($code): Failed to add recipient "$to"';
+$messages['smtpfromerror'] = 'SMTP Error ($code): Failed to set sender "$from" ($msg)';
+$messages['smtptoerror'] = 'SMTP Error ($code): Failed to add recipient "$to" ($msg)';
 $messages['smtprecipientserror'] = 'SMTP Error: Unable to parse recipients list';
 $messages['smtperror'] = 'SMTP Error: $msg';
+$messages['emailformaterror'] = 'Incorrect e-mail address: $email';
+$messages['toomanyrecipients'] = 'Too many recipients. Reduce the number of recipients to $max.';
+$messages['maxgroupmembersreached'] = 'The number of group members exceeds the maximum of $max';
+$messages['internalerror'] = 'An internal error occured. Please try again';
 
 ?>

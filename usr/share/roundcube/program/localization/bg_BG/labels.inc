@@ -6,7 +6,7 @@
 | language/bg/labels.inc                                                |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |	  Nickolay Bunev <just4nick@gmail.com>								|
 +-----------------------------------------------------------------------+
 
-@version $Id$
+@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
 
 */
 
@@ -252,7 +252,6 @@ $labels['advancedoptions'] = 'Настройки за напреднали';
 $labels['focusonnewmessage'] = 'Премигване на прозореца при ново писмо';
 $labels['checkallfolders'] = 'Провери всички папки за нови писма';
 $labels['displaynext'] = 'След изтриване / премини към следващото писмо';
-$labels['indexsort'] = 'Използвай индекса на писмата при сортиране по дата';
 $labels['mainoptions'] = 'Основни настройки';
 $labels['section'] = 'Раздел';
 $labels['maintenance'] = 'Поддръжка';

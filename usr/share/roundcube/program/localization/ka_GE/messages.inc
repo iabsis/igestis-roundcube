@@ -5,7 +5,7 @@
 | localization/ka_GE/messages.inc                                       |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -101,9 +101,10 @@ $messages['editorwarning'] = 'რედაქტორის გადართ�
 $messages['httpreceivedencrypterror'] = 'სერვერზე მოხდა შეცდომა. დაუყონებლივ დაუკავშირდით ადმინისტრატორს. <b>თქვენი შეტყობინება შესაძლოა ვერ გაიგზავნა.</b>';
 $messages['smtpconnerror'] = 'SMTP Error ($code): სერვერთან დაკავშირება ვერ მოხერხდა';
 $messages['smtpautherror'] = 'SMTP Error ($code): ავტორიზაციის შეცდომა';
-$messages['smtpfromerror'] = 'SMTP Error ($code): ვერ მიეთითა გამგზავნი "$from"';
-$messages['smtptoerror'] = 'SMTP Error ($code): ვერ დაემატა მიმღები "$to"';
+$messages['smtpfromerror'] = 'SMTP Error ($code): ვერ მიეთითა გამგზავნი "$from" ($msg)';
+$messages['smtptoerror'] = 'SMTP Error ($code): ვერ დაემატა მიმღები "$to" ($msg)';
 $messages['smtprecipientserror'] = 'SMTP Error: მიმღებთა ჩამონათვალის დამუშავება ვერ მოხერხდა';
 $messages['smtperror'] = 'SMTP Error: $msg';
+$messages['emailformaterror'] = 'ელ-ფოსტის მისამართი არასწორია $email';
 
 ?>

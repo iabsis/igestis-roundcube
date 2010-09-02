@@ -1,12 +1,11 @@
 <?php
 
 /*
-
 +-----------------------------------------------------------------------+
-| language/fi/messages.inc                                              |
+| language/fi_FI/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,7 +14,7 @@
 |         Jorma Tuomainen <jt@wiza.fi>                                  |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 2572 2009-05-29 17:39:35Z alec $
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -25,10 +24,12 @@ $messages['cookiesdisabled'] = 'Selaimesi ei hyväksy evästeitä';
 $messages['sessionerror'] = 'Sessio ei kelpaa tai ei ole enää voimassa';
 $messages['imaperror'] = 'Yhteys IMAP-palvelimeen epäonnistui';
 $messages['servererror'] = 'Palvelin virhe!';
+$messages['invalidrequest'] = 'Kelpaamaton pyyntö! Tietoa ei tallennettu.';
 $messages['nomessagesfound'] = 'Kansiossa ei ole sähköpostiviestejä';
 $messages['loggedout'] = 'Sinut on kirjattu ulos järjestelmästä.';
 $messages['mailboxempty'] = 'Kansio on tyhjä';
 $messages['loading'] = 'Ladataan...';
+$messages['uploading'] = 'Ladataan tiedostoa palvelimelle...';
 $messages['loadingdata'] = 'Ladataan tietoja...';
 $messages['checkingmail'] = 'Tarkistetaan saapuneita viestejä...';
 $messages['sendingmessage'] = 'Lähetetään viestiä...';
@@ -47,7 +48,9 @@ $messages['senttooquickly'] = 'Odota $sec sekunti(a) ennen viestin lähettämist
 $messages['errorsavingsent'] = 'Lähetetyn viestin tallennuksessa tapahtui virhe';
 $messages['errorsaving'] = 'Tallennuksessa tapahtui virhe';
 $messages['errormoving'] = 'Viestiä ei voitu siirtää';
+$messages['errorcopying'] = 'Viestiä ei voitu kopioida';
 $messages['errordeleting'] = 'Viestiä ei voitu poistaa';
+$messages['errormarking'] = 'Viestiä ei voitu merkiä';
 $messages['deletecontactconfirm'] = 'Haluatko varmasti poistaa valitut kontaktit?';
 $messages['deletemessagesconfirm'] = 'Haluatko varmasti poistaa valitut viestit?';
 $messages['deletefolderconfirm'] = 'Haluatko varmasti poistaa kansion?';
@@ -68,6 +71,7 @@ $messages['notsentwarning'] = 'Viestiä ei lähetetty. Haluatko poistaa viestin?
 $messages['noldapserver'] = 'Valitse LDAP -palvelin';
 $messages['nocontactsreturned'] = 'Yhtään kontaktia ei löytynyt';
 $messages['nosearchname'] = 'Anna kontaktin nimi tai sähköpostiosoite';
+$messages['notuploadedwarning'] = 'Kaikkia liitteitä ei ole vielä ladattu palvelimelle. Odota tai peruuta lataus.';
 $messages['searchsuccessful'] = 'Löydetty $nr viestiä';
 $messages['searchnomatch'] = 'Haku ei tuottanut tuloksia';
 $messages['searching'] = 'Etsitään...';
@@ -84,6 +88,7 @@ $messages['copyerror'] = 'Yhtään osoitetta ei voitu kopioida';
 $messages['sourceisreadonly'] = 'Tämän osoitteen lähde on kirjoitussuojattu';
 $messages['errorsavingcontact'] = 'Yhteystietoa ei voitu tallentaa';
 $messages['movingmessage'] = 'Siirretään viestiä...';
+$messages['copyingmessage'] = 'Kopioidaan viestiä...';
 $messages['receiptsent'] = 'Lukukuittaus lähetetty onnistuneesti';
 $messages['errorsendingreceipt'] = 'Lukukuittausta ei voitu lähettää';
 $messages['nodeletelastidentity'] = 'Et voi poistaa tätä identiteettiä, koska se on ainoa jäljelläoleva';
@@ -91,6 +96,8 @@ $messages['addsubfolderhint'] = 'Uusi kansio luodaan valitun kansion alikansiona
 $messages['forbiddencharacter'] = 'Kansion nimessä on kiellettyjä merkkejä';
 $messages['selectimportfile'] = 'Valitse lähetettävä tiedosto';
 $messages['addresswriterror'] = 'Valittuun osoitekirjaan ei voi kirjoittaa';
+$messages['contactaddedtogroup'] = 'Kontaktit lisätty ryhmään';
+$messages['contactremovedfromgroup'] = 'Kontaktit poistettu ryhmästä';
 $messages['importwait'] = 'Tuodaan, odota...';
 $messages['importerror'] = 'Tuonti epäonnistui! Lähetetty tiedosto ei ole vCard -muodossa.';
 $messages['importconfirm'] = '<b>$inserted kontaktia tuotu onnistuneesti $inserted kontaktioa, $skipped olemassaolevaa kontaktia hypättiin yli</b>:<p><em>$names</em></p>';
@@ -98,5 +105,14 @@ $messages['opnotpermitted'] = 'Toiminto ei ole sallittu!';
 $messages['nofromaddress'] = 'Valittu identiteetti ei sisällä sähköpostiosoitetta';
 $messages['editorwarning'] = 'Vaihtaminen tekstieditoriin aiheuttaa viestin muotoilun katoamisen. Haluatko jatkaa?';
 $messages['httpreceivedencrypterror'] = 'Vakava virhe asetuksissa. Ota välittömästi yhteys ylläpitoon. <b>Viestiäsi ei voida lähettää.</b>';
+$messages['smtpconnerror'] = 'SMTP-virhe ($code): Palvelimelle yhdistäminen epäonnistui';
+$messages['smtpautherror'] = 'SMTP-virhe ($code): Tunnistus epäonnistui';
+$messages['smtpfromerror'] = 'SMTP-virhe ($code): Lähettäjän "$from" asettaminen epäonnistui ($msg)';
+$messages['smtptoerror'] = 'SMTP-virhe ($code): Vastaanottajan "$to" lisääminen epäonnistui ($msg)';
+$messages['smtprecipientserror'] = 'SMTP-virhe: Ei voida jäsentää vastaanottajien listaa';
+$messages['smtperror'] = 'SMTP-virhe: $msg';
+$messages['emailformaterror'] = 'Väärä sähköpostiosoite: $email';
+$messages['toomanyrecipients'] = 'Liikaa vastaanottajia. Vähennä vastaanottajien määrä maksimiin $max.';
+$messages['maxgroupmembersreached'] = 'Ryhmän jäsenten määrä ylittää maksimin $max';
 
 ?>

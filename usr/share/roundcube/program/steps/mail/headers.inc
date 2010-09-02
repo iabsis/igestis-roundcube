@@ -14,31 +14,37 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: mark.inc 1580 2008-06-30 09:36:18Z alec $
+ $Id: headers.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
 if ($uid = get_input_value('_uid', RCUBE_INPUT_POST))
 {
-  $source = $IMAP->get_raw_headers($uid);
+    $source = $IMAP->get_raw_headers($uid);
 
-  if ($source)
-    {
-    $browser = new rcube_browser;
-    
-    if ($browser->ie)
-      $source = rc_utf8_clean($source);	  
+    if ($source !== false) {
+        $source = htmlspecialchars(trim($source));
+        $source = preg_replace(
+            array(
+                '/\n[\t\s]+/',
+                '/^([a-z0-9_:-]+)/im',
+                '/\r?\n/'
+            ),
+            array(
+                "\n&nbsp;&nbsp;&nbsp;&nbsp;",
+                '<font class="bold">\1</font>',
+                '<br />'
+            ), $source);
 
-    $source = htmlspecialchars(trim($source));
-    $source = preg_replace('/\t/', '&nbsp;&nbsp;&nbsp;&nbsp;', $source);
-    $source = preg_replace('/^([a-z0-9_:-]+)/im', '<font class="bold">'.'\1'.'</font>', $source);
-    $source = preg_replace('/\r?\n/', '<br />', $source);
-    
-    $OUTPUT->command('set_headers', $source);
-    $OUTPUT->send();
+        $OUTPUT->command('set_headers', $source);
     }
+    else {
+        $RCMAIL->output->show_message('messageopenerror', 'error');
+    }
+
+    $OUTPUT->send();
 }
-  
+
 exit;
 
-?>
+

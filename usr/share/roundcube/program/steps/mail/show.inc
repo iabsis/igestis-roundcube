@@ -15,58 +15,34 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: show.inc 2933 2009-09-08 08:04:17Z alec $
+ $Id: show.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
 $PRINT_MODE = $RCMAIL->action=='print' ? TRUE : FALSE;
 
 // similar code as in program/steps/mail/get.inc
-if ($_GET['_uid']) {
-  $MESSAGE = new rcube_message(get_input_value('_uid', RCUBE_INPUT_GET));
+if ($uid = get_input_value('_uid', RCUBE_INPUT_GET)) {
+  $MESSAGE = new rcube_message($uid);
 
   // if message not found (wrong UID)...
   if (empty($MESSAGE->headers)) {
-    $OUTPUT->show_message('messageopenerror', 'error');
-    // ... display error or preview page
-    if ($RCMAIL->action=='preview' && $OUTPUT->template_exists('messageerror'))
-      $OUTPUT->send('messageerror');
-    else if ($RCMAIL->action=='preview' && $OUTPUT->template_exists('messagepreview'))
-      $OUTPUT->send('messagepreview');
-    // ... go back to the list
-    else {
-      rcmail_overwrite_action('');
-      return;
-    }
+    rcmail_message_error($uid);
   }
 
+  send_nocacheing_headers();
+
   $mbox_name = $IMAP->get_mailbox_name();
-  
+
   // show images?
   rcmail_check_safe($MESSAGE);
-
-  // calculate Etag for this request
-  $etag = md5($MESSAGE->uid.$mbox_name.session_id()
-    .intval($MESSAGE->headers->mdn_sent)
-    .intval($MESSAGE->is_safe)
-    .(!empty($MESSAGE->attachments) ? intval($CONFIG['inline_images']) : '')
-    .intval($PRINT_MODE)
-    .$_SESSION['sort_col'].$_SESSION['sort_order']
-    .$IMAP->messagecount($mbox_name, 'ALL', true)
-    );
-
-  // allow caching, unless remote images are present
-  if ((bool)$MESSAGE->is_safe)
-    send_nocacheing_headers();
-  else if (empty($CONFIG['devel_mode']))
-    send_modified_header($_SESSION['login_time'], $etag, !$MESSAGE->headers->seen);
 
   // set message charset as default
   if (!empty($MESSAGE->headers->charset))
     $IMAP->set_charset($MESSAGE->headers->charset);
 
   $OUTPUT->set_pagetitle($MESSAGE->subject);
-  
+
   // give message uid to the client
   $OUTPUT->set_env('uid', $MESSAGE->uid);
   // set environement
@@ -88,7 +64,7 @@ if ($_GET['_uid']) {
 
   if (!$OUTPUT->ajax_call)
     $OUTPUT->add_label('checkingmail', 'deletemessage', 'movemessagetotrash', 'movingmessage');
-        
+
   // check for unset disposition notification
   if ($MESSAGE->headers->mdn_to &&
       !$MESSAGE->headers->mdn_sent && !$MESSAGE->headers->seen &&
@@ -118,7 +94,7 @@ if ($_GET['_uid']) {
     $next = $prev = $first = $last = -1;
 
     if ($_SESSION['sort_col'] == 'date' && $_SESSION['sort_order'] != 'DESC'
-        && empty($_REQUEST['_search']) && !$IMAP->skip_deleted)
+        && empty($_REQUEST['_search']) && !$CONFIG['skip_deleted'] && !$IMAP->threading)
       {
       // this assumes that we are sorted by date_DESC
       $cnt = $IMAP->messagecount();
@@ -137,10 +113,11 @@ if ($_GET['_uid']) {
 
       $MESSAGE->index = array_search($IMAP->get_id($MESSAGE->uid), $a_msg_index);
 
-      $prev = isset($a_msg_index[$MESSAGE->index-1]) ? $IMAP->get_uid($a_msg_index[$MESSAGE->index-1]) : -1 ;
-      $first = count($a_msg_index)>0 ? $IMAP->get_uid($a_msg_index[0]) : -1;
-      $next = isset($a_msg_index[$MESSAGE->index+1]) ? $IMAP->get_uid($a_msg_index[$MESSAGE->index+1]) : -1 ;
-      $last = count($a_msg_index)>0 ? $IMAP->get_uid($a_msg_index[count($a_msg_index)-1]) : -1;
+      $count = count($a_msg_index);
+      $prev = isset($a_msg_index[$MESSAGE->index-1]) ? $IMAP->get_uid($a_msg_index[$MESSAGE->index-1]) : -1;
+      $first = $count > 1 ? $IMAP->get_uid($a_msg_index[0]) : -1;
+      $next = isset($a_msg_index[$MESSAGE->index+1]) ? $IMAP->get_uid($a_msg_index[$MESSAGE->index+1]) : -1;
+      $last = $count > 1 ? $IMAP->get_uid($a_msg_index[$count-1]) : -1;
       }
 
     if ($prev > 0)
@@ -151,11 +128,14 @@ if ($_GET['_uid']) {
       $OUTPUT->set_env('next_uid', $next);
     if ($last > 0)
       $OUTPUT->set_env('last_uid', $last);
+
+    // Don't need a real messages count value
+    $OUTPUT->set_env('messagecount', 1);
     }
 
-  if (!$MESSAGE->headers->seen)
+  if (!$MESSAGE->headers->seen && ($RCMAIL->action == 'show' || ($RCMAIL->action == 'preview' && intval($CONFIG['preview_pane_mark_read']) == 0)))
     $RCMAIL->plugins->exec_hook('message_read', array('uid' => $MESSAGE->uid,
-      'mailbox' => $IMAP->mailbox, 'message' => $MESSAGE));
+      'mailbox' => $mbox_name, 'message' => $MESSAGE));
 }
 
 
@@ -239,9 +219,13 @@ else
 
 
 // mark message as read
-if ($MESSAGE && $MESSAGE->headers && !$MESSAGE->headers->seen)
-  $IMAP->set_flag($MESSAGE->uid, 'SEEN');
+if ($MESSAGE && $MESSAGE->headers && !$MESSAGE->headers->seen &&
+  ($RCMAIL->action == 'show' || ($RCMAIL->action == 'preview' && intval($CONFIG['preview_pane_mark_read']) == 0)))
+{
+  if ($IMAP->set_flag($MESSAGE->uid, 'SEEN') && $_SESSION['unseen_count'][$mbox_name])
+    $_SESSION['unseen_count'][$mbox_name] -= 1;
+}
 
 exit;
 
-?>
+

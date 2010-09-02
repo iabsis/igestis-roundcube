@@ -44,7 +44,7 @@
 // |          Lorenzo Alberton <l.alberton@quipo.it>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: mssql.php,v 1.109 2008/03/05 12:55:57 afz Exp $
+// $Id: mssql.php 295587 2010-02-28 17:16:38Z quipo $
 //
 
 require_once 'MDB2/Driver/Manager/Common.php';
@@ -74,7 +74,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function createDatabase($name, $options = array())
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -106,7 +106,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function alterDatabase($name, $options = array())
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -138,7 +138,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function dropDatabase($name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -245,7 +245,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function truncateTable($name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -275,7 +275,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function vacuum($table = null, $options = array())
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -385,7 +385,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function alterTable($name, $changes, $check)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -546,7 +546,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function _dropConflictingIndices($table, $fields)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -592,7 +592,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function _dropConflictingConstraints($table, $fields)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -647,7 +647,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function _getTableFieldDefaultConstraint($table, $field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -673,7 +673,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listTables()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
 
         if (PEAR::isError($db)) {
             return $db;
@@ -710,16 +710,16 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listTableFields($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
 
-        $table = $db->quoteIdentifier($table, true);
+        $table = $db->quote($table, 'text');
         $columns = $db->queryCol("SELECT c.name
                                     FROM syscolumns c
                                LEFT JOIN sysobjects o ON c.id = o.id
-                                   WHERE o.name = '$table'");
+                                   WHERE o.name = $table");
         if (PEAR::isError($columns)) {
             return $columns;
         }
@@ -742,7 +742,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listTableIndexes($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -790,7 +790,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listDatabases()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -816,7 +816,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listUsers()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -842,7 +842,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listFunctions()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -883,7 +883,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listTableTriggers($table = null)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -893,7 +893,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
                     FROM sysobjects o
                    WHERE xtype = 'TR'
                      AND OBJECTPROPERTY(o.id, 'IsMSShipped') = 0";
-        if (!is_null($table)) {
+        if (null !== $table) {
             $query .= " AND object_name(parent_obj) = $table";
         }
 
@@ -924,7 +924,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listViews()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -967,7 +967,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function dropIndex($table, $name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -990,16 +990,16 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listTableConstraints($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
-        $table = $db->quoteIdentifier($table, true);
+        $table = $db->quote($table, 'text');
 
         $query = "SELECT c.constraint_name
                     FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS c
                    WHERE c.constraint_catalog = DB_NAME()
-                     AND c.table_name = '$table'";
+                     AND c.table_name = $table";
         $constraints = $db->queryCol($query);
         if (PEAR::isError($constraints)) {
             return $constraints;
@@ -1033,7 +1033,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function createSequence($seq_name, $start = 1)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1079,7 +1079,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function dropSequence($seq_name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1099,7 +1099,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listSequences()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }

@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: save.inc 2889 2009-08-29 18:41:17Z alec $
+ $Id: save.inc 3840 2010-07-30 06:34:02Z alec $
 
 */
 
@@ -54,7 +54,7 @@ foreach ($a_save_cols as $col)
 // update an existing contact
 if (!empty($cid))
 {
-  $plugin = $RCMAIL->plugins->exec_hook('save_contact', array('id' => $cid, 'record' => $a_record, 'source' => get_input_value('_source', RCUBE_INPUT_GPC)));
+  $plugin = $RCMAIL->plugins->exec_hook('contact_save', array('id' => $cid, 'record' => $a_record, 'source' => get_input_value('_source', RCUBE_INPUT_GPC)));
   $a_record = $plugin['record'];
   
   if (!$plugin['abort'] && ($result = $CONTACTS->update($cid, $a_record)))
@@ -93,7 +93,7 @@ else
 {
   // check for existing contacts
   $existing = $CONTACTS->search('email', $a_record['email'], true, false);
-  
+
   // show warning message
   if ($existing->count)
   {
@@ -102,7 +102,7 @@ else
     return;
   }
 
-  $plugin = $RCMAIL->plugins->exec_hook('create_contact', array('record' => $a_record, 'source' => get_input_value('_source', RCUBE_INPUT_GPC)));
+  $plugin = $RCMAIL->plugins->exec_hook('contact_create', array('record' => $a_record, 'source' => get_input_value('_source', RCUBE_INPUT_GPC)));
   $a_record = $plugin['record'];
 
   // insert record and send response
@@ -121,8 +121,7 @@ else
 
     // show confirmation
     $OUTPUT->show_message('successfullysaved', 'confirmation', null, false);
-    rcmail_overwrite_action('show');
-    $_GET['_cid'] = $insert_id;
+    $OUTPUT->send('iframe');
   }
   else
   {
@@ -132,4 +131,4 @@ else
   }
 }
 
-?>
+

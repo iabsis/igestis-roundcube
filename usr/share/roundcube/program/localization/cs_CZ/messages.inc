@@ -6,16 +6,17 @@
 | language/cs_CZ/messages.inc                                              |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Martin Mrajca <martin@moonlake.cz>                            |
 |        joe <joe@humlak.cz>                                            |
 |        Jiri Kaderavek <jiri.kaderavek@webstep.net>                    |
+|        Ales Pospichal <ales@pospichalales.info>                       |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3061 2009-10-26 21:42:58Z yllar $
+@version $Id: messages.inc 3799 2010-06-30 16:37:24Z yllar $
 
 */
 
@@ -49,18 +50,19 @@ $messages['senttooquickly'] = 'Prosím počkejte $sec sekund před odesláním z
 $messages['errorsavingsent'] = 'Nastala chyba při ukládání odeslané zprávy';
 $messages['errorsaving'] = 'Vyskytla se chyba při ukládání';
 $messages['errormoving'] = 'Nemohu přesunout zprávu';
+$messages['errorcopying'] = 'Nemohu zkopírovat zprávu';
 $messages['errordeleting'] = 'Nemohu smazat zprávu';
-$messages['errormarking'] = 'Zpráva nelze označit';
+$messages['errormarking'] = 'Zprávu nelze označit';
 $messages['deletecontactconfirm'] = 'Opravdu chcete smazat označené kontakty?';
 $messages['deletemessagesconfirm'] = 'Opravdu chcete smazat označené zprávy?';
 $messages['deletefolderconfirm'] = 'Chcete opravdu smazat tento adresář?';
 $messages['purgefolderconfirm'] = 'Opravdu chcete smazat všechny zprávy v této složce?';
 $messages['foldercreating'] = 'Vytvářím složku...';
-$messages['folderdeleting'] = 'Mažu složku...';
+$messages['folderdeleting'] = 'Odstraňuji složku...';
 $messages['folderrenaming'] = 'Přejmenovávám složku...';
 $messages['foldermoving'] = 'Přesouvám složku...';
 $messages['formincomplete'] = 'Formulář nebyl korektně vyplněn';
-$messages['noemailwarning'] = 'Zadejte, prosím, platnou adresu';
+$messages['noemailwarning'] = 'Zadejte, prosím, platnou e-mailovou adresu';
 $messages['nonamewarning'] = 'Zadejte, prosím, jméno';
 $messages['nopagesizewarning'] = 'Zadejte, prosím, velikost stránky';
 $messages['nosenderwarning'] = 'Zadejte e-mailovou adresu odesílatele';
@@ -79,7 +81,7 @@ $messages['checking'] = 'Kontroluji...';
 $messages['nospellerrors'] = 'Nebyly nalezeny žádné chyby';
 $messages['folderdeleted'] = 'Složka byla úspěšně vymazána';
 $messages['deletedsuccessfully'] = 'Úspěšně smazáno';
-$messages['converting'] = 'Odstranuji formátování ze zprávy...';
+$messages['converting'] = 'Odstraňuji formátování ze zprávy...';
 $messages['messageopenerror'] = 'Nemohu načíst zprávu ze serveru';
 $messages['fileuploaderror'] = 'Nahrávání souboru selhalo';
 $messages['filesizeerror'] = 'Soubor přesáhl maximální velikost $size';
@@ -88,6 +90,7 @@ $messages['copyerror'] = 'Nemohu zkopírovat žádnou adresu';
 $messages['sourceisreadonly'] = 'Tento zdroj adres je pouze pro čtení';
 $messages['errorsavingcontact'] = 'Nemohu uložit adresu kontaktu';
 $messages['movingmessage'] = 'Přesouvám zprávu...';
+$messages['copyingmessage'] = 'Kopíruji zprávu...';
 $messages['receiptsent'] = 'Potvrzení o přřijetí zprávy odesláno';
 $messages['errorsendingreceipt'] = 'Potvrzení o přijetí zprávy nebylo možné odeslat';
 $messages['nodeletelastidentity'] = 'Alespoň jedna identita musí být ponechána. Identitu nelze odstranit.';
@@ -95,6 +98,8 @@ $messages['addsubfolderhint'] = 'Tato složka bude vytvořena jako podsložka ak
 $messages['forbiddencharacter'] = 'Název složky obsahuje zakázaný znak';
 $messages['selectimportfile'] = 'Prosím vyberte soubor k nahrání';
 $messages['addresswriterror'] = 'Vybraný seznam kontaktů není zapisovatelný';
+$messages['contactaddedtogroup'] = 'Kontakty byly úspěšně přidány do této skupiny';
+$messages['contactremovedfromgroup'] = 'Kontakty byly odstraněny z této skupiny';
 $messages['importwait'] = 'Importuji, prosím čekejte...';
 $messages['importerror'] = 'Během importu nastala chyba! Nahraný soubor není ve formátu vCard.';
 $messages['importconfirm'] = '<b>Úspěšně naimportováno $inserted kontaktů, $skipped existujících záznamů přeskočeno</b>:<p><em>$names</em></p>';
@@ -104,10 +109,13 @@ $messages['editorwarning'] = 'Přepnutím do režimu prostého textu ztratíte v
 $messages['httpreceivedencrypterror'] = 'Vyskytla se vážná chyba v konfiguraci. Kontaktujte neprodleně administátora. <b>Vaše zpráva nemohla být odeslána.</b>';
 $messages['smtpconnerror'] = 'Chyba SMTP ($code): Připojení k serveru selhalo';
 $messages['smtpautherror'] = 'Chyba SMTP ($code): Chyba přihlášení';
-$messages['smtpfromerror'] = 'Chyba SMTP ($code): Nelze nastavit odesílatele "$from"';
-$messages['smtptoerror'] = 'Chyba SMTP ($code): Nelze přidat příjemce "$to"';
+$messages['smtpfromerror'] = 'Chyba SMTP ($code): Nelze nastavit odesílatele "$from" ($msg)';
+$messages['smtptoerror'] = 'Chyba SMTP ($code): Nelze přidat příjemce "$to" ($msg)';
 $messages['smtprecipientserror'] = 'Chyba SMTP: Nelze zpracovat seznam příjemců';
 $messages['smtperror'] = 'Chyba SMTP: $msg';
 $messages['emailformaterror'] = 'Neplatná e-mailová adresa: $email';
+$messages['toomanyrecipients'] = 'Příliš mnoho příjemců. Změňte počet příjemců na $max.';
+$messages['maxgroupmembersreached'] = 'Počet členských skupin dosáhl maximum z $max';
+$messages['internalerror'] = 'Došlo k interní chybě. Zkuste to znovu';
 
 ?>

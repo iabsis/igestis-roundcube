@@ -6,7 +6,7 @@
  * Plugin that adds a new button to the mailbox toolbar
  * to move messages to a (user selectable) archive folder.
  *
- * @version 1.4
+ * @version @package_version@
  * @author Andre Rodier, Thomas Bruederli
  */
 class archive extends rcube_plugin
@@ -15,15 +15,14 @@ class archive extends rcube_plugin
 
   function init()
   {
+    $rcmail = rcmail::get_instance();
+
     $this->register_action('plugin.archive', array($this, 'request_action'));
 
     // There is no "Archived flags"
     // $GLOBALS['IMAP_FLAGS']['ARCHIVED'] = 'Archive';
-    
-    $rcmail = rcmail::get_instance();
     if ($rcmail->task == 'mail' && ($rcmail->action == '' || $rcmail->action == 'show')
       && ($archive_folder = $rcmail->config->get('archive_mbox'))) {
-
       $skin_path = $this->local_skin_path();
       
       $this->include_script('archive.js');
@@ -54,8 +53,8 @@ class archive extends rcube_plugin
     else if ($rcmail->task == 'settings') {
       $dont_override = $rcmail->config->get('dont_override', array());
       if (!in_array('archive_mbox', $dont_override)) {
-        $this->add_hook('user_preferences', array($this, 'prefs_table'));
-        $this->add_hook('save_preferences', array($this, 'save_prefs'));
+        $this->add_hook('preferences_list', array($this, 'prefs_table'));
+        $this->add_hook('preferences_save', array($this, 'save_prefs'));
       }
     }
   }
@@ -111,12 +110,19 @@ class archive extends rcube_plugin
 
   function prefs_table($args)
   {
+    global $CURR_SECTION;
+
     if ($args['section'] == 'folders') {
       $this->add_texts('localization');
-      
+
       $rcmail = rcmail::get_instance();
-      $select = rcmail_mailbox_select(array('noselection' => '---', 'realnames' => true,
-        'maxlength' => 30, 'exceptions' => array('INBOX')));
+
+      // load folders list when needed
+      if ($CURR_SECTION)
+        $select = rcmail_mailbox_select(array('noselection' => '---', 'realnames' => true,
+          'maxlength' => 30, 'exceptions' => array('INBOX')));
+      else
+        $select = new html_select();
 
       $args['blocks']['main']['options']['archive_mbox'] = array(
           'title' => $this->gettext('archivefolder'),

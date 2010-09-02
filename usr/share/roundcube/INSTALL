@@ -12,20 +12,26 @@ REQUIREMENTS
 * The Apache or Lighttpd Webserver
 * .htaccess support allowing overrides for DirectoryIndex
 * PHP Version 5.2 or greater including
-   - PCRE (perl compatible regular expression)
-   - DOM (xml document object model)
+   - PCRE, DOM, JSON, XML, Session, Sockets (required)
    - libiconv (recommended)
-   - mbstring (optional)
-* php.ini options:
+   - mbstring, fileinfo, mcrypt (optional)
+* PEAR packages distributed with Roundcube or external:
+   - MDB2 2.5.0 or newer
+   - Mail_Mime 1.7.0 or newer
+   - Net_SMTP 1.4.2 or newer
+* php.ini options (see .htaccess file):
    - error_reporting E_ALL & ~E_NOTICE (or lower)
-   - memory_limit (increase as suitable to support large attachments)
+   - memory_limit > 16MB (increase as suitable to support large attachments)
    - file_uploads enabled (for attachment upload features)
    - session.auto_start disabled
    - zend.ze1_compatibility_mode disabled
+   - suhosin.session.encrypt disabled
+   - mbstring.func_overload disabled
 * PHP compiled with OpenSSL to connect to IMAPS and to use the spell checker
-* A MySQL or PostgreSQL database engine or the SQLite extension for PHP
+* A MySQL (4.0.8 or newer), PostgreSQL, MSSQL database engine
+  or the SQLite extension for PHP
 * One of the above databases with permission to create tables
-* An SMTP server or PHP configured for mail delivery
+* An SMTP server (recommended) or PHP configured for mail delivery
 
 
 INSTALLATION
@@ -46,14 +52,21 @@ INSTALLATION
 CONFIGURATION HINTS
 ===================
 
-RoundCube writes internal errors to the 'errors' log file located in the logs
+Roundcube writes internal errors to the 'errors' log file located in the logs
 directory which can be configured in config/main.inc.php. If you want ordinary
 PHP errors to be logged there as well, enable the 'php_value error_log' line
 in the .htaccess file and set the path to the log file accordingly.
 
+By default the session_path settings of PHP are not modified by Roundcube.
+However if you want to limit the session cookies to the directory where
+Roundcube resides you can uncomment and configure the according line
+in the .htaccess file.
+
 
 DATABASE SETUP
 ==============
+
+Note: Database for Roundcube must use UTF-8 character set.
 
 * MySQL
 -------
@@ -72,9 +85,6 @@ roundcube user. Here is an example of that procedure:
 Note 1: 'password' is the master password for the roundcube user. It is strongly
 recommended you replace this with a more secure password. Please keep in
 mind: You need to specify this password later in 'config/db.inc.php'.
-
-Note 2: For MySQL version 4.1 and up, it's recommended to create the database for
-RoundCube with utf-8 charset.
 
 
 * SQLite
@@ -96,7 +106,7 @@ webserver can write to the file and the directory containing the file.
 
 * PostgreSQL
 ------------
-To use RoundCube with PostgreSQL support you have to follow these
+To use Roundcube with PostgreSQL support you have to follow these
 simple steps, which have to be done as the postgres system user (or
 which ever is the database superuser):
 
@@ -111,6 +121,14 @@ roundcubemail => \i SQL/postgres.initial.sql
 All this has been tested with PostgreSQL 8.x and 7.4.x. Older
 versions don't have a -O option for the createdb, so if you are
 using that version you'll have to change ownership of the DB later.
+
+
+Database cleaning
+-----------------
+Do keep your database slick and clean we recommend to periodically execute
+bin/cleandb.sh which finally removes all records that are marked as deleted.
+Best solution is to install a cronjob running this script daily.
+
 
 
 MANUAL CONFIGURATION
@@ -129,7 +147,7 @@ increase the allowed size of file attachments, for example:
 UPGRADING
 =========
 
-If you already have a previous version of RoundCube installed,
+If you already have a previous version of Roundcube installed,
 please refer to the instructions in UPGRADING guide.
 
 
@@ -137,9 +155,9 @@ OPTIMISING
 ==========
 
 There are two forms of optimisation here, compression and caching, both aimed
-at increasing an end user's experience using RoundCube Webmail. Compression
+at increasing an end user's experience using Roundcube Webmail. Compression
 allows the static web pages to be delivered with less bandwidth. The index.php
-of RoundCube Webmail already enables compression on its output. The settings
+of Roundcube Webmail already enables compression on its output. The settings
 below allow compression to occur for all static files. Caching sets HTTP 
 response headers that enable a user's web client to understand what is static
 and how to cache it.

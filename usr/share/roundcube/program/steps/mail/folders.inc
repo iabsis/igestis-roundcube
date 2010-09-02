@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: folders.inc 2959 2009-09-17 12:07:58Z alec $
+ $Id: folders.inc 3780 2010-06-23 09:55:08Z alec $
 */
 
 // only process ajax requests
@@ -32,6 +32,7 @@ if ($RCMAIL->action=='expunge' && ($mbox = get_input_value('_mbox', RCUBE_INPUT_
   // reload message list if current mailbox  
   if ($success && !empty($_REQUEST['_reload']))
   {
+    $OUTPUT->command('set_quota', rcmail_quota_content());
     $OUTPUT->command('message_list.clear');
     $RCMAIL->action = 'list';
     return;
@@ -60,6 +61,7 @@ else if ($RCMAIL->action=='purge' && ($mbox = get_input_value('_mbox', RCUBE_INP
       $OUTPUT->command('message_list.clear');
       $OUTPUT->command('set_rowcount', rcmail_get_messagecount_text());
       $OUTPUT->command('set_unread_count', $mbox_name, 0);
+      $OUTPUT->command('set_quota', rcmail_quota_content());
       $_SESSION['unseen_count'][$mbox_name] = 0;
     }
     else
@@ -69,4 +71,4 @@ else if ($RCMAIL->action=='purge' && ($mbox = get_input_value('_mbox', RCUBE_INP
 
 $OUTPUT->send($commands);
 
-?>
+

@@ -6,7 +6,7 @@
 | language/pt_PT/labels.inc                                             |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -17,7 +17,7 @@
 |          Teotónio Ricardo <teotonio.ricardo@webtuga.pt>               |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3019 2009-10-05 19:10:11Z yllar $
+@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
 
 */
 
@@ -255,12 +255,23 @@ $labels['advancedoptions'] = 'Opções avançadas';
 $labels['focusonnewmessage'] = 'Focar janela de navegador na nova mensagem';
 $labels['checkallfolders'] = 'Verificar todas as pastas para novas mensagens';
 $labels['displaynext'] = 'Depois de mover/eliminar uma mensagem, mostrar a próxima mensagem';
-$labels['indexsort'] = 'Utilize o índice de mensagens para ordenar por data';
 $labels['mainoptions'] = 'Opções';
 $labels['section'] = 'Secção';
 $labels['maintenance'] = 'Manutenção';
 $labels['newmessage'] = 'Nova Mensagem';
 $labels['listoptions'] = 'Listar opções';
+$labels['signatureoptions'] = 'Opções de Assinatura';
+$labels['whenreplying'] = 'Quando a responder';
+$labels['replytopposting'] = 'criar nova mensagem acima da original';
+$labels['replybottomposting'] = 'criar nova mensagem abaixo da original';
+$labels['replyremovesignature'] = 'Quando a responder, remover a assinatura original da mensagem';
+$labels['autoaddsignature'] = 'Adicionar assinatura automaticamente';
+$labels['newmessageonly'] = 'nova mensagem apenas';
+$labels['replyandforwardonly'] = 'respostas e re-envios apenas';
+$labels['replysignaturepos'] = 'Ao responder ou re-encaminhar colocar assinatura';
+$labels['belowquote'] = 'depois da citação';
+$labels['abovequote'] = 'antes da citação';
+$labels['insertsignature'] = 'Inserir assinatura';
 $labels['folder'] = 'Pasta';
 $labels['folders'] = 'Pastas';
 $labels['foldername'] = 'Nome da pasta';

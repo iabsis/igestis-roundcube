@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_browser.php 328 2006-08-30 17:41:21Z thomasb $
+ $Id: rcube_browser.php 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -69,5 +69,5 @@ class rcube_browser
         $this->pngalpha = $this->mz || $this->safari || ($this->ie && $this->ver>=5.5) ||
             ($this->ie && $this->ver>=5 && $this->mac) || ($this->opera && $this->ver>=7) ? true : false;
     }
-  }
+}
 

@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: compose.inc 2081 2008-11-23 12:38:44Z thomasb $
+ $Id: attachments.inc 3840 2010-07-30 06:34:02Z alec $
 
 */
 
@@ -32,7 +32,7 @@ if ($RCMAIL->action=='remove-attachment')
   if (preg_match('/^rcmfile(\w+)$/', $_POST['_file'], $regs))
     $id = $regs[1];
   if ($attachment = $_SESSION['compose']['attachments'][$id])
-    $attachment = $RCMAIL->plugins->exec_hook('remove_attachment', $attachment);
+    $attachment = $RCMAIL->plugins->exec_hook('attachment_delete', $attachment);
   if ($attachment['status']) {
     if (is_array($_SESSION['compose']['attachments'][$id])) {
       unset($_SESSION['compose']['attachments'][$id]);
@@ -50,12 +50,14 @@ if ($RCMAIL->action=='display-attachment')
   if (preg_match('/^rcmfile(\w+)$/', $_GET['_file'], $regs))
     $id = $regs[1];
   if ($attachment = $_SESSION['compose']['attachments'][$id])
-    $attachment = $RCMAIL->plugins->exec_hook('display_attachment', $attachment);
+    $attachment = $RCMAIL->plugins->exec_hook('attachment_display', $attachment);
     
   if ($attachment['status']) {
-    $size = $attachment['data'] ? strlen($attachment['data']) : @filesize($attachment['path']);
+    if (empty($attachment['size']))
+      $attachment['size'] = $attachment['data'] ? strlen($attachment['data']) : @filesize($attachment['path']);
+
     header('Content-Type: ' . $attachment['mimetype']);
-    header('Content-Length: ' . $size);
+    header('Content-Length: ' . $attachment['size']);
     
     if ($attachment['data'])
       echo $attachment['data'];
@@ -80,11 +82,12 @@ if (is_array($_FILES['_attachments']['tmp_name'])) {
   foreach ($_FILES['_attachments']['tmp_name'] as $i => $filepath) {
     $attachment = array(
       'path' => $filepath,
+      'size' => $_FILES['_attachments']['size'][$i],
       'name' => $_FILES['_attachments']['name'][$i],
       'mimetype' => rc_mime_content_type($filepath, $_FILES['_attachments']['name'][$i], $_FILES['_attachments']['type'][$i])
     );
 
-    $attachment = $RCMAIL->plugins->exec_hook('upload_attachment', $attachment);
+    $attachment = $RCMAIL->plugins->exec_hook('attachment_upload', $attachment);
 
     if ($attachment['status'] && !$attachment['abort']) {
       $id = $attachment['id'];
@@ -149,4 +152,3 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $OUTPUT->command('auto_save_start', false);
 $OUTPUT->send('iframe');
 
-?>

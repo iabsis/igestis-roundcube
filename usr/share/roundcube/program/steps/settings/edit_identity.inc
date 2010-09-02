@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: edit_identity.inc 2755 2009-07-15 09:49:35Z thomasb $
+ $Id: edit_identity.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -70,7 +70,7 @@ function rcube_identity_form($attrib)
                        'reply-to'     => array('type' => 'text', 'label' => 'reply-to', 'size' => $i_size),
                        'bcc'          => array('type' => 'text', 'size' => $i_size),
                        'signature'	  => array('type' => 'textarea', 'size' => $t_cols, 'rows' => $t_rows),
-                       'html_signature'=>array('type' => 'checkbox', 'label' => 'htmlsignature', 'onclick' => 'return rcmail_toggle_editor(this.checked, \'rcmfd_signature\');'),
+                       'html_signature'=>array('type' => 'checkbox', 'label' => 'htmlsignature', 'onclick' => 'return rcmail_toggle_editor(this, \'rcmfd_signature\');'),
                        'standard'     => array('type' => 'checkbox', 'label' => 'setdefault'));
 
   // disable some field according to access level
@@ -135,4 +135,4 @@ if ($RCMAIL->action=='add-identity' && $OUTPUT->template_exists('addidentity'))
 
 $OUTPUT->send('editidentity');
 
-?>
+

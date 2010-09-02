@@ -2,14 +2,14 @@
 
 /*
 +-----------------------------------------------------------------------+
-| language/_NEW_/messages.inc                                           |
+| language/sl_SL/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2008, RoundQube Dev. - Switzerland                      |
+| Copyright (C) 2008-2010, RoundQube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
-| Author:   Barbara Krasovec -  barbarak@arnes.si                                                            |
+| Author:   Barbara Krasovec -  barbarak@arnes.si                       |
 +-----------------------------------------------------------------------+
 
 */
@@ -18,13 +18,14 @@ $messages = array();
 $messages['loginfailed'] = 'Prijava ni uspela';
 $messages['cookiesdisabled'] = 'Vaš spletni brskalnik ne sprejema piškotkov.';
 $messages['sessionerror'] = 'Seja je neveljavna ali je potekla.';
-$messages['imaperror'] = 'Povzava z IMAP strežnikom je spodletela.';
+$messages['imaperror'] = 'Povezava z IMAP strežnikom je spodletela.';
 $messages['servererror'] = 'Napaka strežnika!';
 $messages['invalidrequest'] = 'Neveljavna zahteva. Podatki niso bili shranjeni.';
 $messages['nomessagesfound'] = 'V poštnem predalu ni sporočil.';
 $messages['loggedout'] = 'Odjava je bila uspešna.';
 $messages['mailboxempty'] = 'Poštni predal je prazen.';
 $messages['loading'] = 'Nalaganje...';
+$messages['uploading'] = 'Prenos dokumenta na strežnik...';
 $messages['loadingdata'] = 'Nalaganje podatkov...';
 $messages['checkingmail'] = 'Preverjanje novih sporočil...';
 $messages['sendingmessage'] = 'Pošiljanje sporočil...';
@@ -36,13 +37,14 @@ $messages['addedsuccessfully'] = 'Stik je bil uspešno dodan v imenik.';
 $messages['contactexists'] = 'Stik s tem elektronskim naslovom že obstaja.';
 $messages['blockedimages'] = 'Zaradi zaščite zasebnosti je prikaz slik v sporočilu onemogočen.';
 $messages['encryptedmessage'] = 'Sporočilo je šifrirano in ne more biti prikazano.';
-$messages['nocontactsfound'] = 'Nobenega stika ni bilo mogoče najti.';
+$messages['nocontactsfound'] = 'Ni stikov.';
 $messages['contactnotfound'] = 'Iskanega stika ni bilo mogoče najti.';
 $messages['sendingfailed'] = 'Sporočila ni bilo mogoče poslati.';
-$messages['senttooquickly'] = 'Počakajte $sek sekund in nato znova poskusite s pošiljanjem sporočila.';
+$messages['senttooquickly'] = 'Počakajte $sec sekund in nato znova poskusite s pošiljanjem sporočila.';
 $messages['errorsavingsent'] = 'Pri shranjevanju poslanega sporočila je prišlo do napake.';
 $messages['errorsaving'] = 'Pri shranjevanju je prišlo do napake.';
 $messages['errormoving'] = 'Sporočila ni bilo mogoče premakniti.';
+$messages['errorcopying'] = 'Sporočila ni bilo mogoče kopirati.';
 $messages['errordeleting'] = 'Sporočila ni bilo mogoče izbrisati.';
 $messages['errormarking'] = 'Sporočila ni bilo mogoče označiti.';
 $messages['deletecontactconfirm'] = 'Ste prepričani, da želite izbrisati označen(e) stik(e)?';
@@ -52,7 +54,7 @@ $messages['purgefolderconfirm'] = 'Ste prepričani, da želite izbrisati vsa spo
 $messages['foldercreating'] = 'Ustvarjanje mape...';
 $messages['folderdeleting'] = 'Brisanje mape...';
 $messages['folderrenaming'] = 'Preimenovanje mape...';
-$messages['foldermoving'] = 'Premiranje mape...';
+$messages['foldermoving'] = 'Premikanje mape...';
 $messages['formincomplete'] = 'Obrazec ni v celoti izpolnjen';
 $messages['noemailwarning'] = 'Vnesite veljaven elektronski naslov';
 $messages['nonamewarning'] = 'Vnesite ime';
@@ -65,6 +67,7 @@ $messages['notsentwarning'] = 'Sporočilo ni bilo poslano. Želite zavreči to s
 $messages['noldapserver'] = 'Izberite LDAP strežnik, v katerem želite iskati?';
 $messages['nocontactsreturned'] = 'Nobenega stika ni bilo mogoče najti';
 $messages['nosearchname'] = 'Vnesite ime ali elektronski naslov stika';
+$messages['notuploadedwarning'] = 'Priponke se še nalagajo na strežnik. Počakajte ali prekinite prenos.';
 $messages['searchsuccessful'] = '$nr najdenih sporočil';
 $messages['searchnomatch'] = 'Ni zadetkov';
 $messages['searching'] = 'Iskanje...';
@@ -81,6 +84,7 @@ $messages['copyerror'] = 'Nobenih naslovov ni bilo mogoče kopirati';
 $messages['sourceisreadonly'] = 'Ta naslov je na voljo samo za branje';
 $messages['errorsavingcontact'] = 'Stika ni bilo mogoče shraniti';
 $messages['movingmessage'] = 'Premikanje sporočila...';
+$messages['copyingmessage'] = 'Kopiranje sporočila...';
 $messages['receiptsent'] = 'Sporočilo o branju je bilo uspešno poslano';
 $messages['errorsendingreceipt'] = 'Sporočila o branju ni bilo mogoče poslati';
 $messages['nodeletelastidentity'] = 'Te identitete ni mogoče izbrisati, saj je edina.';
@@ -88,8 +92,10 @@ $messages['addsubfolderhint'] = 'Ta mapa bo ustvarjena kot podmapa od izbrane ma
 $messages['forbiddencharacter'] = 'Ime mape vsebuje nedovoljen znak';
 $messages['selectimportfile'] = 'Izberite datoteko, ki jo želite prenesti';
 $messages['addresswriterror'] = 'Izbran imenik ni zapisljiv';
+$messages['contactaddedtogroup'] = 'Stik je bil uspešno dodan v skupino';
+$messages['contactremovedfromgroup'] = 'Stik je bil uspešno izbrisan iz skupine';
 $messages['importwait'] = 'Uvažanje poteka...';
-$messages['importerror'] = 'Uvažanje je spodletelo. Naložena datoteka ni veljavena vCard datoteka.';
+$messages['importerror'] = 'Uvažanje je spodletelo. Naložena datoteka ni veljavna vCard datoteka.';
 $messages['importconfirm'] = '<b>Uspešno uvoženi $inserted stiki, $skipped stikov že obstaja v imeniku</b>:<p><em>$names</em></p>';
 $messages['opnotpermitted'] = 'Operacija ni dovoljena.';
 $messages['nofromaddress'] = 'V izbrani identiteti manjka elektronski naslov.';
@@ -97,9 +103,13 @@ $messages['editorwarning'] = 'Preklop v splošen urejevalnik onemogoča uporabo 
 $messages['httpreceivedencrypterror'] = 'Prišlo je do večje napake v konfiguraciji.Obrnite se na skrbnika sistema.  <b>Sporočila ni bilo mogoče poslati.</b>';
 $messages['smtpconnerror'] = 'Napaka pri pošiljanju ($code): Povezava s strežnikom je spodletela';
 $messages['smtpautherror'] = 'Napaka pri pošiljanju($code): Avtentikacija je spodletela';
-$messages['smtpfromerror'] = 'Napaka pri pošiljanju ($code): Neveljaven elektronski naslov pošiljatelja "$from"';
-$messages['smtptoerror'] = 'Napaka pri pošiljanju ($code): Neveljaven elektronski naslov prejemnika "$to"';
+$messages['smtpfromerror'] = 'Napaka pri pošiljanju ($code): Neveljaven elektronski naslov pošiljatelja "$from" ($msg)';
+$messages['smtptoerror'] = 'Napaka pri pošiljanju ($code): Neveljaven elektronski naslov prejemnika "$to" ($msg)';
 $messages['smtprecipientserror'] = 'Napaka pri pošiljanju: Seznama prejemnikov ni bilo mogoče razčleniti';
 $messages['smtperror'] = 'Napaka pri pošiljanju:$msg';
+$messages['emailformaterror'] = 'Nepravilen elektronski naslov: $email';
+$messages['toomanyrecipients'] = 'Navedli ste preveč prejemnikov. Zmanjšajte število prejemnikov na $max';
+$messages['maxgroupmembersreached'] = 'Število članov skupine presega največje dovoljeno število $max.';
+$messages['internalerror'] = 'Prišlo je do napake. Poskusite znova.';
 
 ?>

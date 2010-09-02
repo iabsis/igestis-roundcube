@@ -73,6 +73,8 @@
  * Roundcube Changes:
  * - added $block_elements
  * - changed $ignore_elements behaviour
+ * - added RFC2397 support
+ * - base URL support
  */
 
 class washtml
@@ -87,7 +89,7 @@ class washtml
   static $html_attribs = array('name', 'class', 'title', 'alt', 'width', 'height', 'align', 'nowrap', 'col', 'row', 'id', 'rowspan', 'colspan', 'cellspacing', 'cellpadding', 'valign', 'bgcolor', 'color', 'border', 'bordercolorlight', 'bordercolordark', 'face', 'marginwidth', 'marginheight', 'axis', 'border', 'abbr', 'char', 'charoff', 'clear', 'compact', 'coords', 'vspace', 'hspace', 'cellborder', 'size', 'lang', 'dir');  
 
   /* Block elements which could be empty but cannot be returned in short form (<tag />) */
-  static $block_elements = array('div', 'p', 'pre', 'blockquote');
+  static $block_elements = array('div', 'p', 'pre', 'blockquote', 'a', 'font', 'center', 'table', 'ul', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'dl', 'strong');
   
   /* State for linked objects in HTML */
   public $extlinks = false;
@@ -131,31 +133,37 @@ class washtml
   private function wash_style($style) {
     $s = '';
 
-    foreach(explode(';', $style) as $declaration) {
-      if(preg_match('/^\s*([a-z\-]+)\s*:\s*(.*)\s*$/i', $declaration, $match)) {
+    foreach (explode(';', $style) as $declaration) {
+      if (preg_match('/^\s*([a-z\-]+)\s*:\s*(.*)\s*$/i', $declaration, $match)) {
         $cssid = $match[1];
         $str = $match[2];
         $value = '';
-        while(sizeof($str) > 0 &&
+        while (sizeof($str) > 0 &&
           preg_match('/^(url\(\s*[\'"]?([^\'"\)]*)[\'"]?\s*\)'./*1,2*/
                  '|rgb\(\s*[0-9]+\s*,\s*[0-9]+\s*,\s*[0-9]+\s*\)'.
                  '|-?[0-9.]+\s*(em|ex|px|cm|mm|in|pt|pc|deg|rad|grad|ms|s|hz|khz|%)?'.
                  '|#[0-9a-f]{3,6}|[a-z0-9\-]+'.
                  ')\s*/i', $str, $match)) {
-          if($match[2]) {
-            if($src = $this->config['cid_map'][$match[2]])
-              $value .= ' url(\''.htmlspecialchars($src, ENT_QUOTES) . '\')';
-            else if(preg_match('/^(http|https|ftp):.*$/i', $match[2], $url)) {
-              if($this->config['allow_remote'])
-                $value .= ' url(\''.htmlspecialchars($url[0], ENT_QUOTES).'\')';
+          if ($match[2]) {
+            if (($src = $this->config['cid_map'][$match[2]])
+                || ($src = $this->config['cid_map'][$this->config['base_url'].$match[2]])) {
+              $value .= ' url('.htmlspecialchars($src, ENT_QUOTES) . ')';
+            }
+            else if (preg_match('/^(http|https|ftp):.*$/i', $match[2], $url)) {
+              if ($this->config['allow_remote'])
+                $value .= ' url('.htmlspecialchars($url[0], ENT_QUOTES).')';
               else
                 $this->extlinks = true;
             }
-          } else if($match[0] != 'url' && $match[0] != 'rbg')//whitelist ?
+            else if (preg_match('/^data:.+/i', $match[2])) { // RFC2397
+              $value .= ' url('.htmlspecialchars($match[2], ENT_QUOTES).')';
+            }
+          }
+          else if ($match[0] != 'url' && $match[0] != 'rbg') //whitelist ?
             $value .= ' ' . $match[0];
           $str = substr($str, strlen($match[0]));
         }
-        if($value)
+        if ($value)
           $s .= ($s?' ':'') . $cssid . ':' . $value . ';';
       }
     }
@@ -167,26 +175,30 @@ class washtml
     $t = '';
     $washed;
 
-    foreach($node->attributes as $key => $plop) {
+    foreach ($node->attributes as $key => $plop) {
       $key = strtolower($key);
       $value = $node->getAttribute($key);
-      if(isset($this->_html_attribs[$key]) ||
+      if (isset($this->_html_attribs[$key]) ||
          ($key == 'href' && preg_match('/^(http:|https:|ftp:|mailto:|#).+/i', $value)))
         $t .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES) . '"';
-      else if($key == 'style' && ($style = $this->wash_style($value)))
+      else if ($key == 'style' && ($style = $this->wash_style($value)))
         $t .= ' style="' . $style . '"';
-      else if($key == 'background' || ($key == 'src' && strtolower($node->tagName) == 'img')) { //check tagName anyway
-        if($src = $this->config['cid_map'][$value]) {
+      else if ($key == 'background' || ($key == 'src' && strtolower($node->tagName) == 'img')) { //check tagName anyway
+        if (($src = $this->config['cid_map'][$value])
+            || ($src = $this->config['cid_map'][$this->config['base_url'].$value])) {
           $t .= ' ' . $key . '="' . htmlspecialchars($src, ENT_QUOTES) . '"';
         }
-        else if(preg_match('/^(http|https|ftp):.+/i', $value)) {
-          if($this->config['allow_remote'])
+        else if (preg_match('/^(http|https|ftp):.+/i', $value)) {
+          if ($this->config['allow_remote'])
             $t .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES) . '"';
           else {
             $this->extlinks = true;
             if ($this->config['blocked_src'])
               $t .= ' ' . $key . '="' . htmlspecialchars($this->config['blocked_src'], ENT_QUOTES) . '"';
           }
+        }
+        else if (preg_match('/^data:.+/i', $value)) { // RFC2397
+          $t .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES) . '"';
         }
       } else
         $washed .= ($washed?' ':'') . $key;
@@ -208,18 +220,23 @@ class washtml
       switch($node->nodeType) {
       case XML_ELEMENT_NODE: //Check element
         $tagName = strtolower($node->tagName);
-        if($callback = $this->handlers[$tagName]) {
+        if ($callback = $this->handlers[$tagName]) {
           $dump .= call_user_func($callback, $tagName, $this->wash_attribs($node), $this->dumpHtml($node));
-        } else if(isset($this->_html_elements[$tagName])) {
+        }
+        else if (isset($this->_html_elements[$tagName])) {
           $content = $this->dumpHtml($node);
           $dump .= '<' . $tagName . $this->wash_attribs($node) .
-            ($content || isset($this->_block_elements[$tagName]) ? ">$content</$tagName>" : ' />');
-        } else if(isset($this->_ignore_elements[$tagName])) {
+            // create closing tag for block elements, but also for elements
+            // with content or with some attributes (eg. style, class) (#1486812)
+            ($content != '' || $node->hasAttributes() || isset($this->_block_elements[$tagName]) ? ">$content</$tagName>" : ' />');
+        }
+        else if (isset($this->_ignore_elements[$tagName])) {
           $dump .= '<!-- ' . htmlspecialchars($tagName, ENT_QUOTES) . ' not allowed -->';
-        } else {
+        }
+        else {
           $dump .= '<!-- ' . htmlspecialchars($tagName, ENT_QUOTES) . ' ignored -->';
           $dump .= $this->dumpHtml($node); // ignore tags not its content
-	}
+        }
         break;
       case XML_CDATA_SECTION_NODE:
         $dump .= $node->nodeValue;
@@ -242,10 +259,18 @@ class washtml
 
   /* Main function, give it untrusted HTML, tell it if you allow loading
    * remote images and give it a map to convert "cid:" urls. */
-  public function wash($html) {
-    //Charset seems to be ignored (probably if defined in the HTML document)
+  public function wash($html)
+  {
+    // Charset seems to be ignored (probably if defined in the HTML document)
     $node = new DOMDocument('1.0', $this->config['charset']);
     $this->extlinks = false;
+
+    // Find base URL for images
+    if (preg_match('/<base\s+href=[\'"]*([^\'"]+)/is', $html, $matches))
+      $this->config['base_url'] = $matches[1];
+    else
+      $this->config['base_url'] = '';
+
     @$node->loadHTML($html);
     return $this->dumpHtml($node);
   }

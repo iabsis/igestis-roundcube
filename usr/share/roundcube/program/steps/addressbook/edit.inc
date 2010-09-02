@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: edit.inc 2755 2009-07-15 09:49:35Z thomasb $
+ $Id: edit.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -88,6 +88,7 @@ function get_form_tags($attrib)
   
   if (empty($EDIT_FORM)) {
     $hiddenfields = new html_hiddenfield(array('name' => '_source', 'value' => get_input_value('_source', RCUBE_INPUT_GPC)));
+    $hiddenfields->add(array('name' => '_gid', 'value' => $CONTACTS->group_id));
     
     if (($result = $CONTACTS->get_result()) && ($record = $result->first()))
       $hiddenfields->add(array('name' => '_cid', 'value' => $record['ID']));
@@ -109,4 +110,4 @@ if (!$CONTACTS->get_result() && $OUTPUT->template_exists('addcontact'))
 
 // this will be executed if no template for addcontact exists
 $OUTPUT->send('editcontact');
-?>
+

@@ -6,16 +6,17 @@
 | language/pt_PT/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Authors: Sergio Rocha <sergio.rocha@makeitsimple.pt>                  |
 |          João Vale <jpvale@gmail.com>                                 |
 |         Nuno Costa <nuno@criacaoweb.net>                              |
+|         Teotónio Ricardo <teotonio.ricardo@webtuga.pt>                |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 2953 2009-09-13 16:42:56Z yllar $
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -30,6 +31,7 @@ $messages['nomessagesfound'] = 'Nenhuma mensagem encontrada na caixa de entrada'
 $messages['loggedout'] = 'A sua sessão foi finalizada com sucesso. Até breve!';
 $messages['mailboxempty'] = 'A caixa de entrada está vazia';
 $messages['loading'] = 'A carregar...';
+$messages['uploading'] = 'Enviando ficheiro...';
 $messages['loadingdata'] = 'A carregar informações...';
 $messages['checkingmail'] = 'Verificando novas mensagens...';
 $messages['sendingmessage'] = 'Enviando mensagem...';
@@ -70,6 +72,7 @@ $messages['notsentwarning'] = 'A mensagem não foi enviada, deseja apagá-la?';
 $messages['noldapserver'] = 'Selecione um servidor LDAP para a pesquisa';
 $messages['nocontactsreturned'] = 'Nenhum contacto foi encontrado';
 $messages['nosearchname'] = 'Por favor, escreva o nome do contacto ou seu endereço de e-mail';
+$messages['notuploadedwarning'] = 'Nem todos os anexos foram já enviados. Por favor espere ou cancele o envio.';
 $messages['searchsuccessful'] = '$nr mensagens encontradas';
 $messages['searchnomatch'] = 'Pesquisa não devolveu resultados';
 $messages['searching'] = 'Pesquisando...';
@@ -102,9 +105,10 @@ $messages['editorwarning'] = 'Ao mudar para o editor plain text vai perder toda 
 $messages['httpreceivedencrypterror'] = 'Ocorreu um erro fatal de configuração. Contacte o seu administrador imediatamente. <b>A sua mensagem não pôde ser enviada.</b>';
 $messages['smtpconnerror'] = 'Erro SMTP ($code): Ligação ao servidor falhou';
 $messages['smtpautherror'] = 'Erro SMTP ($code): Autenticação falhou';
-$messages['smtpfromerror'] = 'Erro SMTP ($code): Falhou a definir remetente "$from"';
-$messages['smtptoerror'] = 'Erro SMTP ($code): Falhou ao adicionar destinatário: "$to"';
+$messages['smtpfromerror'] = 'Erro SMTP ($code): Falhou a definir remetente "$from" ($msg)';
+$messages['smtptoerror'] = 'Erro SMTP ($code): Falhou ao adicionar destinatário: "$to" ($msg)';
 $messages['smtprecipientserror'] = 'Erro SMTP: Impossível analisar lista de destinatários';
 $messages['smtperror'] = 'Erro SMTP: $msg';
+$messages['emailformaterror'] = 'Endereço de e-mail incorrecto: $email';
 
 ?>

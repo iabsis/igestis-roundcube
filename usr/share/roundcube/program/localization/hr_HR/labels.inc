@@ -6,14 +6,14 @@
 | language/hr/labels.inc                                                |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Edi Budimilic <edi@gemstudio.hr>                              |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 2513 2009-05-21 12:59:19Z alec $
+@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
 
 */
 
@@ -116,12 +116,16 @@ $labels['markread'] = 'Kao pročitano';
 $labels['markunread'] = 'Kao nepročitano';
 $labels['markflagged'] = 'Kao markiranu';
 $labels['markunflagged'] = 'Kao nemarkiranu';
+$labels['messageactions'] = 'Više akcija';
 $labels['select'] = 'Označi';
 $labels['all'] = 'Sve';
 $labels['none'] = 'Nijednu';
 $labels['unread'] = 'Nepročitane';
 $labels['flagged'] = 'Markirane';
 $labels['unanswered'] = 'Neodgovrene';
+$labels['deleted'] = 'Obrisano';
+$labels['invert'] = 'Obrni';
+$labels['filter'] = 'Filtriraj';
 $labels['compact'] = 'Kompresiranje';
 $labels['empty'] = 'Isprazni ';
 $labels['purge'] = 'Očisti';
@@ -130,8 +134,12 @@ $labels['unknown'] = 'nepoznato';
 $labels['unlimited'] = 'beskonačna';
 $labels['quicksearch'] = 'Brza pretraga';
 $labels['resetsearch'] = 'Prikaži sve poruke';
+$labels['searchmod'] = 'Postavke pretrage';
+$labels['msgtext'] = 'Cijela poruka';
 $labels['openinextwin'] = 'Otvori u novom prozoru';
+$labels['emlsave'] = 'Download (.eml)';
 $labels['compose'] = 'Nova poruka';
+$labels['editasnew'] = 'Uredi kao novo';
 $labels['savemessage'] = 'Spremi u \'Predlošci\'';
 $labels['sendmessage'] = 'Pošalji poruku';
 $labels['addattachment'] = 'Priloži datoteku';
@@ -225,6 +233,9 @@ $labels['ignore'] = 'ignoriraj';
 $labels['readwhendeleted'] = 'Označi poruku kao pročitanu pri brisanju';
 $labels['flagfordeletion'] = 'Označi poruku za brisanje umjesto brisanja';
 $labels['skipdeleted'] = 'Ne prikazivaj pobrisane poruke';
+$labels['showremoteimages'] = 'Prikaži slike s interneta';
+$labels['fromknownsenders'] = 'od poznatih pošiljatelja';
+$labels['always'] = 'uvijek';
 $labels['showinlineimages'] = 'Prikaži slike ispod poruke';
 $labels['autosavedraft'] = 'Automatski spremi draft';
 $labels['everynminutes'] = 'svakih $n minuta';
@@ -238,6 +249,25 @@ $labels['miscfolding'] = 'RFC 2047/2231 (MS Outlook)';
 $labels['2047folding'] = 'Full RFC 2047 (ostali)';
 $labels['advancedoptions'] = 'Napredne postavke';
 $labels['focusonnewmessage'] = 'Fokusiraj browser pri novoj poruci';
+$labels['checkallfolders'] = 'Provjeri nove poruke u svim mapama';
+$labels['displaynext'] = 'Nakon brisanja/micanja poruke, prikaži slijedeću';
+$labels['mainoptions'] = 'Glavne postavke';
+$labels['section'] = 'Sekcija';
+$labels['maintenance'] = 'Održavanje';
+$labels['newmessage'] = 'Nova poruka';
+$labels['listoptions'] = 'Postavke liste';
+$labels['signatureoptions'] = 'Postavke potpisa';
+$labels['whenreplying'] = 'Prilikom odgovora';
+$labels['replytopposting'] = 'započni novu poruku iznad originala';
+$labels['replybottomposting'] = 'započni novu poruku ispod originala';
+$labels['replyremovesignature'] = 'Kod odgovaranja, makni originalni potpis iz poruke';
+$labels['autoaddsignature'] = 'Automatski dodaj potpis';
+$labels['newmessageonly'] = 'samo nova poruka';
+$labels['replyandforwardonly'] = 'samo odgovori i proslijeđivanja';
+$labels['replysignaturepos'] = 'Kod downloada ili proslijeđivanja postavi potpis';
+$labels['belowquote'] = 'ispod citata';
+$labels['abovequote'] = 'iznad citata';
+$labels['insertsignature'] = 'Umetni potpis';
 $labels['folder'] = 'Mapa';
 $labels['folders'] = 'Mape';
 $labels['foldername'] = 'Ime mape';

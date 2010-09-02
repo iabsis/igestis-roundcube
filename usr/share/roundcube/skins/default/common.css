@@ -3,7 +3,7 @@
 body
 {
   margin: 8px;
-  background-color: #F6F6F6; /* #EBEBEB; */
+  background-color: #F6F6F6;
   color: #000000;
 }
 
@@ -22,7 +22,6 @@ body, td, th, div, p, h3
 {
   font-family: "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
   font-size: 12px;
-  color: #000000;
 }
 
 th
@@ -32,9 +31,7 @@ th
 
 h3
 {
-  font-family: "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
   font-size: 18px;
-  color: #000000;
 }
 
 a, a:active, a:visited
@@ -68,8 +65,6 @@ input[type="button"],
 input[type="password"],
 textarea
 {
-  font-size: 9pt;
-  font-family: "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
   padding: 1px;
   padding-left: 3px;
   padding-right: 3px;
@@ -85,6 +80,12 @@ input, textarea
   color: black;
   padding-left: 3px;
   padding-right: 3px;
+}
+
+select
+{
+  font-family: "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+  color: black;
 }
 
 input.button
@@ -127,6 +128,15 @@ img
 
 /** common user interface objects */
 
+#mainscreen
+{
+  position: absolute;
+  top: 85px;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+}
+
 #header
 {
   position: absolute;
@@ -142,10 +152,10 @@ img
   position: absolute;
   top: 0px;
   right: 0px;
-  width: 600px;
-  height: 37px;
-  background: url(images/taskbar.gif) top right no-repeat;
-  padding: 10px 4px 10px 0px;
+  height: 24px;
+  width: 100%;
+  background: url(images/taskbar.png) top right no-repeat;
+  padding: 10px 4px 5px 0px;
   text-align: right;
   white-space: nowrap;
   z-index: 2;
@@ -156,8 +166,8 @@ img
   font-size: 11px;
   color: #666666;
   text-decoration: none;
-  padding: 6px 14px 6px 27px;
-  background: url('images/taskicons.gif') no-repeat;
+  padding: 6px 12px 6px 26px;
+  background: url(images/taskicons.gif) no-repeat;
 }
 
 #taskbar a:hover
@@ -207,7 +217,7 @@ img
 #message div.notice,
 #remote-objects-message
 {
-  background: url('images/display/icons.png') 6px 3px no-repeat;
+  background: url(images/display/icons.png) 6px 3px no-repeat;
   background-color: #F7FDCB;
   border: 1px solid #C2D071;
 }
@@ -215,30 +225,125 @@ img
 #message div.error,
 #message div.warning
 {
-  background: url('images/display/icons.png') 6px -97px no-repeat;
+  background: url(images/display/icons.png) 6px -97px no-repeat;
   background-color: #EF9398;
   border: 1px solid #DC5757;
 }
 
 #message div.confirmation
 {
-  background: url('images/display/icons.png') 6px -47px no-repeat;
+  background: url(images/display/icons.png) 6px -47px no-repeat;
   background-color: #A6EF7B;
   border: 1px solid #76C83F;
 }
 
 #message div.loading
 {
-  background: url('images/display/loading.gif') 6px 3px no-repeat;
+  background: url(images/display/loading.gif) 6px 3px no-repeat;
   background-color: #EBEBEB;
   border: 1px solid #CCCCCC;
 }
 
-#pagecontent
+.box
+{
+  border: 1px solid #999;
+}
+
+.boxtitle
+{
+  height: 12px !important;
+  padding: 2px 10px 5px 5px;
+  border-bottom: 1px solid #999;
+  color: #333;
+  font-size: 11px;
+  font-weight: bold;
+  overflow: hidden;
+  background: url(images/listheader.gif) top left repeat-x #CCC;
+}
+
+.boxcontent
+{
+  padding: 15px 10px 10px 10px;
+  background-color: #F2F2F2;
+}
+
+.boxcontent table td.title
+{
+  color: #666;
+  padding-right: 10px;
+}
+
+.boxlistcontent
 {
   position: absolute;
-  top: 95px;
-  left: 20px;
+  top: 20px;
+  bottom: 22px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.boxsubject
+{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden;
+  height: 22px;
+  border-bottom: 1px solid #999;
+  background: url(images/listheader.gif) top left repeat-x #CCC;
+}
+
+.boxfooter
+{
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden;
+  height: 22px;
+  border-top: 1px solid #999;
+  background: url(images/listheader.gif) top left repeat-x #CCC;
+}
+
+.boxfooter a.button,
+.boxfooter a.buttonPas
+{
+  display: block;
+  float: left;
+  width: 34px;
+  height: 22px;
+  padding: 0px;
+  margin: 0;
+  overflow: hidden;
+  background: url(images/icons/groupactions.png) 0 0 no-repeat transparent;
+  opacity: 0.99; /* this is needed to make buttons appear correctly in Chrome */
+}
+
+.boxfooter a.groupactions
+{
+  background-position: 0 -26px;
+}
+
+.boxfooter a.buttonPas
+{
+  opacity: 0.35;
+}
+
+.pagenav
+{
+  min-width: 250px;
+}
+
+.pagenav span
+{
+  color: #444;
+  font-size: 11px;
+  text-shadow: white 1px 1px;
+  white-space: nowrap;
 }
 
 .pagenav a.button,
@@ -251,7 +356,7 @@ img
   padding: 0;
   margin: 1px;
   overflow: hidden;
-  background: url('images/pagenav.gif') 0 0 no-repeat transparent;
+  background: url(images/pagenav.gif) 0 0 no-repeat transparent;
   opacity: 0.99; /* this is needed to make buttons appear correctly in Chrome */
 }
 
@@ -308,26 +413,65 @@ img
   background-position: 2px center;
 }
 
-.boxtitle
+.popupmenu
 {
-  height: 12px !important;
-  padding: 2px 10px 5px 5px;
-  border-bottom: 1px solid #999;
-  color: #333;
+  position: absolute;
+  top: 32px;
+  left: 90px;
+  width: auto;
+  display: none;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #999;
+  padding: 4px;
+  z-index: 240;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-box-shadow: 1px 1px 12px #999;
+  -webkit-box-shadow: #999 1px 1px 12px;
+}
+
+.popupmenu ul
+{
+  margin: -4px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.popupmenu ul li
+{
   font-size: 11px;
-  font-weight: bold;
-  background: url('images/listheader.gif') top left repeat-x #CCC;
+  white-space: nowrap;
+  min-width: 100px;
+  margin: 3px -4px;
 }
 
-.boxcontent
+.popupmenu li a
 {
-  padding: 15px 10px 10px 10px;
+  display: block;
+  color: #a0a0a0;
+  padding: 2px 10px;
+  text-decoration: none;
+  min-height: 14px;
 }
 
-.boxcontent table td.title
+.popupmenu li a.active,
+.popupmenu li a.active:active,
+.popupmenu li a.active:visited
 {
-  color: #666;
-  padding-right: 10px;
+  color: #333;
+}
+
+.popupmenu li a.active:hover
+{
+  color: #fff;
+  background-color: #c00;
+}
+
+.darkbg
+{
+  background-color: #F2F2F2 !important;
 }
 
 
@@ -340,7 +484,7 @@ table.records-table thead tr td
   vertical-align: middle;
   border-bottom: 1px solid #999999;
   color: #333333;
-  background: url('images/listheader.gif') top left repeat-x #CCC;
+  background: url(images/listheader.gif) top left repeat-x #CCC;
   font-size: 11px;
   font-weight: bold;
 }
@@ -388,7 +532,7 @@ table.records-table tr.unfocused td
   width: 182px;
   height: 20px;
   text-align: right;
-  background: url('images/searchfield.gif') top left no-repeat;
+  background: url(images/searchfield.gif) top left no-repeat;
 }
 
 #searchreset
@@ -399,7 +543,7 @@ table.records-table tr.unfocused td
   text-decoration: none;
 }
 
-#searchmod
+#searchmenulink
 {
  position: absolute;
  top: 3px;
@@ -426,21 +570,15 @@ table.records-table tr.unfocused td
 
 /***** roundcube webmail pre-defined classes *****/
 
-#rcversion
+#rcmversion
 {
   position: absolute;
-  top: 67px;
-  left: 20px;
-  width: 160px;
-  text-align: center;
-
-  font-weight: normal;
-  font-size: x-small;
-  font-variant: small-caps;
-  
-  color: #999999;
-  /*border: 1px solid #308014;
-  background-color: #b4eeb4;*/
+  bottom: 10px;
+  right: 20px;
+  text-align: right;
+  white-space: nowrap;
+  font-size: 8pt;
+  color: #999;
 }
 
 #rcmdraglayer
@@ -449,14 +587,30 @@ table.records-table tr.unfocused td
   width: auto !important;
   width: 300px;
   border: 1px solid #999999;
-  background-color: #F9F9F9;
+  background-color: #fff;
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 3px;
   padding-bottom: 3px;
   font-size: 11px;
   white-space: nowrap;
-  opacity: 0.7;
+  opacity: 0.82;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-box-shadow: 1px 1px 12px #999;
+  -webkit-box-shadow: #999 1px 1px 12px;
+}
+
+.draglayercopy:before
+{
+  position: absolute;
+  bottom: -5px;
+  left: -6px;
+  content: " ";
+  width: 14px;
+  height: 14px;
+  background: url(images/messageactions.png) -2px -128px no-repeat;
 }
 
 a.rcmContactAddress
@@ -537,7 +691,7 @@ a.rcmContactAddress:hover
 
 ul.toolbarmenu
 {
-  margin: 0;
+  margin: -4px 0 -4px 0;
   padding: 0;
   list-style: none;
 }
@@ -547,13 +701,14 @@ ul.toolbarmenu li
   font-size: 11px;
   white-space: nowrap;
   min-width: 130px;
+  margin: 2px -4px;
 }
 
 ul.toolbarmenu li a
 {
   display: block;
   color: #a0a0a0;
-  padding: 2px 8px 3px 22px;
+  padding: 2px 12px 3px 28px;
   text-decoration: none;
   min-height: 14px;
 }
@@ -584,6 +739,7 @@ ul.toolbarmenu li img
   margin: 0 2px;
 }
 
+div.popupmenu ul li.separator_below,
 ul.toolbarmenu li.separator_below
 {
   border-bottom: 1px solid #ccc;
@@ -591,9 +747,21 @@ ul.toolbarmenu li.separator_below
   padding-bottom: 2px;
 }
 
+div.popupmenu ul li.separator_above,
 ul.toolbarmenu li.separator_above
 {
   border-top: 1px solid #ccc;
   margin-top: 2px;
   padding-top: 2px;
 }
+
+.disabled
+{
+  color: #999;
+}
+
+font.bold
+{
+  font-weight: bold;
+}
+  

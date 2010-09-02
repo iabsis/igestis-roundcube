@@ -6,14 +6,15 @@
 | language/ru_RU/labels.inc                                             |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Artur Smolkin <artsmolkin@ya.ru>                              |
+| Updates: Sergey Dukachev <iam@dukess.ru>                              |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3061 2009-10-26 21:42:58Z yllar $
+@version $Id: labels.inc 3851 2010-08-01 10:13:15Z yllar $
 
 */
 
@@ -45,14 +46,14 @@ $labels['organization'] = 'Организация';
 $labels['reply-to'] = 'Ответить';
 $labels['mailboxlist'] = 'Папки';
 $labels['messagesfromto'] = 'Сообщения с $from по $to из $count';
+$labels['threadsfromto'] = 'Обсуждения с $from по $to из $count';
 $labels['messagenrof'] = 'Сообщение $nr из $count';
+$labels['copy'] = 'Копировать';
+$labels['move'] = 'Переместить';
 $labels['moveto'] = 'Переместить в...';
 $labels['download'] = 'Загрузить';
 $labels['filename'] = 'Имя файла';
 $labels['filesize'] = 'Размер файла';
-$labels['preferhtml'] = 'Предпочитать HTML';
-$labels['htmlmessage'] = 'Сообщение HTML';
-$labels['prettydate'] = 'Красивые даты';
 $labels['addtoaddressbook'] = 'Добавить в контакты';
 $labels['sun'] = 'Вс';
 $labels['mon'] = 'Пн';
@@ -120,12 +121,35 @@ $labels['messageactions'] = 'Еще действия...';
 $labels['select'] = 'Выбрать';
 $labels['all'] = 'Все';
 $labels['none'] = 'Ничего';
+$labels['currpage'] = 'Текущая страница';
 $labels['unread'] = 'Непрочитанные';
 $labels['flagged'] = 'Помеченные';
 $labels['unanswered'] = 'Неотвеченные';
 $labels['deleted'] = 'Удаленное';
 $labels['invert'] = 'Инвертное';
 $labels['filter'] = 'Фильтр';
+$labels['list'] = 'Список';
+$labels['threads'] = 'Обсуждения';
+$labels['expand-all'] = 'Развернуть все';
+$labels['expand-unread'] = 'Развернуть непрочитанные';
+$labels['collapse-all'] = 'Свернуть все';
+$labels['threaded'] = 'Обсуждения';
+$labels['autoexpand_threads'] = 'Развернуть обсуждения';
+$labels['do_expand'] = 'все обсуждения';
+$labels['expand_only_unread'] = 'только с непрочитанными сообщениями';
+$labels['fromto'] = 'Отправитель/Получатель';
+$labels['flag'] = 'Флаг';
+$labels['attachment'] = 'Вложение';
+$labels['nonesort'] = 'Отсутствует';
+$labels['sentdate'] = 'Дата отправки';
+$labels['arrival'] = 'Дата получения';
+$labels['asc'] = 'по возрастанию';
+$labels['desc'] = 'по убыванию';
+$labels['listcolumns'] = 'Колонки';
+$labels['listsorting'] = 'Сортировать по';
+$labels['listorder'] = 'Порядок сортировки';
+$labels['listmode'] = 'Режим просмотра';
+$labels['folderactions'] = 'Операции над папкой...';
 $labels['compact'] = 'Сжать';
 $labels['empty'] = 'Опустошить';
 $labels['purge'] = 'Очистить';
@@ -152,6 +176,7 @@ $labels['revertto'] = 'Отменить правки';
 $labels['attachments'] = 'Вложения';
 $labels['upload'] = 'Загрузить';
 $labels['close'] = 'Закрыть';
+$labels['messageoptions'] = 'Настройки сообщений...';
 $labels['low'] = 'Низкий';
 $labels['lowest'] = 'Нижайш.';
 $labels['normal'] = 'Норм.';
@@ -178,6 +203,7 @@ $labels['surname'] = 'Фамилия';
 $labels['email'] = 'E-Mail';
 $labels['addcontact'] = 'Добавить выбранные контакты в список контактов';
 $labels['editcontact'] = 'Редактировать контакт';
+$labels['contacts'] = 'Контакты';
 $labels['edit'] = 'Правка';
 $labels['cancel'] = 'Отмена';
 $labels['save'] = 'Сохранить';
@@ -189,10 +215,13 @@ $labels['contactsfromto'] = 'Контакты с $from по $to из $count';
 $labels['print'] = 'Печать';
 $labels['export'] = 'Экспорт';
 $labels['exportvcards'] = 'Экспортировать контакты в формате vCard';
+$labels['newcontactgroup'] = 'Создать группу контактов';
+$labels['groupactions'] = 'Действия для групп контактов';
 $labels['previouspage'] = 'Показать предыдущий';
 $labels['firstpage'] = 'Показать первый';
 $labels['nextpage'] = 'Показать следующий';
 $labels['lastpage'] = 'Показать последний';
+$labels['group'] = 'Группа';
 $labels['groups'] = 'Группы';
 $labels['personaladrbook'] = 'Персональные адреса';
 $labels['import'] = 'Импортировать';
@@ -210,6 +239,10 @@ $labels['manageidentities'] = 'Управление профилями';
 $labels['newidentity'] = 'Новый профиль';
 $labels['newitem'] = 'Новый';
 $labels['edititem'] = 'Правка';
+$labels['preferhtml'] = 'Предпочитать HTML';
+$labels['defaultcharset'] = 'Набор символов по-умолчанию';
+$labels['htmlmessage'] = 'Сообщение HTML';
+$labels['prettydate'] = 'Красивые даты';
 $labels['setdefault'] = 'Использовать по умолчанию';
 $labels['autodetect'] = 'Определять автоматически';
 $labels['language'] = 'Язык';
@@ -233,6 +266,7 @@ $labels['ignore'] = 'игнорировать';
 $labels['readwhendeleted'] = 'Помечать как прочитанное при удалении';
 $labels['flagfordeletion'] = 'Помечать для удаления вместо удаления';
 $labels['skipdeleted'] = 'Не показывать удаленные сообщения';
+$labels['deletealways'] = 'Удалять сообщения, если не получается поместить их в корзину';
 $labels['showremoteimages'] = 'Показывать удаленные изображения';
 $labels['fromknownsenders'] = 'от известных отправителей';
 $labels['always'] = 'всегда';
@@ -241,22 +275,37 @@ $labels['autosavedraft'] = 'Автосохранение черновика';
 $labels['everynminutes'] = 'каждые $n минут';
 $labels['keepalive'] = 'Проверять новые сообщения';
 $labels['never'] = 'никогда';
+$labels['immediately'] = 'немедленно';
 $labels['messagesdisplaying'] = 'Отображение сообщений';
 $labels['messagescomposition'] = 'Создание сообщений';
 $labels['mimeparamfolding'] = 'Имена вложений';
 $labels['2231folding'] = 'RFC 2231 (только для новейших программ)';
 $labels['miscfolding'] = 'RFC 2047/2231  (наибольшая совместимость)';
 $labels['2047folding'] = 'RFC 2047  (для старых программ)';
+$labels['force7bit'] = 'Использовать MIME для 8-битных символов';
 $labels['advancedoptions'] = 'Дополнительные настройки';
 $labels['focusonnewmessage'] = 'Фокусировать окно браузера при новом сообщении';
 $labels['checkallfolders'] = 'Проверять новые сообщения во всех папках';
 $labels['displaynext'] = 'Показать следующее сообщение, после удаления или перемещения данного';
-$labels['indexsort'] = 'Использовать индекс сообщений для сортировки по дате';
 $labels['mainoptions'] = 'Основные настройки';
 $labels['section'] = 'Раздел';
 $labels['maintenance'] = 'Обслуживание';
 $labels['newmessage'] = 'Новое сообщение';
 $labels['listoptions'] = 'Список настроек';
+$labels['signatureoptions'] = 'Опции подписи';
+$labels['whenreplying'] = 'При ответе';
+$labels['replytopposting'] = 'начать новое сообщение перед цитируемым';
+$labels['replybottomposting'] = 'начать новое сообщение после цитируемого';
+$labels['replyremovesignature'] = 'Удалить подпись при ответе';
+$labels['autoaddsignature'] = 'Автоматически добавлять подпись';
+$labels['newmessageonly'] = 'только в новых сообщениях';
+$labels['replyandforwardonly'] = 'только в ответах и пересылках';
+$labels['replysignaturepos'] = 'Прикрепить подпись при ответе и пересылке';
+$labels['belowquote'] = 'после цитаты';
+$labels['abovequote'] = 'до цитаты';
+$labels['insertsignature'] = 'Вставить подпись';
+$labels['previewpanemarkread'] = 'Отмечать просмотренные сообщения как прочитанные';
+$labels['afternseconds'] = 'через $n секунд';
 $labels['folder'] = 'Папка';
 $labels['folders'] = 'Папки';
 $labels['foldername'] = 'Имя папки';
@@ -276,5 +325,23 @@ $labels['B'] = 'Б';
 $labels['KB'] = 'КБ';
 $labels['MB'] = 'МБ';
 $labels['GB'] = 'ГБ';
+$labels['unicode'] = 'Unicode';
+$labels['english'] = 'Английский';
+$labels['westerneuropean'] = 'Западноевропейский';
+$labels['easterneuropean'] = 'Восточноевропейский';
+$labels['southeasterneuropean'] = 'Юго-Восточноевропейский';
+$labels['baltic'] = 'Прибалтийский';
+$labels['cyrillic'] = 'Кириллица';
+$labels['arabic'] = 'Арабский';
+$labels['greek'] = 'Греческий';
+$labels['hebrew'] = 'Иврит';
+$labels['turkish'] = 'Турецкий';
+$labels['nordic'] = 'Скандинавский';
+$labels['thai'] = 'Тайский';
+$labels['celtic'] = 'Кельтский';
+$labels['vietnamese'] = 'Вьетнамский';
+$labels['japanese'] = 'Японский';
+$labels['korean'] = 'Корейский';
+$labels['chinese'] = 'Китайский';
 
 ?>

@@ -15,23 +15,12 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: func.inc 2894 2009-08-29 20:56:00Z alec $
+ $Id: func.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
 // add list of address sources to client env
-$js_list = array();
-if (strtolower($CONFIG['address_book_type']) != 'ldap') {
-  // We are using the DB address book, add it.
-  $js_list['0'] = array('id' => 0, 'name' => rcube_label('personaladrbook'), 'readonly' => false);
-}
-if (is_array($CONFIG['ldap_public'])) {
-  foreach ($CONFIG['ldap_public'] as $id => $prop)
-    $js_list[$id] = array('id' => $id, 'name' => $prop['name'], 'readonly' => !$prop['writable']);
-}
-
-$plugin = $RCMAIL->plugins->exec_hook('address_sources', array('sources' => $js_list));
-$js_list = $plugin['sources'];
+$js_list = $RCMAIL->get_address_sources();
 
 // select source
 $source = get_input_value('_source', RCUBE_INPUT_GPC);
@@ -39,7 +28,6 @@ $source = get_input_value('_source', RCUBE_INPUT_GPC);
 // if source is not set use first directory
 if (empty($source))
   $source = $js_list[key($js_list)]['id'];
-
 
 // instantiate a contacts object according to the given source
 $CONTACTS = $RCMAIL->get_address_book($source);
@@ -51,6 +39,9 @@ if (!empty($_GET['_page']))
   $CONTACTS->set_page(($_SESSION['page'] = intval($_GET['_page'])));
 else
   $CONTACTS->set_page(isset($_SESSION['page']) ?$_SESSION['page'] : 1);
+  
+if (!empty($_REQUEST['_gid']))
+  $CONTACTS->set_group(get_input_value('_gid', RCUBE_INPUT_GPC));
 
 // set message set for search result
 if (!empty($_REQUEST['_search']) && isset($_SESSION['search'][$_REQUEST['_search']]))
@@ -59,8 +50,10 @@ if (!empty($_REQUEST['_search']) && isset($_SESSION['search'][$_REQUEST['_search
 // set data source env
 $OUTPUT->set_env('source', $source ? $source : '0');
 $OUTPUT->set_env('readonly', $CONTACTS->readonly, false);
-$OUTPUT->set_env('address_sources', $js_list);
-
+if(! $OUTPUT->ajax_call) {
+  $OUTPUT->set_env('address_sources', $js_list);
+  $OUTPUT->set_pagetitle(rcube_label('addressbook'));
+}
 
 function rcmail_directory_list($attrib)
 {
@@ -71,8 +64,9 @@ function rcmail_directory_list($attrib)
 
   $out = '';
   $local_id = '0';
+  $jsdata = array();
   $current = get_input_value('_source', RCUBE_INPUT_GPC);
-  $line_templ = html::tag('li', array('id' => 'rcmli%s', 'class' => '%s'),
+  $line_templ = html::tag('li', array('id' => 'rcmli%s', 'class' => 'addressbook %s'),
     html::a(array('href' => '%s', 'onclick' => "return ".JS_OBJECT_NAME.".command('list','%s',this)"), '%s'));
 
   if (!$current && strtolower($RCMAIL->config->get('address_book_type', 'sql')) != 'ldap') {
@@ -90,11 +84,37 @@ function rcmail_directory_list($attrib)
     $dom_id = preg_replace('/[^a-z0-9\-_]/i', '', $id);
     $out .= sprintf($line_templ, $dom_id, ($current == $id ? 'selected' : ''),
       Q(rcmail_url(null, array('_source' => $id))), $js_id, (!empty($source['name']) ? Q($source['name']) : Q($id)));
+    $groupdata = rcmail_contact_groups(array('out' => $out, 'jsdata' => $jsdata, 'source' => $id));
+    $jsdata = $groupdata['jsdata'];
+    $out = $groupdata['out'];
   }
 
+  $OUTPUT->set_env('contactgroups', $jsdata); 
   $OUTPUT->add_gui_object('folderlist', $attrib['id']);
   
   return html::tag('ul', $attrib, $out, html::$common_attrib);
+}
+
+
+function rcmail_contact_groups($args)
+{
+  global $RCMAIL;
+
+  $groups = $RCMAIL->get_address_book($args['source'])->list_groups();
+
+  if (!empty($groups)) {
+    $line_templ = html::tag('li', array('id' => 'rcmliG%s%s', 'class' => 'contactgroup'),
+      html::a(array('href' => '#', 'onclick' => "return ".JS_OBJECT_NAME.".command('listgroup',{'source':'%s','id':'%s'},this)"), '%s'));
+
+    $jsdata = array();
+    foreach ($groups as $group) {
+      $args['out'] .= sprintf($line_templ, $args['source'], $group['ID'], $args['source'], $group['ID'], Q($group['name']));
+      $args['jsdata']['G'.$args['source'].$group['ID']] = array(
+        'source' => $args['source'], 'id' => $group['ID'], 'name' => $group['name'], 'type' => 'group');
+    }
+  }
+
+  return $args;
 }
 
 
@@ -205,17 +225,14 @@ function rcmail_get_rowcount_text()
 
   return $out;
   }
-
-
-$OUTPUT->set_pagetitle(rcube_label('addressbook'));
   
 // register UI objects
 $OUTPUT->add_handlers(array(
   'directorylist' => 'rcmail_directory_list',
+//  'groupslist' => 'rcmail_contact_groups',
   'addresslist' => 'rcmail_contacts_list',
   'addressframe' => 'rcmail_contact_frame',
   'recordscountdisplay' => 'rcmail_rowcount_display',
   'searchform' => array($OUTPUT, 'search_form')
 ));
 
-?>

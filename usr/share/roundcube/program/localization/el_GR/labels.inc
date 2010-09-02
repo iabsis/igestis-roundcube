@@ -6,7 +6,7 @@
 | language/el/labels.inc                                                |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         John Economou <hsoc@irc.gr>                                   |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3075 2009-10-28 18:37:59Z yllar $
+@version $Id: labels.inc 3745 2010-06-13 09:06:04Z alec $
 
 */
 
@@ -211,7 +211,7 @@ $labels['signature'] = 'Υπογραφή';
 $labels['dstactive'] = 'Daylight savings';
 $labels['htmleditor'] = 'Σύνθεση HTML μηνύματος';
 $labels['htmlsignature'] = 'Υπογραφή HTML';
-$labels['previewpane'] = 'Εμφάνιση προηγούμενου παραθύρου';
+$labels['previewpane'] = 'Εμφάνιση παραθύρου προεπισκόπησης';
 $labels['skin'] = 'Θεματική παραλλαγή';
 $labels['logoutclear'] = 'Άδειασμα κάδου στην έξοδο';
 $labels['logoutcompact'] = 'Συμπίεση εισερχομένων στην έξοδο';

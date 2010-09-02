@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: delete_identity.inc 2779 2009-07-21 16:13:42Z thomasb $
+ $Id: delete_identity.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -49,4 +49,4 @@ if ($OUTPUT->ajax_call)
 // go to identities page
 rcmail_overwrite_action('identities');
 
-?>
+

@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: list.inc 543 2007-04-28 18:07:12Z thomasb $
+ $Id: list.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -32,4 +32,3 @@ rcmail_js_contacts_list($result);
 // send response
 $OUTPUT->send();
 
-?>

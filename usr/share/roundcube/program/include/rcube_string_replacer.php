@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id:  $
+ $Id: rcube_string_replacer.php 3212 2010-01-18 19:15:28Z alec $
 
 */
 

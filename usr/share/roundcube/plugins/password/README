@@ -19,7 +19,7 @@
  with this program; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
- @version 1.2
+ @version @package_version@
  @author Aleksander 'A.L.E.C' Machniak <alec@alec.pl>
  @author <see driver files for driver authors>
  -----------------------------------------------------------------------
@@ -30,9 +30,14 @@
  2.2.	Cyrus/SASL (sasl)
  2.3.	Poppassd/Courierpassd (poppassd)
  2.4.	LDAP (ldap)
- 2.5.	DirectAdmin Control Panel
- 2.6.   cPanel
- 2.7.   XIMSS (Communigate)
+ 2.5.	DirectAdmin Control Panel (directadmin)
+ 2.6.   cPanel (cpanel)
+ 2.7.   XIMSS/Communigate (ximms)
+ 2.8.	Virtualmin (virtualmin)
+ 2.9.   hMailServer (hmail)
+ 2.10.  PAM (pam)
+ 2.11.  Chpasswd (chpasswd)
+ 2.12.  LDAP - no PEAR (ldap_simple)
  3.	Driver API
 
 
@@ -168,26 +173,69 @@
  See config.inc.php file. Requires PEAR::Net_LDAP2 package.
 
 
- 2.5. DirectAdmin Control Panel
- -------------------------------------
+ 2.5. DirectAdmin Control Panel (directadmin)
+ --------------------------------------------
 
  You can specify which host to connect to via 'password_directadmin_host' 
  and what port via 'password_direactadmin_port'. See config.inc.php file 
  for more info.
 
 
- 2.6. cPanel
- -----------
+ 2.6. cPanel (cpanel)
+ --------------------
 
  You can specify parameters for HTTP connection to cPanel's admin
  interface. See config.inc.php file for more info.
 
 
- 2.7. XIMSS (Communigate)
- -------------------------------------
+ 2.7. XIMSS/Communigate (ximms)
+ ------------------------------
 
  You can specify which host and port to connect to via 'password_ximss_host' 
  and 'password_ximss_port'. See config.inc.php file for more info.
+
+
+ 2.8. Virtualmin (virtualmin)
+ ----------------------------
+
+ As in sasl driver this one allows to change password using shell
+ utility called "virtualmin". See drivers/chgvirtualminpasswd.c for
+ installation instructions.
+
+
+ 2.9. hMailServer (hmail)
+ ------------------------
+ 
+ Requires PHP COM (Windows only).
+
+
+ 2.10. PAM (pam)
+ ---------------
+ 
+ This driver is for changing passwords of shell users authenticated with PAM.
+ Requires PECL's PAM exitension to be installed (http://pecl.php.net/package/PAM).
+
+
+ 2.11. Chpasswd (chpasswd)
+ -------------------------
+ 
+ Driver that adds functionality to change the systems user password via 
+ the 'chpasswd' command. See config.inc.php file.
+
+
+ 2.12.  LDAP - no PEAR (ldap_simple)
+ -----------------------------------
+
+ It's rewritten ldap driver that doesn't require the Net_LDAP2 PEAR extension.
+ It uses directly PHP's ldap module functions instead (as Roundcube does).
+
+ This driver is fully compatible with the ldap driver, but
+ does not require (or uses) the
+    $rcmail_config['password_ldap_force_replace'] variable.
+ Other advantages:
+    * Connects only once with the LDAP server when using the search user.
+    * Does not read the DN, but only replaces the password within (that is
+      why the 'force replace' is always used).
 
 
  3. Driver API

@@ -15,7 +15,7 @@
  |         Mickaël Wolff <rcw@lupusmic.org>                              |
  +-----------------------------------------------------------------------+
 
- @version $Id$
+ @version $Id: labels.inc 3370 2010-03-17 13:33:14Z alec $
 
 */
 

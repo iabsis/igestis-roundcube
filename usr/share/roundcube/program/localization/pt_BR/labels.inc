@@ -6,7 +6,7 @@
 | language/pt_BR/labels.inc                                             |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,9 +15,10 @@
 |         Alessandro Lenzi <alessandro@mistymountain.com.br>            |
 |         Gervasio Antonio <gdsa32-translations@yahoo.com.br>           |
 |         Victor Benincasa <vbenincasa@gmail.com>                       |
+|         Jarbas Peixoto Junior <jarbas.peixoto@gmail.com>              |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3061 2009-10-26 21:42:58Z yllar $
+@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
 
 */
 
@@ -49,14 +50,14 @@ $labels['organization'] = 'Organização';
 $labels['reply-to'] = 'Responder para';
 $labels['mailboxlist'] = 'Pastas';
 $labels['messagesfromto'] = 'Mensagens $from - $to de $count';
+$labels['threadsfromto'] = 'Tópicos $from - $to de $count';
 $labels['messagenrof'] = 'Mensagem $nr de $count';
+$labels['copy'] = 'Copiar';
+$labels['move'] = 'Mover';
 $labels['moveto'] = 'Mover para...';
 $labels['download'] = 'Download';
 $labels['filename'] = 'Arquivo';
 $labels['filesize'] = 'Tamanho';
-$labels['preferhtml'] = 'Exibir formatação HTML em mensagens';
-$labels['htmlmessage'] = 'Mensagem HTML';
-$labels['prettydate'] = 'Exibir datas amigáveis';
 $labels['addtoaddressbook'] = 'Incluir no catálogo de endereços';
 $labels['sun'] = 'Dom';
 $labels['mon'] = 'Seg';
@@ -124,12 +125,34 @@ $labels['messageactions'] = 'Mais ações...';
 $labels['select'] = 'Selecionar';
 $labels['all'] = 'Todas';
 $labels['none'] = 'Nenhuma';
+$labels['currpage'] = 'Página atual';
 $labels['unread'] = 'Não lidas';
 $labels['flagged'] = 'Sinalizada';
 $labels['unanswered'] = 'Não respondida';
 $labels['deleted'] = 'Excluída';
 $labels['invert'] = 'Inverter';
 $labels['filter'] = 'Exibir';
+$labels['list'] = 'Lista';
+$labels['threads'] = 'Tópicos';
+$labels['expand-all'] = 'Expandir Tudo';
+$labels['expand-unread'] = 'Expandir Não Lidas';
+$labels['collapse-all'] = 'Recolher Tudo';
+$labels['threaded'] = 'Agrupado';
+$labels['autoexpand_threads'] = 'Expandir mensagens agrupadas';
+$labels['do_expand'] = 'todos os tópicos';
+$labels['expand_only_unread'] = 'somente com mensagem(s) não lidas';
+$labels['fromto'] = 'Remetente/Destinatário';
+$labels['flag'] = 'Marca';
+$labels['attachment'] = 'Anexo';
+$labels['nonesort'] = 'Nenhuma';
+$labels['sentdate'] = 'Data de Envio';
+$labels['arrival'] = 'Data da Chegada';
+$labels['asc'] = 'crescente';
+$labels['desc'] = 'decrescente';
+$labels['listcolumns'] = 'Lista de colunas';
+$labels['listsorting'] = 'Seleção de coluna';
+$labels['listorder'] = 'Ordem de classificação';
+$labels['listmode'] = 'Modo de visão de Lista';
 $labels['compact'] = 'Compactar';
 $labels['empty'] = 'Esvaziar';
 $labels['purge'] = 'Apagar';
@@ -193,10 +216,13 @@ $labels['contactsfromto'] = 'Contatos $from - $to de $count';
 $labels['print'] = 'Imprimir';
 $labels['export'] = 'Exportar';
 $labels['exportvcards'] = 'Exportar os contatos em formato vCard';
+$labels['newcontactgroup'] = 'Criar novo grupo de contatos';
+$labels['groupactions'] = 'Ações para grupos de contatos...';
 $labels['previouspage'] = 'Página Anterior';
 $labels['firstpage'] = 'Primeira Página ';
 $labels['nextpage'] = 'Próxima Página';
 $labels['lastpage'] = 'Última Página';
+$labels['group'] = 'Grupo';
 $labels['groups'] = 'Grupos';
 $labels['personaladrbook'] = 'Endereços pessoais';
 $labels['import'] = 'Importar';
@@ -214,6 +240,10 @@ $labels['manageidentities'] = 'Gerenciar identidades desta conta';
 $labels['newidentity'] = 'Nova identidade';
 $labels['newitem'] = 'Novo item';
 $labels['edititem'] = 'Editar item';
+$labels['preferhtml'] = 'Exibir formatação HTML em mensagens';
+$labels['defaultcharset'] = 'Conjunto padrão de caracteres';
+$labels['htmlmessage'] = 'Mensagem HTML';
+$labels['prettydate'] = 'Exibir datas amigáveis';
 $labels['setdefault'] = 'Padrão';
 $labels['autodetect'] = 'Auto';
 $labels['language'] = 'Idioma';
@@ -235,8 +265,9 @@ $labels['askuser'] = 'perguntar ao usuário';
 $labels['autosend'] = 'enviar automaticamente';
 $labels['ignore'] = 'ignorar';
 $labels['readwhendeleted'] = 'Marcar a mensagem como lida ao excluir';
-$labels['flagfordeletion'] = 'Sinalizar a mensagem para exclusão ao invés de excluir';
+$labels['flagfordeletion'] = 'Marcar a mensagem para exclusão ao invés de excluir';
 $labels['skipdeleted'] = 'Não exibir mensagens excluídas';
+$labels['deletealways'] = 'Apagar as mensagens se movê-las para a lixeira falhar';
 $labels['showremoteimages'] = 'Exibir imagens externas';
 $labels['fromknownsenders'] = 'de remetentes conhecidos';
 $labels['always'] = 'sempre';
@@ -245,22 +276,37 @@ $labels['autosavedraft'] = 'Salvar rascunho automaticamente';
 $labels['everynminutes'] = 'a cada $n minuto(s)';
 $labels['keepalive'] = 'Verificar se há novas mensagens';
 $labels['never'] = 'nunca';
+$labels['immediately'] = 'imediatamente';
 $labels['messagesdisplaying'] = 'Exibição de mensagens';
 $labels['messagescomposition'] = 'Composição de mensagens';
 $labels['mimeparamfolding'] = 'Nomes de anexos';
 $labels['2231folding'] = 'RFC 2231 Integral (Thunderbird)';
 $labels['miscfolding'] = 'RFC 2047/2231 (MS Outlook)';
 $labels['2047folding'] = 'RFC 2047 Integral (outro)';
+$labels['force7bit'] = 'Usar codificação MIME para caracteres 8-bit';
 $labels['advancedoptions'] = 'Opções avançadas';
 $labels['focusonnewmessage'] = 'Focar janela do navegador na nova mensagem';
 $labels['checkallfolders'] = 'Verificar se há novas mensagens em todas as pastas';
 $labels['displaynext'] = 'Exibir a mensagem seguinte após apagar/mover uma mensagem';
-$labels['indexsort'] = 'Utilize o índice de mensagens para ordenar por data';
 $labels['mainoptions'] = 'Opções Principais';
 $labels['section'] = 'Seção';
 $labels['maintenance'] = 'Manutenção';
 $labels['newmessage'] = 'Novas Mensagens';
 $labels['listoptions'] = 'Opções de Exibição';
+$labels['signatureoptions'] = 'Opções de Assinatura';
+$labels['whenreplying'] = 'Quando responder';
+$labels['replytopposting'] = 'iniciar nova mensagem acima da original';
+$labels['replybottomposting'] = 'iniciar nova mensagem abaixo da original';
+$labels['replyremovesignature'] = 'Remover assinatura original da mensagem ao respondê-la';
+$labels['autoaddsignature'] = 'Automaticamente adicionar assinatura';
+$labels['newmessageonly'] = 'somente para novas mensagens';
+$labels['replyandforwardonly'] = 'somente respostas e encaminhamentos';
+$labels['replysignaturepos'] = 'Inserir assinatura ao responder ou encaminhar';
+$labels['belowquote'] = 'abaixo da citação';
+$labels['abovequote'] = 'acima da citação';
+$labels['insertsignature'] = 'Inserir assinatura';
+$labels['previewpanemarkread'] = 'Marcar mensagem pré-visualizada como lida';
+$labels['afternseconds'] = 'depois de $n segundos';
 $labels['folder'] = 'Pasta';
 $labels['folders'] = 'Pastas';
 $labels['foldername'] = 'Nome da pasta';
@@ -280,5 +326,23 @@ $labels['B'] = 'B';
 $labels['KB'] = 'KB';
 $labels['MB'] = 'MB';
 $labels['GB'] = 'GB';
+$labels['unicode'] = 'Unicode';
+$labels['english'] = 'Inglês';
+$labels['westerneuropean'] = 'Europa Ocidental';
+$labels['easterneuropean'] = 'Leste Europeu';
+$labels['southeasterneuropean'] = 'Sudeste Europeu';
+$labels['baltic'] = 'Báltico';
+$labels['cyrillic'] = 'Cirílico';
+$labels['arabic'] = 'Árabe';
+$labels['greek'] = 'Grego';
+$labels['hebrew'] = 'Hebraico';
+$labels['turkish'] = 'Turco';
+$labels['nordic'] = 'Nórdico';
+$labels['thai'] = 'Tailandês';
+$labels['celtic'] = 'Celta';
+$labels['vietnamese'] = 'Vietnamita';
+$labels['japanese'] = 'Japonês';
+$labels['korean'] = 'Coreano';
+$labels['chinese'] = 'Chinês';
 
 ?>

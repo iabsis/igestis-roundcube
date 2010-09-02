@@ -44,7 +44,7 @@
 // |          Daniel Convissor <danielc@php.net>                          |
 // +----------------------------------------------------------------------+
 //
-// $Id: mssql.php,v 1.65 2008/02/19 14:54:17 afz Exp $
+// $Id: mssql.php 295587 2010-02-28 17:16:38Z quipo $
 //
 
 require_once 'MDB2/Driver/Datatype/Common.php';
@@ -71,7 +71,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function _baseConvertResult($value, $type, $rtrim = true)
     {
-        if (is_null($value)) {
+        if (null === $value) {
             return null;
         }
         switch ($type) {
@@ -136,7 +136,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function getTypeDeclaration($field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -215,7 +215,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function _getIntegerDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -228,7 +228,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
             if ($field['default'] === '') {
                 $field['default'] = 0;
             }
-            if (is_null($field['default'])) {
+            if (null === $field['default']) {
                 $default = ' DEFAULT (null)';
             } else {
                 $default = ' DEFAULT (' . $this->quote($field['default'], 'integer') . ')';
@@ -269,7 +269,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function _getCLOBDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -305,7 +305,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function _getBLOBDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -336,6 +336,65 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
         }
         $value = '0x'.bin2hex($this->_readFile($value));
         return $value;
+    }
+
+    // }}}
+    // {{{ matchPattern()
+
+    /**
+     * build a pattern matching string
+     *
+     * @access public
+     *
+     * @param array $pattern even keys are strings, odd are patterns (% and _)
+     * @param string $operator optional pattern operator (LIKE, ILIKE and maybe others in the future)
+     * @param string $field optional field name that is being matched against
+     *                  (might be required when emulating ILIKE)
+     *
+     * @return string SQL pattern
+     */
+    function matchPattern($pattern, $operator = null, $field = null)
+    {
+        $db = $this->getDBInstance();
+        if (PEAR::isError($db)) {
+            return $db;
+        }
+
+        $match = '';
+        if (null !== $operator) {
+            $field = (null === $field) ? '' : $field.' ';
+            $operator = strtoupper($operator);
+            switch ($operator) {
+            // case insensitive
+            case 'ILIKE':
+                $match = $field.'LIKE ';
+                break;
+            case 'NOT ILIKE':
+                $match = $field.'NOT LIKE ';
+                break;
+            // case sensitive
+            case 'LIKE':
+                $match = $field.'LIKE ';
+                break;
+            case 'NOT LIKE':
+                $match = $field.'NOT LIKE ';
+                break;
+            default:
+                return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
+                    'not a supported operator type:'. $operator, __FUNCTION__);
+            }
+        }
+        $match.= "'";
+        foreach ($pattern as $key => $value) {
+            if ($key % 2) {
+                $match.= $value;
+            } else {
+                $match.= $db->escapePattern($db->escape($value));
+            }
+        }
+        $match.= "'";
+        $match.= $this->patternEscapeString();
+        return $match;
     }
 
     // }}}
@@ -376,6 +435,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
             $type[0] = 'integer';
             $length = 8;
             break;
+        case 'smalldatetime':
         case 'datetime':
             $type[0] = 'timestamp';
             break;
@@ -416,7 +476,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
             $length = null;
             break;
         default:
-            $db =& $this->getDBInstance();
+            $db = $this->getDBInstance();
             if (PEAR::isError($db)) {
                 return $db;
             }

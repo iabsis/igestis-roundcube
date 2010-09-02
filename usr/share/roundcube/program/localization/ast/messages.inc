@@ -15,7 +15,7 @@
 |         http://softastur.org                                          |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 2036 2009-02-02 04:37:58Z mikelg $
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -102,8 +102,8 @@ $messages['editorwarning'] = 'Si pases a editor en modu testu vas perder tol est
 $messages['httpreceivedencrypterror'] = 'Hai un fallu garrafal de configuración. Contauta col alministrador de secute. <b>Nun se pude unviar el mesaxe</b>';
 $messages['smtpconnerror'] = 'Fallu SMTP ($code): Fallu de conexón col sirvidor';
 $messages['smtpautherror'] = 'Fallu SMTP ($code): Fallu d\'autorización';
-$messages['smtpfromerror'] = 'Fallu SMTP ($code): Fallu al aficar el remitente "$from"';
-$messages['smtptoerror'] = 'Fallu SMTP ($code): Fallu al amestar el destinatariu "$to"';
+$messages['smtpfromerror'] = 'Fallu SMTP ($code): Fallu al aficar el remitente "$from" ($msg)';
+$messages['smtptoerror'] = 'Fallu SMTP ($code): Fallu al amestar el destinatariu "$to" ($msg)';
 $messages['smtprecipientserror'] = 'Fallu SMTP: Nun soi a amosar la llista de destinatarios';
 $messages['smtperror'] = 'Fallu SMTP: $msg';
 

@@ -6,14 +6,14 @@
 | language/ms_MY/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Muhammad Zamri MS <myzamri@gmail.com>                        |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 543 2007-04-28 18:07:12Z thomasb $
+@version $Id: messages.inc 3565 2010-04-26 19:23:21Z yllar $
 
 */
 

@@ -5,7 +5,7 @@
 | language/da_DK/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         Søren Aggeboe <soren@aggeboe.dk>                              |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 2494 2009-05-17 11:56:53Z yllar $
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -23,10 +23,13 @@ $messages['loginfailed'] = 'Det lykkedes ikke at logge på';
 $messages['cookiesdisabled'] = 'Din browser accepterer ikke cookies';
 $messages['sessionerror'] = 'Din session er ugyldig eller udløbet';
 $messages['imaperror'] = 'Forbindelse til IMAP serveren fejlede';
+$messages['servererror'] = 'Server fejl!';
+$messages['invalidrequest'] = 'Ugyldig forespørgsel! Ingen data blev gemt.';
 $messages['nomessagesfound'] = 'Der blev ikke fundet nogen beskeder i denne postkasse';
 $messages['loggedout'] = 'Du er nu logget af webmail. Farvel så længe!';
 $messages['mailboxempty'] = 'Postkassen er tom!';
 $messages['loading'] = 'Indlæser...';
+$messages['uploading'] = 'Uploader fil...';
 $messages['loadingdata'] = 'Indlæser data...';
 $messages['checkingmail'] = 'Tjekker for nye beskeder...';
 $messages['sendingmessage'] = 'Sender besked...';
@@ -45,7 +48,9 @@ $messages['senttooquickly'] = 'Vent venligst $sec sekunder før du sender denne 
 $messages['errorsavingsent'] = 'Der opstod en fejl da den sendte besked blev gemt';
 $messages['errorsaving'] = 'Der opstod en fejl ved lagring af data';
 $messages['errormoving'] = 'Beskeden kunne ikke flyttes';
+$messages['errorcopying'] = 'Beskeden kunne ikke kopieres';
 $messages['errordeleting'] = 'Beskeden kunne ikke slettes';
+$messages['errormarking'] = 'Beskeden kunne ikke markeres';
 $messages['deletecontactconfirm'] = 'Vil du virkelig slette den/de valgte kontakt(er)?';
 $messages['deletemessagesconfirm'] = 'Vil du virkelig slette den/de valgte besked(er)?';
 $messages['deletefolderconfirm'] = 'Vil du virkelig slette den valgte mappe';
@@ -66,6 +71,7 @@ $messages['notsentwarning'] = 'Beskeden er ikke blevet sendt. Vil du kassere din
 $messages['noldapserver'] = 'Vælg venligst hvilken LDAP-server der skal søges i';
 $messages['nocontactsreturned'] = 'Ingen kontakter blev fundet';
 $messages['nosearchname'] = 'Indtast venligst en kontakts navn eller e-mail adresse';
+$messages['notuploadedwarning'] = 'Ikke alle vedhæftede filer er blevet uploadet endnu. Vent venligst eller afbryd upload.';
 $messages['searchsuccessful'] = 'Fandt $nr beskeder';
 $messages['searchnomatch'] = 'Søgningen fandt ingen beskeder';
 $messages['searching'] = 'Søger...';
@@ -82,6 +88,7 @@ $messages['copyerror'] = 'Kunne ikke kopiere adresserne';
 $messages['sourceisreadonly'] = 'Denne adressekilde er kun til læsning';
 $messages['errorsavingcontact'] = 'Kunne ikke gemme kontakt adressen';
 $messages['movingmessage'] = 'Flytter besked...';
+$messages['copyingmessage'] = 'Kopierer besked...';
 $messages['receiptsent'] = 'Kvittering for læsning er sendt';
 $messages['errorsendingreceipt'] = 'Kvitteringen kunne ikke sendes';
 $messages['nodeletelastidentity'] = 'Du kan ikke slette denne identitet, da det er den eneste der er tilbage.';
@@ -89,11 +96,23 @@ $messages['addsubfolderhint'] = 'Denne mappe vil blive oprettet som en undermapp
 $messages['forbiddencharacter'] = 'Mappe-navnet indeholder ugyldige tegn';
 $messages['selectimportfile'] = 'Vælg venligst den fil der skal uploades';
 $messages['addresswriterror'] = 'Der kan ikke skrives i den valgte adressebog';
+$messages['contactaddedtogroup'] = 'Succesfuldt tilføjet kontakten til denne gruppe';
+$messages['contactremovedfromgroup'] = 'Succesfuldt fjernet kontakten fra denne gruppe';
 $messages['importwait'] = 'Importerer, vent venligst...';
 $messages['importerror'] = 'Fejl i importen! Den uploadede fil er ikke en gyldig vCard fil.';
 $messages['importconfirm'] = '<b>Importerede $inserted kontakter, sprang over $skipped allerede eksisterende kontakter</b>:<p><em>$names</em></p>';
 $messages['opnotpermitted'] = 'Handlingen er ikke tilladt!';
 $messages['nofromaddress'] = 'Der mangler en email-adresse i den valgte identitet';
 $messages['editorwarning'] = 'Al formatering af teksten forsvinder, hvis der skiftes til ren tekst. Vil du fortsætte?';
+$messages['httpreceivedencrypterror'] = 'Der er opstået en fatal konfigurationsfejl. Kontakt venligst din system-administrator med det samme.<b>Din besked kunne ikke afsendes.</b>';
+$messages['smtpconnerror'] = 'SMTP fejl ($code): Forbindelsen til serveren afbrudt';
+$messages['smtpautherror'] = 'SMTP fejl ($code): Autenticering fejlede';
+$messages['smtpfromerror'] = 'SMTP fejl ($code): Kunne ikke afsende som "$from" ($msg)';
+$messages['smtptoerror'] = 'SMTP fejl ($code): Kunne ikke tilføje modtageren "$to" ($msg)';
+$messages['smtprecipientserror'] = 'SMTP fejl: kan ikke fortolke listen af modtagere';
+$messages['smtperror'] = 'SMTP fejl: $msg';
+$messages['emailformaterror'] = 'Ugyldig email-adresse: $email';
+$messages['toomanyrecipients'] = 'For mange modtagere. Reducer antallet af modtagere til $max';
+$messages['maxgroupmembersreached'] = 'Antallet af gruppemedlemmer overstiger maksimum på $max';
 
 ?>

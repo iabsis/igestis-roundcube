@@ -6,7 +6,7 @@
 | language/it/messages.inc                                              |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         Yusef Maali <contact@yusefmaali.net>                          |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 2900 2009-09-01 11:47:46Z yllar $
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -29,6 +29,7 @@ $messages['nomessagesfound'] = 'Nessun messaggio trovato in questa cartella';
 $messages['loggedout'] = 'Sessione chiusa correttamente. Arrivederci!';
 $messages['mailboxempty'] = 'La cartella è vuota';
 $messages['loading'] = 'Caricamento...';
+$messages['uploading'] = 'Caricamento file...';
 $messages['loadingdata'] = 'Caricamento dati...';
 $messages['checkingmail'] = 'Controllo nuovi messaggi...';
 $messages['sendingmessage'] = 'Invio messaggio in corso...';
@@ -47,6 +48,7 @@ $messages['senttooquickly'] = 'Per favore, attendi $sec secondi prima di inviare
 $messages['errorsavingsent'] = 'C\'è stato un errore nel salvare il messaggio inviato';
 $messages['errorsaving'] = 'Impossibile salvare';
 $messages['errormoving'] = 'Impossibile spostare il messaggio';
+$messages['errorcopying'] = 'Impossibile copiare il messaggio';
 $messages['errordeleting'] = 'Impossibile eliminare il messaggio';
 $messages['errormarking'] = 'Impossibile segnare il messaggio';
 $messages['deletecontactconfirm'] = 'Sei sicuro di voler eliminare i contatti selezionati?';
@@ -69,6 +71,7 @@ $messages['notsentwarning'] = 'Il messaggio non è stato inviato. Vuoi annullare
 $messages['noldapserver'] = 'Per favore, scegli un server LDAP in cui ricercare';
 $messages['nocontactsreturned'] = 'Nessun contatto trovato';
 $messages['nosearchname'] = 'Per favore, immetti un nome o un indirizzo e-mail';
+$messages['notuploadedwarning'] = 'Non tutti gli allegati sono stati ancora caricati. Prego attendere, oppure cancellare il caricamento.';
 $messages['searchsuccessful'] = '$nr messaggi trovati';
 $messages['searchnomatch'] = 'La ricerca non ha dato nessun risultato';
 $messages['searching'] = 'Ricerca...';
@@ -85,6 +88,7 @@ $messages['copyerror'] = 'Impossibile copiare gli indirizzi';
 $messages['sourceisreadonly'] = 'La rubrica è in sola lettura';
 $messages['errorsavingcontact'] = 'Impossibile salvare il contatto';
 $messages['movingmessage'] = 'Spostamento del messaggio...';
+$messages['copyingmessage'] = 'Copia del messaggio';
 $messages['receiptsent'] = 'Ricevuta di ritorno inviata con successo';
 $messages['errorsendingreceipt'] = 'Impossibile spedire la ricevuta di ritorno';
 $messages['nodeletelastidentity'] = 'Impossibile eliminare l\'unica identità disponibile';
@@ -92,6 +96,8 @@ $messages['addsubfolderhint'] = 'La cartella verrà creata come sotto cartella d
 $messages['forbiddencharacter'] = 'Il nome della cartella contiene un carattere vietato';
 $messages['selectimportfile'] = 'Per favore, seleziona il file da caricare';
 $messages['addresswriterror'] = 'La rubrica selezionata non è scrivibile';
+$messages['contactaddedtogroup'] = 'Contatto aggiunto con successo al gruppo';
+$messages['contactremovedfromgroup'] = 'Contatto rimosso con successo dal gruppo';
 $messages['importwait'] = 'Importazione in corso, attendere...';
 $messages['importerror'] = 'Importazione fallita! Il file caricato non è un file vCard valido.';
 $messages['importconfirm'] = '<b>Importati con successo $inserted contatti, saltate $skipped voci esistenti</b>:<p><em>$names</em></p>';
@@ -101,9 +107,12 @@ $messages['editorwarning'] = 'Passare all\'editor testuale farà perdere tutte l
 $messages['httpreceivedencrypterror'] = 'Fatale errore di configurazione. Per favore contatta l\'amministratore immediatamente. Il tuo messaggio non può essere inviato.';
 $messages['smtpconnerror'] = 'Errore SMTP ($code): Connessione al server fallita';
 $messages['smtpautherror'] = 'Errore SMTP ($code): Autenticazione fallita';
-$messages['smtpfromerror'] = 'Errore SMTP ($code): Fallita l\'impostazione del mittente "$from"';
-$messages['smtptoerror'] = 'Errore SMTP ($code): Fallito l\'inserimento del destinatario "$to"';
+$messages['smtpfromerror'] = 'Errore SMTP ($code): Fallita l\'impostazione del mittente "$from" ($msg)';
+$messages['smtptoerror'] = 'Errore SMTP ($code): Fallito l\'inserimento del destinatario "$to" ($msg)';
 $messages['smtprecipientserror'] = 'Errore SMTP: Impossibile processare la lista dei destinatari';
 $messages['smtperror'] = 'Errore SMTP: $msg';
+$messages['emailformaterror'] = 'Indirizzo e-mail non corretto: $email';
+$messages['toomanyrecipients'] = 'Numero eccessivo di destinatari, ridurlo a $max';
+$messages['maxgroupmembersreached'] = 'Il numero dei membri del gruppo eccede il massimo di $max';
 
 ?>

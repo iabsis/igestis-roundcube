@@ -14,7 +14,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_ldap.php 2976 2009-09-21 11:50:53Z alec $
+ $Id: rcube_ldap.php 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -84,7 +84,9 @@ class rcube_ldap extends rcube_addressbook
     global $RCMAIL;
     
     if (!function_exists('ldap_connect'))
-      raise_error(array('code' => 100, 'type' => 'ldap', 'message' => "No ldap support in this installation of PHP"), true);
+      raise_error(array('code' => 100, 'type' => 'ldap',
+        'file' => __FILE__, 'line' => __LINE__,
+        'message' => "No ldap support in this installation of PHP"), true);
 
     if (is_resource($this->conn))
       return true;
@@ -97,6 +99,7 @@ class rcube_ldap extends rcube_addressbook
 
     foreach ($this->prop['hosts'] as $host)
     {
+      $host = rcube_parse_host($host);
       $this->_debug("C: Connect [$host".($this->prop['port'] ? ':'.$this->prop['port'] : '')."]");
 
       if ($lc = @ldap_connect($host, $this->prop['port']))
@@ -129,18 +132,21 @@ class rcube_ldap extends rcube_addressbook
         // Get the pieces needed for variable replacement.
         $fu = $RCMAIL->user->get_username();
         list($u, $d) = explode('@', $fu);
-        
+        $dc = 'dc='.strtr($d, array('.' => ',dc=')); // hierarchal domain string
+
         // Replace the bind_dn and base_dn variables.
-        $replaces = array('%fu' => $fu, '%u' => $u, '%d' => $d);
+        $replaces = array('%dc' => $dc, '%d' => $d, '%fu' => $fu, '%u' => $u);
         $this->prop['bind_dn'] = strtr($this->prop['bind_dn'], $replaces);
         $this->prop['base_dn'] = strtr($this->prop['base_dn'], $replaces);
       }
-      
+
       if (!empty($this->prop['bind_dn']) && !empty($this->prop['bind_pass']))
         $this->ready = $this->bind($this->prop['bind_dn'], $this->prop['bind_pass']);
     }
     else
-      raise_error(array('code' => 100, 'type' => 'ldap', 'message' => "Could not connect to any LDAP server, tried $host:{$this->prop[port]} last"), true);
+      raise_error(array('code' => 100, 'type' => 'ldap',
+        'file' => __FILE__, 'line' => __LINE__,
+        'message' => "Could not connect to any LDAP server, last tried $host:{$this->prop[port]}"), true);
 
     // See if the directory is writeable.
     if ($this->prop['writable']) {
@@ -173,8 +179,8 @@ class rcube_ldap extends rcube_addressbook
     $this->_debug("S: ".ldap_error($this->conn));
 
     raise_error(array(
-        'code' => ldap_errno($this->conn),
-        'type' => 'ldap',
+        'code' => ldap_errno($this->conn), 'type' => 'ldap',
+	'file' => __FILE__, 'line' => __LINE__,
         'message' => "Bind failed for dn=$dn: ".ldap_error($this->conn)),
         true);
 
@@ -300,10 +306,13 @@ class rcube_ldap extends rcube_addressbook
    *
    * @param array   List of fields to search in
    * @param string  Search value
+   * @param boolean True for strict, False for partial (fuzzy) matching
    * @param boolean True if results are requested, False if count only
+   * @param boolean (Not used)
+   * @param array   List of fields that cannot be empty
    * @return array  Indexed list of contact records and 'count' value
    */
-  function search($fields, $value, $strict=false, $select=true)
+  function search($fields, $value, $strict=false, $select=true, $nocount=false, $required=array())
   {
     // special treatment for ID-based search
     if ($fields == 'ID' || $fields == $this->primary_key)
@@ -334,10 +343,19 @@ class rcube_ldap extends rcube_addressbook
           $filter .= "($f=$wc" . rcube_ldap::quote_string($value) . "$wc)";
     }
     $filter .= ')';
-    
+
+    // add required (non empty) fields filter
+    $req_filter = '';
+    foreach ((array)$required as $field)
+      if ($f = $this->_map_field($field))
+        $req_filter .= "($f=*)";
+
+    if (!empty($req_filter))
+      $filter = '(&' . $req_filter . $filter . ')';
+
     // avoid double-wildcard if $value is empty
     $filter = preg_replace('/\*+/', '*', $filter);
-    
+
     // add general filter to query
     if (!empty($this->prop['filter']))
       $filter = '(&(' . preg_replace('/^\(|\)$/', '', $this->prop['filter']) . ')' . $filter . ')';
@@ -405,9 +423,11 @@ class rcube_ldap extends rcube_addressbook
     $res = null;
     if ($this->conn && $dn)
     {
-      $this->_debug("C: Read [dn: ".base64_decode($dn)."] [(objectclass=*)]");
+      $dn = base64_decode($dn);
+
+      $this->_debug("C: Read [dn: $dn] [(objectclass=*)]");
     
-      if ($this->ldap_result = @ldap_read($this->conn, base64_decode($dn), '(objectclass=*)', array_values($this->fieldmap)))
+      if ($this->ldap_result = @ldap_read($this->conn, $dn, '(objectclass=*)', array_values($this->fieldmap)))
         $entry = ldap_first_entry($this->conn, $this->ldap_result);
       else
         $this->_debug("S: ".ldap_error($this->conn));
@@ -419,7 +439,7 @@ class rcube_ldap extends rcube_addressbook
         $rec = array_change_key_case($rec, CASE_LOWER);
 
         // Add in the dn for the entry.
-        $rec['dn'] = base64_decode($dn);
+        $rec['dn'] = $dn;
         $res = $this->_ldap2result($rec);
         $this->result = new rcube_result_set(1);
         $this->result->add($res);
@@ -459,7 +479,8 @@ class rcube_ldap extends rcube_addressbook
     } // end foreach
 
     // Build the new entries DN.
-    $dn = $this->prop['LDAP_rdn'].'='.$newentry[$this->prop['LDAP_rdn']].','.$this->prop['base_dn'];
+    $dn = $this->prop['LDAP_rdn'].'='.rcube_ldap::quote_string($newentry[$this->prop['LDAP_rdn']], true)
+      .','.$this->prop['base_dn'];
 
     $this->_debug("C: Add [dn: $dn]: ".print_r($newentry, true));
 
@@ -532,9 +553,12 @@ class rcube_ldap extends rcube_addressbook
     if (!empty($replacedata)) {
       // Handle RDN change
       if ($replacedata[$this->prop['LDAP_rdn']]) {
-        $newdn = $this->prop['LDAP_rdn'].'='.$replacedata[$this->prop['LDAP_rdn']].','.$this->prop['base_dn']; 
+        $newdn = $this->prop['LDAP_rdn'].'='
+	  .rcube_ldap::quote_string($replacedata[$this->prop['LDAP_rdn']], true)
+	  .','.$this->prop['base_dn']; 
         if ($dn != $newdn) {
-          $newrdn = $this->prop['LDAP_rdn'].'='.$replacedata[$this->prop['LDAP_rdn']];
+          $newrdn = $this->prop['LDAP_rdn'].'='
+	    .rcube_ldap::quote_string($replacedata[$this->prop['LDAP_rdn']], true);
           unset($replacedata[$this->prop['LDAP_rdn']]);
         }
       }
@@ -616,7 +640,9 @@ class rcube_ldap extends rcube_addressbook
 
       $this->_debug("C: Search [".$filter."]");
 
-      if ($this->ldap_result = @$function($this->conn, $this->prop['base_dn'], $filter, array_values($this->fieldmap), 0, 0)) {
+      if ($this->ldap_result = @$function($this->conn, $this->prop['base_dn'], $filter,
+          array_values($this->fieldmap), 0, (int) $this->prop['sizelimit'], (int) $this->prop['timelimit'])
+      ) {
         $this->_debug("S: ".ldap_count_entries($this->conn, $this->ldap_result)." record(s)");
         return true;
       } else
@@ -642,7 +668,7 @@ class rcube_ldap extends rcube_addressbook
     foreach ($this->fieldmap as $rf => $lf)
     {
       if ($rec[$lf]['count']) {
-        if ($rf == 'email' && $mail_domain && !strpos($rec[$lf][0], '@'))
+        if ($rf == 'email' && $this->mail_domain && !strpos($rec[$lf][0], '@'))
           $out[$rf] = sprintf('%s@%s', $rec[$lf][0], $this->mail_domain);
         else
           $out[$rf] = $rec[$lf][0];
@@ -670,7 +696,7 @@ class rcube_ldap extends rcube_addressbook
     // list of known attribute aliases
     $aliases = array(
       'gn' => 'givenname',
-      'rfc822mailbox' => 'mail',
+      'rfc822mailbox' => 'email',
       'userid' => 'uid',
       'emailaddress' => 'email',
       'pkcs9email' => 'email',
@@ -692,11 +718,17 @@ class rcube_ldap extends rcube_addressbook
   /**
    * @static
    */
-  function quote_string($str)
+  function quote_string($str, $dn=false)
   {
-    return strtr($str, array('*'=>'\2a', '('=>'\28', ')'=>'\29', '\\'=>'\5c'));
+    if ($dn)
+      $replace = array(','=>'\2c', '='=>'\3d', '+'=>'\2b', '<'=>'\3c',
+        '>'=>'\3e', ';'=>'\3b', '\\'=>'\5c', '"'=>'\22', '#'=>'\23');
+    else
+      $replace = array('*'=>'\2a', '('=>'\28', ')'=>'\29', '\\'=>'\5c',
+        '/'=>'\2f');
+
+    return strtr($str, $replace);
   }
 
 }
 
-?>

@@ -6,7 +6,7 @@
 | language/bg/messages.inc                                              |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |	  Nickolay Bunev <just4nick@gmail.com>								|
 +-----------------------------------------------------------------------+
 
-@version $Id$
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -103,8 +103,8 @@ $messages['editorwarning'] = 'Превключването на редактор
 $messages['httpreceivedencrypterror'] = 'Фатална конфигурационна грешка. Моля, свържете се веднага с администратора. <b>Съобщението Ви не може да бъде изпратено.</b>';
 $messages['smtpconnerror'] = 'SMTP грешка ($code): Няма връзка със сървъра';
 $messages['smtpautherror'] = 'SMTP грешка ($code): Грешни потребител/парола';
-$messages['smtpfromerror'] = 'SMTP грешка ($code): Не може да бъде изпратено писмо от "$from"';
-$messages['smtptoerror'] = 'SMTP грешка ($code): Не може да бъде изпратено писмо до "$to"';
+$messages['smtpfromerror'] = 'SMTP грешка ($code): Не може да бъде изпратено писмо от "$from" ($msg)';
+$messages['smtptoerror'] = 'SMTP грешка ($code): Не може да бъде изпратено писмо до "$to" ($msg)';
 $messages['smtprecipientserror'] = 'SMTP грешка: Не може да бъде обработен списъка с получатели';
 $messages['smtperror'] = 'SMTP грешка: $msg';
 $messages['emailformaterror'] = 'Невалиден e-mail адрес: $email';

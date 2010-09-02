@@ -5,11 +5,12 @@
  *
  * Make use of an existing HTTP authentication and perform login with the existing user credentials
  *
- * @version 1.0
+ * @version 1.1
  * @author Thomas Bruederli
  */
 class http_authentication extends rcube_plugin
 {
+  public $task = 'login';
 
   function init()
   {
@@ -20,7 +21,7 @@ class http_authentication extends rcube_plugin
   function startup($args)
   {
     // change action to login
-    if ($args['task'] == 'mail' && empty($args['action']) && empty($_SESSION['user_id'])
+    if (empty($args['action']) && empty($_SESSION['user_id'])
         && !empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW']))
       $args['action'] = 'login';
 
@@ -33,6 +34,8 @@ class http_authentication extends rcube_plugin
       $args['user'] = $_SERVER['PHP_AUTH_USER'];
       $args['pass'] = $_SERVER['PHP_AUTH_PW'];
     }
+    
+    $args['cookiecheck'] = false;
   
     return $args;
   }

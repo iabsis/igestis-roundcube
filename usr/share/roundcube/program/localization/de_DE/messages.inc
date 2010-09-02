@@ -6,14 +6,14 @@
 | language/de_DE/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Marcel Schlesinger <info@marcel-schlesinger.de>               |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3065 2009-10-27 16:08:00Z thomasb $
+@version $Id: messages.inc 3799 2010-06-30 16:37:24Z yllar $
 
 */
 
@@ -28,8 +28,8 @@ $messages['nomessagesfound'] = 'Keine Nachrichten in diesem Ordner';
 $messages['loggedout'] = 'Sie haben Ihre Session erfolgreich beendet. Auf Wiedersehen!';
 $messages['mailboxempty'] = 'Ordner ist leer';
 $messages['loading'] = 'Lade...';
-$messages['loadingdata'] = 'Daten werden geladen...';
 $messages['uploading'] = 'Datei wird hochgeladen...';
+$messages['loadingdata'] = 'Daten werden geladen...';
 $messages['checkingmail'] = 'Überprüfung auf neue Nachrichten...';
 $messages['sendingmessage'] = 'Nachricht wird gesendet...';
 $messages['messagesent'] = 'Nachricht erfolgreich gesendet';
@@ -47,6 +47,7 @@ $messages['senttooquickly'] = 'Bitte warten Sie $sec Sekunde(n) vor dem Senden d
 $messages['errorsavingsent'] = 'Ein Fehler ist beim Speichern der gesendeten Nachricht aufgetreten';
 $messages['errorsaving'] = 'Beim Speichern ist ein Fehler aufgetreten';
 $messages['errormoving'] = 'Nachricht konnte nicht verschoben werden';
+$messages['errorcopying'] = 'Konnte Nachrichten nicht kopieren';
 $messages['errordeleting'] = 'Nachricht konnte nicht gelöscht werden';
 $messages['errormarking'] = 'Nachricht konnte nicht markiert werden';
 $messages['deletecontactconfirm'] = 'Wollen Sie die ausgewählten Kontakte wirklich löschen?';
@@ -86,13 +87,16 @@ $messages['copyerror'] = 'Die Adressen konnten nicht kopiert werden';
 $messages['sourceisreadonly'] = 'Das Adressverzeichnis kann nicht verändert werden';
 $messages['errorsavingcontact'] = 'Die Änderungen konnten nicht gespeichert werden';
 $messages['movingmessage'] = 'Die E-Mail wird verschoben...';
+$messages['copyingmessage'] = 'Kopiere Nachrichten...';
 $messages['receiptsent'] = 'Lesebestätigung erfolgreich gesendet';
 $messages['errorsendingreceipt'] = 'Bestätigung konnte nicht gesendet werden';
 $messages['nodeletelastidentity'] = 'Diese Identität kann nicht gelöscht werden, da dies die letzte ist.';
-$messages['addsubfolderhint'] = 'Wird als Unterordner des aktuell selektieren Ordners erstellt';
+$messages['addsubfolderhint'] = 'Wird als Unterordner des aktuell selektierten Ordners erstellt';
 $messages['forbiddencharacter'] = 'Der Ordnername enthält ein ungültiges Zeichen';
 $messages['selectimportfile'] = 'Bitte wählen Sie eine Datei zum Importieren aus';
 $messages['addresswriterror'] = 'Das ausgewählte Adressbuch kann nicht verändert werden';
+$messages['contactaddedtogroup'] = 'Kontakte wurden dieser Gruppe hinzugefügt';
+$messages['contactremovedfromgroup'] = 'Kontakte wurden aus dieser Gruppe entfernt';
 $messages['importwait'] = 'Daten werden importiert, bitte warten...';
 $messages['importerror'] = 'Import fehlgeschlagen! Die hochgeladene Datei ist nicht im vCard-Format.';
 $messages['importconfirm'] = '<b>Es wurden $inserted Adressen erfolgreich importiert und $skipped bestehende Einträge übersprungen</b>:<p><em>$names</em></p>';
@@ -102,10 +106,13 @@ $messages['editorwarning'] = 'Beim Wechseln in den Texteditor gehen alle Textfor
 $messages['httpreceivedencrypterror'] = 'Ein fataler Konfigurationsfehler ist aufgetreten. Kontaktieren Sie bitte sofort Ihren Administrator. <b>Ihre Nachricht konnte nicht versendet werden.</b>';
 $messages['smtpconnerror'] = 'SMTP Fehler ($code): Die Verbindung ist fehlgeschlagen';
 $messages['smtpautherror'] = 'SMTP Fehler ($code): Die Authentisierung ist fehlgeschlagen';
-$messages['smtpfromerror'] = 'SMTP Fehler ($code): Der Absender ("$from") konnte nicht gesetzt werden';
-$messages['smtptoerror'] = 'SMTP Fehler ($code): Der Empfänger ("$to") konnte nicht gesetzt werden';
+$messages['smtpfromerror'] = 'SMTP Fehler ($code): Der Absender "$from" konnte nicht gesetzt werden ($msg)';
+$messages['smtptoerror'] = 'SMTP Fehler ($code): Der Empfänger "$to" konnte nicht gesetzt werden ($msg)';
 $messages['smtprecipientserror'] = 'SMTP Fehler: Die Empfängerliste konnte nicht verarbeitet werden';
 $messages['smtperror'] = 'SMTP Fehler: $msg';
 $messages['emailformaterror'] = 'Ungültige E-Mail-Adresse: $email';
+$messages['toomanyrecipients'] = 'Zuviele Empfänger. Reduzieren Sie die Anzahl Empfängeradressen auf $max.';
+$messages['maxgroupmembersreached'] = 'Die Anzahl Adressen in dieser Gruppe überschreitet das Maximum von $max';
+$messages['internalerror'] = 'Ein interner Fehler ist aufgetreten. Bitte versuchen Sie den Vorgang erneut.';
 
 ?>

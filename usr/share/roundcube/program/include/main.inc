@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: main.inc 3063 2009-10-27 09:43:39Z alec $
+ $Id: main.inc 3828 2010-07-26 08:54:03Z alec $
 
 */
 
@@ -30,7 +30,6 @@ require_once('lib/utf7.inc');
 require_once('include/rcube_shared.inc');
 
 // fallback if not PHP modules are available
-@include_once('lib/des.inc');
 @include_once('lib/utf8.class.php');
 
 // define constannts for input reading
@@ -69,7 +68,7 @@ function get_table_name($table)
  */
 function get_sequence_name($sequence)
   {
-  // return table name if configured
+  // return sequence name if configured
   $config_key = 'db_sequence_'.$sequence;
   $opt = rcmail::get_instance()->config->get($config_key);
 
@@ -170,6 +169,18 @@ function rcmail_cache_gc()
 
 
 /**
+ * Catch an error and throw an exception.
+ *
+ * @param  int    Level of the error
+ * @param  string Error message
+ */ 
+function rcube_error_handler($errno, $errstr)
+  {
+  throw new ErrorException($errstr, 0, $errno);
+  }
+
+
+/**
  * Convert a string from one charset to another.
  * Uses mbstring and iconv functions if possible
  *
@@ -180,6 +191,7 @@ function rcmail_cache_gc()
  */
 function rcube_charset_convert($str, $from, $to=NULL)
   {
+  static $iconv_options = null;
   static $mbstring_loaded = null;
   static $mbstring_list = null;
   static $convert_warning = false;
@@ -187,7 +199,7 @@ function rcube_charset_convert($str, $from, $to=NULL)
   
   $error = false;
 
-  $to = empty($to) ? $to = strtoupper(RCMAIL_CHARSET) : rcube_parse_charset($to);
+  $to = empty($to) ? strtoupper(RCMAIL_CHARSET) : rcube_parse_charset($to);
   $from = rcube_parse_charset($from);
 
   if ($from == $to || empty($str) || empty($from))
@@ -195,20 +207,37 @@ function rcube_charset_convert($str, $from, $to=NULL)
 
   // convert charset using iconv module  
   if (function_exists('iconv') && $from != 'UTF-7' && $to != 'UTF-7') {
-    $_iconv = iconv($from, $to . '//IGNORE', $str);
+    if ($iconv_options === null) {
+      // ignore characters not available in output charset
+      $iconv_options = '//IGNORE';
+      if (iconv('', $iconv_options, '') === false) {
+        // iconv implementation does not support options
+        $iconv_options = '';
+      }
+    }
+
+    // throw an exception if iconv reports an illegal character in input
+    // it means that input string has been truncated
+    set_error_handler('rcube_error_handler', E_NOTICE);
+    try {
+      $_iconv = iconv($from, $to . $iconv_options, $str);
+    } catch (ErrorException $e) {
+      $_iconv = false;
+    }
+    restore_error_handler();
     if ($_iconv !== false) {
-        return $_iconv;
+      return $_iconv;
     }
   }
 
-  if (is_null($mbstring_loaded))
+  if ($mbstring_loaded === null)
     $mbstring_loaded = extension_loaded('mbstring');
     
   // convert charset using mbstring module
   if ($mbstring_loaded) {
     $aliases['WINDOWS-1257'] = 'ISO-8859-13';
     
-    if (is_null($mbstring_list)) {
+    if ($mbstring_list === null) {
       $mbstring_list = mb_list_encodings();
       $mbstring_list = array_map('strtoupper', $mbstring_list);
     }
@@ -296,12 +325,19 @@ function rcube_charset_convert($str, $from, $to=NULL)
  * @param  string  Input charset name
  * @return The validated charset name
  */
-function rcube_parse_charset($charset)
+function rcube_parse_charset($input)
   {
-  $charset = strtoupper($charset);
+  static $charsets = array();
+  $charset = strtoupper($input);
 
-  # RFC1642
-  $charset = str_replace('UNICODE-1-1-', '', $charset);
+  if (isset($charsets[$input]))
+    return $charsets[$input];
+
+  $charset = preg_replace(array(
+    '/^[^0-9A-Z]+/',	// e.g. _ISO-8859-JP$SIO
+    '/\$.*$/',		// e.g. _ISO-8859-JP$SIO
+    '/UNICODE-1-1-*/',	// RFC1641/1642
+    ), '', $charset);
 
   # Aliases: some of them from HTML5 spec.
   $aliases = array(
@@ -319,25 +355,44 @@ function rcube_parse_charset($charset)
     'TIS620'	    => 'WINDOWS-874',
     'ISO88599'	    => 'WINDOWS-1254',
     'ISO885911'	    => 'WINDOWS-874',
+    'MACROMAN'	    => 'MACINTOSH',
+    '238'           => 'WINDOWS-1250',
+    '178'           => 'WINDOWS-1256',
+    '177'           => 'WINDOWS-1255',
+    '204'           => 'WINDOWS-1251',
+    '161'           => 'WINDOWS-1253',
+    '222'           => 'WINDOWS-874',
+    '134'           => 'GBK',
+    '238'           => 'WINDOWS-1250',
+    '128'           => 'SHIFT-JIS'
   );
 
   // allow a-z and 0-9 only and remove X- prefix (e.g. X-ROMAN8 => ROMAN8)
-  $str = preg_replace(array('/[^a-z0-9]/i', '/^x+/i'), '', $charset);
+  $str = preg_replace(array('/[^A-Z0-9]/', '/^X+/'), '', $charset);
 
   if (isset($aliases[$str]))
-    return $aliases[$str];
-
-  if (preg_match('/UTF(7|8|16|32)(BE|LE)*/', $str, $m))
-    return 'UTF-' . $m[1] . $m[2];
-
-  if (preg_match('/ISO8859([0-9]{0,2})/', $str, $m)) {
+    $result = $aliases[$str];
+  // UTF
+  else if (preg_match('/U[A-Z][A-Z](7|8|16|32)(BE|LE)*/', $str, $m))
+    $result = 'UTF-' . $m[1] . $m[2];
+  // ISO-8859
+  else if (preg_match('/ISO8859([0-9]{0,2})/', $str, $m)) {
     $iso = 'ISO-8859-' . ($m[1] ? $m[1] : 1);
-    # some clients sends windows-1252 text as latin1,
-    # it is safe to use windows-1252 for all latin1
-    return $iso == 'ISO-8859-1' ? 'WINDOWS-1252' : $iso;
+    // some clients sends windows-1252 text as latin1,
+    // it is safe to use windows-1252 for all latin1
+    $result = $iso == 'ISO-8859-1' ? 'WINDOWS-1252' : $iso;
+    }
+  // handle broken charset names e.g. WINDOWS-1250HTTP-EQUIVCONTENT-TYPE
+  else if (preg_match('/(WIN|WINDOWS)([0-9]+)/', $str, $m)) {
+    $result = 'WINDOWS-' . $m[2];
+    }
+  else {
+    $result = $charset;
     }
 
-  return $charset;
+  $charsets[$input] = $result;
+
+  return $result;
   }
 
 
@@ -482,12 +537,15 @@ function rep_specialchars_output($str, $enctype='', $mode='', $newlines=TRUE)
     $xml_rep_table['&'] = '&amp;';
 
     for ($c=160; $c<256; $c++)  // can be increased to support more charsets
-      $xml_rep_table[Chr($c)] = "&#$c;";
+      $xml_rep_table[chr($c)] = "&#$c;";
 
     $xml_rep_table['"'] = '&quot;';
     $js_rep_table['"'] = '\\"';
     $js_rep_table["'"] = "\\'";
     $js_rep_table["\\"] = "\\\\";
+    // Unicode line and paragraph separators (#1486310)
+    $js_rep_table[chr(hexdec(E2)).chr(hexdec(80)).chr(hexdec(A8))] = '&#8232;';
+    $js_rep_table[chr(hexdec(E2)).chr(hexdec(80)).chr(hexdec(A9))] = '&#8233;';
     }
 
   // encode for javascript use
@@ -546,7 +604,6 @@ function JQ($str)
  */
 function get_input_value($fname, $source, $allow_html=FALSE, $charset=NULL)
 {
-  global $OUTPUT;
   $value = NULL;
   
   if ($source==RCUBE_INPUT_GET && isset($_GET[$fname]))
@@ -563,8 +620,30 @@ function get_input_value($fname, $source, $allow_html=FALSE, $charset=NULL)
       $value = $_COOKIE[$fname];
     }
 
+  return parse_input_value($value, $allow_html, $charset);
+}
+
+/**
+ * Parse/validate input value. See get_input_value()
+ * Performs stripslashes() and charset conversion if necessary
+ * 
+ * @param  string   Input value
+ * @param  boolean  Allow HTML tags in field value
+ * @param  string   Charset to convert into
+ * @return string   Parsed value
+ */
+function parse_input_value($value, $allow_html=FALSE, $charset=NULL)
+{
+  global $OUTPUT;
+
   if (empty($value))
     return $value;
+
+  if (is_array($value)) {
+    foreach ($value as $idx => $val)
+      $value[$idx] = parse_input_value($val, $allow_html, $charset);
+    return $value;
+  }
 
   // strip single quotes if magic_quotes_sybase is enabled
   if (ini_get('magic_quotes_sybase'))
@@ -578,7 +657,7 @@ function get_input_value($fname, $source, $allow_html=FALSE, $charset=NULL)
     $value = strip_tags($value);
   
   // convert to internal charset
-  if (is_object($OUTPUT))
+  if (is_object($OUTPUT) && $charset)
     return rcube_charset_convert($value, $OUTPUT->get_charset(), $charset);
   else
     return $value;
@@ -653,8 +732,9 @@ function rcube_table_output($attrib, $table_data, $a_show_cols, $id_col)
   $table = new html_table(/*array('cols' => count($a_show_cols))*/);
     
   // add table header
-  foreach ($a_show_cols as $col)
-    $table->add_header($col, Q(rcube_label($col)));
+  if (!$attrib['noheader'])
+    foreach ($a_show_cols as $col)
+      $table->add_header($col, Q(rcube_label($col)));
   
   $c = 0;
   if (!is_array($table_data)) 
@@ -677,6 +757,9 @@ function rcube_table_output($attrib, $table_data, $a_show_cols, $id_col)
     foreach ($table_data as $row_data)
     {
       $zebra_class = $c % 2 ? 'even' : 'odd';
+      if (!empty($row_data['class']))
+        $zebra_class .= ' '.$row_data['class'];
+
       $table->add_row(array('id' => 'rcmrow' . $row_data[$id_col], 'class' => $zebra_class));
 
       // format each col
@@ -747,6 +830,9 @@ function rcmail_mod_css_styles($source, $container_id)
   if (preg_match('/expression|behavior|url\(|import/', $stripped))
     return '/* evil! */';
 
+  // remove css comments (sometimes used for some ugly hacks)
+  $source = preg_replace('!/\*(.+)\*/!Ums', '', $source);
+
   // cut out all contents between { and }
   while (($pos = strpos($source, '{', $last_pos)) && ($pos2 = strpos($source, '}', $pos)))
   {
@@ -754,13 +840,13 @@ function rcmail_mod_css_styles($source, $container_id)
     $source = substr($source, 0, $pos+1) . $replacements->get_replacement($key) . substr($source, $pos2, strlen($source)-$pos2);
     $last_pos = $pos+2;
   }
-  
+
   // remove html comments and add #container to each tag selector.
   // also replace body definition because we also stripped off the <body> tag
   $styles = preg_replace(
     array(
       '/(^\s*<!--)|(-->\s*$)/',
-      '/(^\s*|,\s*|\}\s*)([a-z0-9\._#][a-z0-9\.\-_]*)/im',
+      '/(^\s*|,\s*|\}\s*)([a-z0-9\._#\*][a-z0-9\.\-_]*)/im',
       "/$container_id\s+body/i",
     ),
     array(
@@ -900,13 +986,15 @@ function format_date($date, $format=NULL)
   $today_limit = mktime(0, 0, 0, $now_date['mon'], $now_date['mday'], $now_date['year']);
   $week_limit = mktime(0, 0, 0, $now_date['mon'], $now_date['mday']-6, $now_date['year']);
 
-  // define date format depending on current time  
-  if ($CONFIG['prettydate'] && !$format && $timestamp > $today_limit && $timestamp < $now)
-    return sprintf('%s %s', rcube_label('today'), date($CONFIG['date_today'] ? $CONFIG['date_today'] : 'H:i', $timestamp));
-  else if ($CONFIG['prettydate'] && !$format && $timestamp > $week_limit && $timestamp < $now)
-    $format = $CONFIG['date_short'] ? $CONFIG['date_short'] : 'D H:i';
-  else if (!$format)
-    $format = $CONFIG['date_long'] ? $CONFIG['date_long'] : 'd.m.Y H:i';
+  // define date format depending on current time
+  if (!$format) {
+    if ($CONFIG['prettydate'] && $timestamp > $today_limit && $timestamp < $now)
+      return sprintf('%s %s', rcube_label('today'), date($CONFIG['date_today'] ? $CONFIG['date_today'] : 'H:i', $timestamp));
+    else if ($CONFIG['prettydate'] && $timestamp > $week_limit && $timestamp < $now)
+      $format = $CONFIG['date_short'] ? $CONFIG['date_short'] : 'D H:i';
+    else
+      $format = $CONFIG['date_long'] ? $CONFIG['date_long'] : 'd.m.Y H:i';
+    }
 
   // strftime() format
   if (preg_match('/%[a-z]+/i', $format))
@@ -1057,6 +1145,34 @@ function write_log($name, $line)
 
 
 /**
+ * Write login data (name, ID, IP address) to the 'userlogins' log file.
+ */
+function rcmail_log_login()
+{
+  global $RCMAIL;
+
+  if (!$RCMAIL->config->get('log_logins') || !$RCMAIL->user)
+    return;
+
+  $address = $_SERVER['REMOTE_ADDR'];
+  // append the NGINX X-Real-IP header, if set
+  if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
+    $remote_ip[] = 'X-Real-IP: ' . $_SERVER['HTTP_X_REAL_IP'];
+  }
+  // append the X-Forwarded-For header, if set
+  if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $remote_ip[] = 'X-Forwarded-For: ' . $_SERVER['HTTP_X_FORWARDED_FOR'];
+  }
+
+  if (!empty($remote_ip))
+    $address .= '(' . implode(',', $remote_ip) . ')';
+
+  write_log('userlogins', sprintf('Successful login for %s (ID: %d) from %s',
+    $RCMAIL->user->get_username(), $RCMAIL->user->ID, $address));
+}
+
+
+/**
  * @access private
  */
 function rcube_timer()
@@ -1094,7 +1210,7 @@ function rcmail_mailbox_list($attrib)
   global $RCMAIL;
   static $a_mailboxes;
   
-  $attrib += array('maxlength' => 100, 'relanames' => false);
+  $attrib += array('maxlength' => 100, 'realnames' => false);
 
   // add some labels to client
   $RCMAIL->output->add_label('purgefolderconfirm', 'deletemessagesconfirm');
@@ -1347,15 +1463,15 @@ function rcmail_folder_classname($folder_id)
 {
   global $CONFIG;
 
+  if ($folder_id == 'INBOX')
+    return 'inbox';
+
   // for these mailboxes we have localized labels and css classes
   foreach (array('sent', 'drafts', 'trash', 'junk') as $smbx)
   {
     if ($folder_id == $CONFIG[$smbx.'_mbox'])
       return $smbx;
   }
-
-  if ($folder_id == 'INBOX')
-    return 'inbox';
 }
 
 
@@ -1409,63 +1525,107 @@ function rcube_html_editor($mode='')
 function rcube_https_check($port=null, $use_https=true)
 {
   global $RCMAIL;
-  
-  if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
+
+  if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off')
+    return true;
+  if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https')
     return true;
   if ($port && $_SERVER['SERVER_PORT'] == $port)
     return true;
-  if ($use_https && $RCMAIL->config->get('use_https'))
+  if ($use_https && isset($RCMAIL) && $RCMAIL->config->get('use_https'))
     return true;
 
   return false;
 }
 
 
+// for backward compatibility
+function rcube_sess_unset($var_name=null)
+{
+  global $RCMAIL;
+
+  $RCMAIL->session->remove($var_name);
+}
+
+
+// Replaces hostname variables
+function rcube_parse_host($name)
+{
+  // %n - host
+  $n = preg_replace('/:\d+$/', '', $_SERVER['SERVER_NAME']);
+  // %d - domain name without first part, e.g. %d=mail.domain.tld, %m=domain.tld
+  $d = preg_replace('/^[^\.]+\./', '', $n);
+  // %h - IMAP host
+  $h = $_SESSION['imap_host'];
+
+  $name = str_replace(array('%n', '%d', '%h'), array($n, $d, $h), $name);
+  return $name;
+}
+
+
 /**
  * E-mail address validation
  */
-function check_email($email)
+function check_email($email, $dns_check=true)
 {
   // Check for invalid characters
   if (preg_match('/[\x00-\x1F\x7F-\xFF]/', $email))
     return false;
 
-  // Check that there's one @ symbol, and that the lengths are right
-  if (!preg_match('/^([^@]{1,64})@([^@]{1,255})$/', $email, $email_array))
+  // Check for length limit specified by RFC 5321 (#1486453)
+  if (strlen($email) > 254) 
     return false;
 
-  // Check local part
-  $local_array = explode('.', $email_array[1]);
-  foreach ($local_array as $local_part)
-    if (!preg_match('/^(([A-Za-z0-9!#$%&\'*+\/=?^_`{|}~-]+)|("[^"]+"))$/', $local_part))
-      return false;
+  $email_array = explode('@', $email);
+
+  // Check that there's one @ symbol
+  if (count($email_array) < 2)
+    return false;
+
+  $domain_part = array_pop($email_array);
+  $local_part = implode('@', $email_array);
+
+  // from PEAR::Validate
+  $regexp = '&^(?:
+	("\s*(?:[^"\f\n\r\t\v\b\s]+\s*)+")| 			 	#1 quoted name
+	([-\w!\#\$%\&\'*+~/^`|{}=]+(?:\.[-\w!\#\$%\&\'*+~/^`|{}=]+)*)) 	#2 OR dot-atom (RFC5322)
+	$&xi';
+
+  if (!preg_match($regexp, $local_part))
+    return false;
 
   // Check domain part
-  if (preg_match('/^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}$/', $email_array[2]) 
-      || preg_match('/^\[(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}\]$/', $email_array[2]))
-    return true; // If an IP address
+  if (preg_match('/^\[*(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}\]*$/', $domain_part))
+    return true; // IP address
   else {
     // If not an IP address
-    $domain_array = explode('.', $email_array[2]);
+    $domain_array = explode('.', $domain_part);
     if (sizeof($domain_array) < 2)
       return false; // Not enough parts to be a valid domain
 
-    foreach ($domain_array as $domain_part)
-      if (!preg_match('/^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]))$/', $domain_part))
+    foreach ($domain_array as $part)
+      if (!preg_match('/^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]))$/', $part))
         return false;
 
-    if (!rcmail::get_instance()->config->get('email_dns_check'))
+    if (!$dns_check || !rcmail::get_instance()->config->get('email_dns_check'))
       return true;
 
-    if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' && version_compare(PHP_VERSION, '5.3.0', '<'))
-      return true;
+    if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN' && version_compare(PHP_VERSION, '5.3.0', '<')) {
+      $lookup = array();
+      @exec("nslookup -type=MX " . escapeshellarg($domain_part) . " 2>&1", $lookup);
+      foreach ($lookup as $line) {
+        if (strpos($line, 'MX preference'))
+          return true;
+      }
+      return false;
+    }
 
     // find MX record(s)
-    if (getmxrr($email_array[2], $mx_records))
+    if (getmxrr($domain_part, $mx_records))
       return true;
 
     // find any DNS record
-    if (checkdnsrr($email_array[2], 'ANY'))
+    if (checkdnsrr($domain_part, 'ANY'))
       return true;
   }
 
@@ -1480,16 +1640,95 @@ function check_email($email)
 class rcube_base_replacer
 {
   private $base_url;
-  
+
   public function __construct($base)
   {
     $this->base_url = $base;
   }
-  
+
   public function callback($matches)
   {
     return $matches[1] . '="' . make_absolute_url($matches[3], $this->base_url) . '"';
   }
 }
 
-?>
+
+/**
+ * Throw system error and show error page
+ *
+ * @param array Named parameters
+ *  - code: Error code (required)
+ *  - type: Error type [php|db|imap|javascript] (required)
+ *  - message: Error message
+ *  - file: File where error occured
+ *  - line: Line where error occured
+ * @param boolean True to log the error
+ * @param boolean Terminate script execution
+ */
+// may be defined in Installer
+if (!function_exists('raise_error')) {
+function raise_error($arg=array(), $log=false, $terminate=false)
+{
+    global $__page_content, $CONFIG, $OUTPUT, $ERROR_CODE, $ERROR_MESSAGE;
+
+    // report bug (if not incompatible browser)
+    if ($log && $arg['type'] && $arg['message'])
+        log_bug($arg);
+
+    // display error page and terminate script
+    if ($terminate) {
+        $ERROR_CODE = $arg['code'];
+        $ERROR_MESSAGE = $arg['message'];
+        include('program/steps/utils/error.inc');
+        exit;
+    }
+}
+}
+
+
+/**
+ * Report error according to configured debug_level
+ *
+ * @param array Named parameters
+ * @see raise_error()
+ */
+function log_bug($arg_arr)
+{
+    global $CONFIG;
+    $program = strtoupper($arg_arr['type']);
+
+    // write error to local log file
+    if ($CONFIG['debug_level'] & 1) {
+        $post_query = ($_SERVER['REQUEST_METHOD'] == 'POST' ? '?_task='.urlencode($_POST['_task']).'&_action='.urlencode($_POST['_action']) : '');
+        $log_entry = sprintf("%s Error: %s%s (%s %s)",
+            $program,
+            $arg_arr['message'],
+            $arg_arr['file'] ? sprintf(' in %s on line %d', $arg_arr['file'], $arg_arr['line']) : '',
+            $_SERVER['REQUEST_METHOD'],
+            $_SERVER['REQUEST_URI'] . $post_query);
+
+        if (!write_log('errors', $log_entry)) {
+            // send error to PHPs error handler if write_log didn't succeed
+            trigger_error($arg_arr['message']);
+        }
+    }
+
+    // resport the bug to the global bug reporting system
+    if ($CONFIG['debug_level'] & 2) {
+        // TODO: Send error via HTTP
+    }
+
+    // show error if debug_mode is on
+    if ($CONFIG['debug_level'] & 4) {
+        print "<b>$program Error";
+
+        if (!empty($arg_arr['file']) && !empty($arg_arr['line']))
+            print " in $arg_arr[file] ($arg_arr[line])";
+
+        print ':</b>&nbsp;';
+        print nl2br($arg_arr['message']);
+        print '<br />';
+        flush();
+    }
+}
+

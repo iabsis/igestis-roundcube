@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: viewsource.inc 2613 2009-06-05 13:34:07Z alec $
+ $Id: viewsource.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -25,7 +25,7 @@ ob_end_clean();
 if ($uid = get_input_value('_uid', RCUBE_INPUT_GET))
 {
   $headers = $IMAP->get_headers($uid);
-  $charset = $headers->charset ? $headers->charset : $IMAP->default_charset;
+  $charset = $headers->charset ? $headers->charset : $CONFIG['default_charset'];
   header("Content-Type: text/plain; charset={$charset}");
 
   if (!empty($_GET['_save'])) {
@@ -50,10 +50,10 @@ else
   raise_error(array(
       'code' => 500,
       'type' => 'php',
+      'file' => __FILE__, 'line' => __LINE__,
       'message' => 'Message UID '.$uid.' not found'),
-    true,
-    true);
+    true, true);
 }
 
 exit;
-?>
+

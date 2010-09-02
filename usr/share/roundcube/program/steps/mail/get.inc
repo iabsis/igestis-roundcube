@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: get.inc 2979 2009-09-22 07:50:32Z alec $
+ $Id: get.inc 3804 2010-07-06 10:38:58Z alec $
 
 */
 
@@ -41,6 +41,7 @@ if (!empty($_GET['_uid'])) {
   $MESSAGE = new rcube_message(get_input_value('_uid', RCUBE_INPUT_GET));
 }
 
+send_nocacheing_headers();
 
 // show part page
 if (!empty($_GET['_frame'])) {
@@ -49,25 +50,14 @@ if (!empty($_GET['_frame'])) {
 }
 
 else if ($pid = get_input_value('_part', RCUBE_INPUT_GET)) {
-  // TNEF encoded attachment part
-  if (preg_match('/^winmail\.([0-9.]+)\.([0-9]+)$/', $pid, $nt)) {
-    $pid = $nt[1]; $i = $nt[2];
-    if ($part = $MESSAGE->mime_parts[$pid]) {
-      $tnef_arr = $IMAP->tnef_decode($part, $MESSAGE->uid);
-      if (is_a($tnef_arr[$i], 'rcube_message_part'))
-        $MESSAGE->mime_parts[$pid] = $tnef_arr[$i];
-    }
-  }
-  
+
   if ($part = $MESSAGE->mime_parts[$pid]) {
     $ctype_primary = strtolower($part->ctype_primary);
     $ctype_secondary = strtolower($part->ctype_secondary);
     $mimetype = sprintf('%s/%s', $ctype_primary, $ctype_secondary);
-    
+
     $browser = new rcube_browser;
 
-    send_nocacheing_headers();
-    
     // send download headers
     if ($_GET['_download']) {
       header("Content-Type: application/octet-stream");
@@ -83,7 +73,7 @@ else if ($pid = get_input_value('_part', RCUBE_INPUT_GET)) {
     }
 
     // deliver part content
-    if ($ctype_primary == 'text' && $ctype_secondary == 'html') {
+    if ($ctype_primary == 'text' && $ctype_secondary == 'html' && empty($_GET['_download'])) {
       // get part body if not available
       if (!$part->body)
         $part->body = $MESSAGE->get_part_content($part->mime_id);
@@ -94,20 +84,21 @@ else if ($pid = get_input_value('_part', RCUBE_INPUT_GET)) {
     else {
       // don't kill the connection if download takes more than 30 sec.
       @set_time_limit(0);
-      
+
       $filename = $part->filename ? $part->filename : ($MESSAGE->subject ? $MESSAGE->subject : 'roundcube') . '.'.$ctype_secondary;
-      
+      $filename = preg_replace('[\r\n]', '', $filename);
+
       if ($browser->ie && $browser->ver < 7)
         $filename = rawurlencode(abbreviate_string($filename, 55));
       else if ($browser->ie)
         $filename = rawurlencode($filename);
       else
         $filename = addcslashes($filename, '"');
-      
+
       $disposition = !empty($_GET['_download']) ? 'attachment' : 'inline';
-      
+
       header("Content-Disposition: $disposition; filename=\"$filename\"");
-      
+
       // turn off output buffering and print part content
       if ($part->body)
         echo $part->body;
@@ -139,4 +130,4 @@ else {
 header('HTTP/1.1 404 Not Found');
 exit;
 
-?>
+

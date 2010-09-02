@@ -20,27 +20,27 @@
 class filesystem_attachments extends rcube_plugin
 {
     public $task = 'mail';
-    
+
     function init()
     {
         // Save a newly uploaded attachment
-        $this->add_hook('upload_attachment', array($this, 'upload'));
+        $this->add_hook('attachment_upload', array($this, 'upload'));
 
         // Save an attachment from a non-upload source (draft or forward)
-        $this->add_hook('save_attachment', array($this, 'save'));
+        $this->add_hook('attachment_save', array($this, 'save'));
 
         // Remove an attachment from storage
-        $this->add_hook('remove_attachment', array($this, 'remove'));
+        $this->add_hook('attachment_delete', array($this, 'remove'));
 
         // When composing an html message, image attachments may be shown
-        $this->add_hook('display_attachment', array($this, 'display'));
+        $this->add_hook('attachment_display', array($this, 'display'));
 
         // Get the attachment from storage and place it on disk to be sent
-        $this->add_hook('get_attachment', array($this, 'get_attachment'));
+        $this->add_hook('attachment_get', array($this, 'get'));
 
         // Delete all temp files associated with this user
-        $this->add_hook('cleanup_attachments', array($this, 'cleanup'));
-        $this->add_hook('kill_session', array($this, 'cleanup'));
+        $this->add_hook('attachments_cleanup', array($this, 'cleanup'));
+        $this->add_hook('session_destroy', array($this, 'cleanup'));
     }
 
     /**
@@ -52,8 +52,7 @@ class filesystem_attachments extends rcube_plugin
         $rcmail = rcmail::get_instance();
 
         // use common temp dir for file uploads
-        // #1484529: we need absolute path on Windows for move_uploaded_file()
-        $temp_dir = realpath($rcmail->config->get('temp_dir'));
+        $temp_dir = $rcmail->config->get('temp_dir');
         $tmpfname = tempnam($temp_dir, 'rcmAttmnt');
 
         if (move_uploaded_file($args['path'], $tmpfname) && file_exists($tmpfname)) {
@@ -77,7 +76,7 @@ class filesystem_attachments extends rcube_plugin
 
         if (!$args['path']) {
             $rcmail = rcmail::get_instance();
-            $temp_dir = unslashify($rcmail->config->get('temp_dir'));
+            $temp_dir = $rcmail->config->get('temp_dir');
             $tmp_path = tempnam($temp_dir, 'rcmAttmnt');
 
             if ($fp = fopen($tmp_path, 'w')) {
@@ -87,10 +86,10 @@ class filesystem_attachments extends rcube_plugin
             } else
                 return $args;
         }
-        
+
         $args['id'] = $this->file_id();
         $args['status'] = true;
-            
+
         // Note the file for later cleanup
         $_SESSION['plugins']['filesystem_attachments']['tmp_files'][] = $args['path'];
 
@@ -123,11 +122,11 @@ class filesystem_attachments extends rcube_plugin
      * on disk for use.  This stub function is kept here to make this 
      * class handy as a parent class for other plugins which may need it.
      */
-    function get_attachment($args)
+    function get($args)
     {
         return $args;
     }
-    
+
     /**
      * Delete all temp files associated with this user
      */
@@ -150,7 +149,7 @@ class filesystem_attachments extends rcube_plugin
     function file_id()
     {
         $userid = rcmail::get_instance()->user->ID;
-	list($usec, $sec) = explode(' ', microtime()); 
+	    list($usec, $sec) = explode(' ', microtime()); 
         return preg_replace('/[^0-9]/', '', $userid . $sec . $usec);
     }
 }

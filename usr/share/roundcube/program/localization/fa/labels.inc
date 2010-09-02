@@ -5,7 +5,7 @@
 | language/fa/labels.inc                                                |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         Nader Aghazadeh <Nader.aghazadeh at gmail.com>                |
 +-----------------------------------------------------------------------+
 
-@version $Id$
+@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
 
 */
 

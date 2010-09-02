@@ -5,7 +5,7 @@
  | program/steps/mail/check_recent.inc                                   |
  |                                                                       |
  | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+ | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,69 +15,73 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: check_recent.inc 233 2006-06-26 17:31:20Z richs $
+ $Id: check_recent.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
-$a_mailboxes = $IMAP->list_mailboxes();
-$check_all = (bool)$RCMAIL->config->get('check_all_folders');
+$current = $IMAP->get_mailbox_name();
+$check_all = !empty($_GET['_refresh']) || (bool)$RCMAIL->config->get('check_all_folders');
+$a_mailboxes = $check_all ? $IMAP->list_mailboxes() : (array)$current;
 
+// check recent/unseen counts for all mailboxes
 foreach ($a_mailboxes as $mbox_name) {
-  if ($mbox_name == $IMAP->get_mailbox_name()) {
-    if ($recent_count = $IMAP->messagecount(NULL, 'RECENT', TRUE)) {
-      // refresh saved search set
-      if (($search_request = get_input_value('_search', RCUBE_INPUT_GPC)) && isset($_SESSION['search'][$search_request])) {
-        $_SESSION['search'][$search_request] = $IMAP->refresh_search();
-        $all_count = $IMAP->messagecount();
-      } else {
-        $all_count = $IMAP->messagecount(NULL, 'ALL', TRUE);
-      }
-      
-      $unread_count = $IMAP->messagecount(NULL, 'UNSEEN', TRUE);
-      $_SESSION['unseen_count'][$mbox_name] = $unread_count;
+    if ($mbox_name == $current && ($status = $IMAP->mailbox_status($mbox_name))) {
 
-      $OUTPUT->set_env('messagecount', $all_count);
-      $OUTPUT->set_env('pagesize', $IMAP->page_size);
-      $OUTPUT->set_env('pagecount', ceil($all_count/$IMAP->page_size));
-      $OUTPUT->command('set_unread_count', $mbox_name, $unread_count, ($mbox_name == 'INBOX'));
-      $OUTPUT->command('set_rowcount', rcmail_get_messagecount_text($all_count));
+        rcmail_send_unread_count($mbox_name, true);
 
-      if (rcmail::get_instance()->config->get('focus_on_new_message',true))
-        $OUTPUT->command('new_message_focus');
+        // refresh saved search set
+        $search_request = get_input_value('_search', RCUBE_INPUT_GPC);
+        if ($search_request && isset($_SESSION['search'][$search_request])) {
+            $_SESSION['search'][$search_request] = $IMAP->refresh_search();
+        }
 
-      if (!empty($_GET['_quota']))
-        $OUTPUT->command('set_quota', rcmail_quota_content($IMAP->get_quota()));
+        if (!empty($_GET['_quota']))
+            $OUTPUT->command('set_quota', rcmail_quota_content());
 
-      // trigger plugin hook
-      $RCMAIL->plugins->exec_hook('new_messages', array('mailbox' => $mbox_name, 'count' => $unread_count));
+        // "No-list" mode, don't get messages
+        if (empty($_GET['_list']))
+            continue;
 
-      // "No-list" mode, don't get messages
-      if (empty($_GET['_list']))
-        continue;
+        // get overall message count; allow caching because rcube_imap::mailbox_status() did a refresh
+        $all_count = $IMAP->messagecount(null, $IMAP->threading ? 'THREADS' : 'ALL');
 
-      // use SEARCH/SORT to find recent messages
-      $search_str = 'RECENT';
-      if ($search_request)
-        $search_str .= ' '.$IMAP->search_string;
+        // check current page if we're not on the first page
+        if ($all_count && $IMAP->list_page > 1) {
+            $remaining = $all_count - $IMAP->page_size * ($IMAP->list_page - 1);
+            if ($remaining <= 0) {
+                $IMAP->set_page($IMAP->list_page-1);
+                $_SESSION['page'] = $IMAP->list_page;
+            }
+        }
 
-      $result = $IMAP->search($mbox_name, $search_str, NULL, 'date');
+        $OUTPUT->set_env('messagecount', $all_count);
+        $OUTPUT->set_env('pagecount', ceil($all_count/$IMAP->page_size));
+        $OUTPUT->command('set_rowcount', rcmail_get_messagecount_text($all_count));
+        $OUTPUT->set_env('current_page', $all_count ? $IMAP->list_page : 1);
 
-      if ($result) {
-        // get the headers
-        $result_h = $IMAP->list_headers($mbox_name, 1, 'date', 'DESC');
-        // add to the list
-        rcmail_js_message_list($result_h, true, false);
-      }
+        if ($status & 1) {
+            if ($RCMAIL->config->get('focus_on_new_message', true))
+                $OUTPUT->command('new_message_focus');
+            // trigger plugin hook
+            $RCMAIL->plugins->exec_hook('new_messages', array('mailbox' => $mbox_name));
+        }
+
+        // remove old rows (and clear selection if new list is empty)
+        $OUTPUT->command('message_list.clear', $all_count ? false : true);
+
+        if ($all_count) {
+            $a_headers = $IMAP->list_headers($mbox_name, null, $_SESSION['sort_col'], $_SESSION['sort_order']);
+            // add message rows
+            rcmail_js_message_list($a_headers, false);
+            // remove messages that don't exists from list selection array
+            $OUTPUT->command('update_selection');
+        }
     }
     else {
-      rcmail_send_unread_count($mbox_name, true);
+        rcmail_send_unread_count($mbox_name, true);
     }
-  }
-  else if ($check_all) {
-    rcmail_send_unread_count($mbox_name, true);
-  }
 }
 
 $OUTPUT->send();
 
-?>
+

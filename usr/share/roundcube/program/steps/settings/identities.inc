@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: identities.inc 2006 2008-10-24 07:57:21Z alec $
+ $Id: identities.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -45,4 +45,3 @@ $OUTPUT->add_handler('identityframe', 'rcmail_identity_frame');
 $OUTPUT->set_env('identities_level', IDENTITIES_LEVEL);
 
 $OUTPUT->send('identities');
-?>

@@ -22,9 +22,11 @@
  */
 class new_user_identity extends rcube_plugin
 {
+    public $task = 'login';
+
     function init()
     {
-        $this->add_hook('create_user', array($this, 'lookup_user_name'));
+        $this->add_hook('user_create', array($this, 'lookup_user_name'));
     }
 
     function lookup_user_name($args)
@@ -37,6 +39,9 @@ class new_user_identity extends rcube_plugin
             $results = $ldap->search($match, $args['user'], TRUE);
             if (count($results->records) == 1) {
                 $args['user_name'] = $results->records[0]['name'];
+                if (!$args['user_email'] && strpos($results->records[0]['email'], '@')) {
+                    $args['user_email'] = $results->records[0]['email'];
+                }
             }
         }
         return $args;

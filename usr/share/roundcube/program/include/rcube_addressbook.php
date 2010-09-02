@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id:  $
+ $Id: rcube_addressbook.php 3553 2010-04-23 11:25:37Z alec $
 
 */
 
@@ -29,6 +29,7 @@ abstract class rcube_addressbook
 {
     /** public properties */
     var $primary_key;
+    var $groups = false;
     var $readonly = true;
     var $ready = false;
     var $list_page = 1;
@@ -61,6 +62,13 @@ abstract class rcube_addressbook
      * @return array  Indexed list of contact records, each a hash array
      */
     abstract function list_records($cols=null, $subset=0);
+
+    /**
+     * List all active contact groups of this source
+     *
+     * @return array  Indexed list of contact groups, each a hash array
+     */
+    function list_groups() { }
 
     /**
      * Search records
@@ -109,7 +117,7 @@ abstract class rcube_addressbook
      */
     function set_page($page)
     {
-      $this->list_page = (int)$page;
+        $this->list_page = (int)$page;
     }
 
     /**
@@ -120,8 +128,14 @@ abstract class rcube_addressbook
      */
     function set_pagesize($size)
     {
-      $this->page_size = (int)$size;
+        $this->page_size = (int)$size;
     }
+
+    /**
+     * Setter for the current group
+     * (empty, has to be re-implemented by extending class)
+     */
+    function set_group($gid) { }
 
     /**
      * Create a new contact record
@@ -132,7 +146,7 @@ abstract class rcube_addressbook
      */
     function insert($save_data, $check=false)
     {
-      /* empty for read-only address books */
+        /* empty for read-only address books */
     }
 
     /**
@@ -144,7 +158,7 @@ abstract class rcube_addressbook
      */
     function update($id, $save_cols)
     {
-      /* empty for read-only address books */
+        /* empty for read-only address books */
     }
 
     /**
@@ -154,7 +168,7 @@ abstract class rcube_addressbook
      */
     function delete($ids)
     {
-      /* empty for read-only address books */
+        /* empty for read-only address books */
     }
 
     /**
@@ -162,8 +176,69 @@ abstract class rcube_addressbook
      */
     function delete_all()
     {
-      /* empty for read-only address books */
+        /* empty for read-only address books */
     }
 
+    /**
+     * Create a contact group with the given name
+     *
+     * @param string The group name
+     * @return False on error, array with record props in success
+     */
+    function create_group($name)
+    {
+        /* empty for address books don't supporting groups */
+        return false;
+    }
+    
+    /**
+     * Delete the given group and all linked group members
+     *
+     * @param string Group identifier
+     * @return boolean True on success, false if no data was changed
+     */
+    function delete_group($gid)
+    {
+        /* empty for address books don't supporting groups */
+        return false;
+    }
+    
+    /**
+     * Rename a specific contact group
+     *
+     * @param string Group identifier
+     * @param string New name to set for this group
+     * @return boolean New name on success, false if no data was changed
+     */
+    function rename_group($gid, $newname)
+    {
+        /* empty for address books don't supporting groups */
+        return false;
+    }
+    
+    /**
+     * Add the given contact records the a certain group
+     *
+     * @param string  Group identifier
+     * @param array   List of contact identifiers to be added
+     * @return int    Number of contacts added 
+     */
+    function add_to_group($group_id, $ids)
+    {
+        /* empty for address books don't supporting groups */
+        return 0;
+    }
+    
+    /**
+     * Remove the given contact records from a certain group
+     *
+     * @param string  Group identifier
+     * @param array   List of contact identifiers to be removed
+     * @return int    Number of deleted group members
+     */
+    function remove_from_group($group_id, $ids)
+    {
+        /* empty for address books don't supporting groups */
+        return 0;
+    }
 }
- 

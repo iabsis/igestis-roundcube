@@ -24,6 +24,7 @@ function rcmail_editor_init(skin_path, editor_lang, spellcheck, mode)
       theme : 'advanced',
       language : editor_lang,
       content_css : skin_path + '/editor_content.css',
+      plugins: 'paste',
       theme_advanced_toolbar_location : 'top',
       theme_advanced_toolbar_align : 'left',
       theme_advanced_buttons1 : 'bold,italic,underline,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,separator,outdent,indent,charmap,hr,link,unlink,code,forecolor',
@@ -41,9 +42,9 @@ function rcmail_editor_init(skin_path, editor_lang, spellcheck, mode)
       apply_source_formatting : true,
       theme : 'advanced',
       language : editor_lang,
-      plugins : 'emotions,media,nonbreaking,table,searchreplace,visualchars,directionality' + (spellcheck ? ',spellchecker' : ''),
-      theme_advanced_buttons1 : 'bold,italic,underline,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,bullist,numlist,outdent,indent,separator,link,unlink,emotions,charmap,code,forecolor,backcolor,fontselect,fontsizeselect, separator' + (spellcheck ? ',spellchecker' : '') + ',undo,redo,image,media,ltr,rtl',
-      theme_advanced_buttons2 : '',
+      plugins : 'paste,emotions,media,nonbreaking,table,searchreplace,visualchars,directionality' + (spellcheck ? ',spellchecker' : ''),
+      theme_advanced_buttons1 : 'bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,outdent,indent,ltr,rtl,blockquote,|,forecolor,backcolor,fontselect,fontsizeselect',
+      theme_advanced_buttons2 : 'link,unlink,code,|,emotions,charmap,image,media,|,search' + (spellcheck ? ',spellchecker' : '') + ',undo,redo',
       theme_advanced_buttons3 : '',
       theme_advanced_toolbar_location : 'top',
       theme_advanced_toolbar_align : 'left',
@@ -51,10 +52,11 @@ function rcmail_editor_init(skin_path, editor_lang, spellcheck, mode)
       content_css : skin_path + '/editor_content.css',
       external_image_list_url : 'program/js/editor_images.js',
       spellchecker_languages : (rcmail.env.spellcheck_langs ? rcmail.env.spellcheck_langs : 'Dansk=da,Deutsch=de,+English=en,Espanol=es,Francais=fr,Italiano=it,Nederlands=nl,Polski=pl,Portugues=pt,Suomi=fi,Svenska=sv'),
+      spellchecker_rpc_url : '?_task=utils&_action=spell&tiny=1',
       gecko_spellcheck : true,
       relative_urls : false,
       remove_script_host : false,
-      rc_client: rcmail,
+      rc_client : rcmail,
       oninit : 'rcmail_editor_callback'
     });
 }
@@ -62,52 +64,53 @@ function rcmail_editor_init(skin_path, editor_lang, spellcheck, mode)
 // react to real individual tinyMCE editor init
 function rcmail_editor_callback(editor)
 {
-  var input_from = rcube_find_object('_from');
-  if (input_from && input_from.type=='select-one')
-    rcmail.change_identity(input_from);
-  // set tabIndex
-  rcmail_editor_tabindex()
+  var editor, elem = rcube_find_object('_from');
+  if (elem && elem.type=='select-one')
+    rcmail.change_identity(elem);
+  // set tabIndex and set focus to element that was focused before
+  rcmail_editor_tabindex(rcmail.env.compose_focus_elem && rcmail.env.compose_focus_elem.id == rcmail.env.composebody);
 }
 
 // set tabIndex on tinyMCE editor
-function rcmail_editor_tabindex()
+function rcmail_editor_tabindex(focus)
 {
   if (rcmail.env.task == 'mail') {
     var editor = tinyMCE.get(rcmail.env.composebody);
-    var textarea = editor.getElement();
-    var node = editor.getContentAreaContainer().childNodes[0];
-    if (textarea && node)
-      node.tabIndex = textarea.tabIndex;
+    if (editor) {
+      var textarea = editor.getElement();
+      var node = editor.getContentAreaContainer().childNodes[0];
+      if (textarea && node)
+        node.tabIndex = textarea.tabIndex;
+      if (focus)
+        editor.getWin().focus();
+    }
   }
 }
 
 // switch html/plain mode
-function rcmail_toggle_editor(ishtml, textAreaId, flagElement)
+function rcmail_toggle_editor(select, textAreaId, flagElement)
 {
-  var composeElement = document.getElementById(textAreaId);
-  var flag;
+  var flag, ishtml;
 
-  if (ishtml)
-    {
-    rcmail.display_spellcheck_controls(false);
+  if (select.tagName != 'SELECT')
+    ishtml = select.checked;
+  else
+    ishtml = select.value == 'html';
 
-    rcmail.plain2html(composeElement.value, textAreaId);
-    tinyMCE.execCommand('mceAddControl', true, textAreaId);
-    rcmail_editor_tabindex();
+  var res = rcmail.command('toggle-editor', {id:textAreaId, mode:ishtml?'html':'plain'});
+
+  if (ishtml) {
+    // #1486593
+    setTimeout("rcmail_editor_tabindex(true);", 500);
     if (flagElement && (flag = rcube_find_object(flagElement)))
       flag.value = '1';
-    }
-  else
-    {
-    if (!confirm(rcmail.get_label('editorwarning')))
-      return false;
-
-    var thisMCE = tinyMCE.get(textAreaId);
-    var existingHtml = thisMCE.getContent();
-    rcmail.html2plain(existingHtml, textAreaId);
-    tinyMCE.execCommand('mceRemoveControl', true, textAreaId);
-    rcmail.display_spellcheck_controls(true);
+  }
+  else {
+    if (!res && select.tagName == 'SELECT')
+      select.value = 'html';
     if (flagElement && (flag = rcube_find_object(flagElement)))
       flag.value = '0';
-    }
-};
+
+    rcube_find_object(rcmail.env.composebody).focus();
+  }
+}

@@ -43,7 +43,7 @@
 // |          Lorenzo Alberton <l.alberton@quipo.it>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: sqlite.php,v 1.74 2008/03/05 11:08:53 quipo Exp $
+// $Id: sqlite.php 295587 2010-02-28 17:16:38Z quipo $
 //
 
 require_once 'MDB2/Driver/Manager/Common.php';
@@ -71,7 +71,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function createDatabase($name, $options = array())
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -107,7 +107,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function dropDatabase($name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -174,7 +174,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function _getCreateTableQuery($name, $fields, $options = array())
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -220,9 +220,11 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
     /**
      * create a new table
      *
-     * @param string $name   Name of the database that should be created
-     * @param array $fields  Associative array that contains the definition of each field of the new table
-     * @param array $options  An associative array of table options
+     * @param string $name    Name of the database that should be created
+     * @param array  $fields  Associative array that contains the definition
+     *                        of each field of the new table
+     * @param array  $options An associative array of table options
+     *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
@@ -234,7 +236,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
         }
         // create triggers to enforce FOREIGN KEY constraints
         if (!empty($options['foreign_keys'])) {
-            $db =& $this->getDBInstance();
+            $db = $this->getDBInstance();
             if (PEAR::isError($db)) {
                 return $db;
             }
@@ -242,9 +244,9 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
                 if (empty($fkdef)) {
                     continue;
                 }
-                //set actions to 'RESTRICT' if not set
-                $fkdef['onupdate'] = empty($fkdef['onupdate']) ? 'RESTRICT' : strtoupper($fkdef['onupdate']);
-                $fkdef['ondelete'] = empty($fkdef['ondelete']) ? 'RESTRICT' : strtoupper($fkdef['ondelete']);
+                //set actions to default if not set
+                $fkdef['onupdate'] = empty($fkdef['onupdate']) ? $db->options['default_fk_action_onupdate'] : strtoupper($fkdef['onupdate']);
+                $fkdef['ondelete'] = empty($fkdef['ondelete']) ? $db->options['default_fk_action_ondelete'] : strtoupper($fkdef['ondelete']);
 
                 $trigger_names = array(
                     'insert'    => $fkname.'_insert_trg',
@@ -300,7 +302,12 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
                     $new_values[]  = $table_fields[$i] .' = NEW.'.$referenced_fields[$i];
                     $null_values[] = $table_fields[$i] .' = NULL';
                 }
-                $restrict_action .= implode(' AND ', $conditions).') IS NOT NULL';
+                $conditions2 = array();
+                for ($i=0; $i<count($referenced_fields); $i++) {
+                    $conditions2[]  = 'NEW.'.$referenced_fields[$i] .' <> OLD.'.$referenced_fields[$i];
+                }
+                $restrict_action .= implode(' AND ', $conditions).') IS NOT NULL'
+                                 .' AND (' .implode(' OR ', $conditions2) .')';
 
                 $cascade_action_update = 'UPDATE '.$name.' SET '.implode(', ', $new_values) .' WHERE '.implode(' AND ', $conditions);
                 $cascade_action_delete = 'DELETE FROM '.$name.' WHERE '.implode(' AND ', $conditions);
@@ -331,8 +338,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
                     $sql_update = sprintf($query, $trigger_names['pk_update'], 'BEFORE UPDATE', 'update') . $setdefault_action. '; END;';
                 } elseif ('NO ACTION' == $fkdef['onupdate']) {
                     $sql_update = sprintf($query.$restrict_action, $trigger_names['pk_update'], 'AFTER UPDATE', 'update') . '; END;';
-                } else {
-                    //'RESTRICT'
+                } elseif ('RESTRICT' == $fkdef['onupdate']) {
                     $sql_update = sprintf($query.$restrict_action, $trigger_names['pk_update'], 'BEFORE UPDATE', 'update') . '; END;';
                 }
                 if ('CASCADE' == $fkdef['ondelete']) {
@@ -343,8 +349,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
                     $sql_delete = sprintf($query, $trigger_names['pk_delete'], 'BEFORE DELETE', 'delete') . $setdefault_action. '; END;';
                 } elseif ('NO ACTION' == $fkdef['ondelete']) {
                     $sql_delete = sprintf($query.$restrict_action, $trigger_names['pk_delete'], 'AFTER DELETE', 'delete')  . '; END;';
-                } else {
-                    //'RESTRICT'
+                } elseif ('RESTRICT' == $fkdef['ondelete']) {
                     $sql_delete = sprintf($query.$restrict_action, $trigger_names['pk_delete'], 'BEFORE DELETE', 'delete') . '; END;';
                 }
 
@@ -379,7 +384,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function dropTable($name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -422,7 +427,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function vacuum($table = null, $options = array())
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -529,7 +534,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function alterTable($name, $changes, $check, $options = array())
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -682,7 +687,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
             $query = 'INSERT INTO '.$db->quoteIdentifier($name_new, true);
             $query.= '('.implode(', ', array_slice(array_keys($fields), 0, count($select_fields))).')';
             $query.=' VALUES (?'.str_repeat(', ?', (count($select_fields) - 1)).')';
-            $stmt =& $db->prepare($query, null, MDB2_PREPARE_MANIP);
+            $stmt = $db->prepare($query, null, MDB2_PREPARE_MANIP);
             if (PEAR::isError($stmt)) {
                 return $stmt;
             }
@@ -707,7 +712,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listDatabases()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -727,7 +732,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listUsers()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -747,7 +752,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listViews()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -775,7 +780,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listTableViews($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -811,7 +816,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listTables()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -845,7 +850,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listTableFields($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -893,13 +898,13 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listTableTriggers($table = null)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
 
         $query = "SELECT name FROM sqlite_master WHERE type='trigger' AND sql NOT NULL";
-        if (!is_null($table)) {
+        if (null !== $table) {
             if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
                 $query.= ' AND LOWER(tbl_name)='.$db->quote(strtolower($table), 'text');
             } else {
@@ -953,7 +958,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function createIndex($table, $name, $definition)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -993,7 +998,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function dropIndex($table, $name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1014,7 +1019,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listTableIndexes($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1075,7 +1080,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function createConstraint($table, $name, $definition)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1128,7 +1133,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
             return $this->alterTable($table, array(), false, array('primary' => null));
         }
 
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1159,12 +1164,13 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      * @param string $table  table name
      * @param string $fkname FOREIGN KEY constraint name
      * @param string $referenced_table  referenced table name
+     *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access private
      */
     function _dropFKTriggers($table, $fkname, $referenced_table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1186,7 +1192,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
         return MDB2_OK;
     }
 
-    // }]]
+    // }}}
     // {{{ listTableConstraints()
 
     /**
@@ -1198,7 +1204,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listTableConstraints($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1268,7 +1274,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function createSequence($seq_name, $start = 1)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1309,7 +1315,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function dropSequence($seq_name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -1329,7 +1335,7 @@ class MDB2_Driver_Manager_sqlite extends MDB2_Driver_Manager_Common
      */
     function listSequences()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }

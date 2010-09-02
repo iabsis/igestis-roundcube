@@ -5,13 +5,13 @@
 | language/he_IL/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Moshe Leibovitch    <moish@mln.co.il>                         |
 | Updates: Noor Dawod <noor@comrax.com>                                 |
-| Updates: Moshe Leibovitch  <moish@mln.co.il>  25102009                |
+| Updates: Moshe Leibovitch  <moish@mln.co.il>  30052010                |
 +-----------------------------------------------------------------------+
 
 */
@@ -46,6 +46,7 @@ $messages['senttooquickly'] = 'נא להמתין $sec שניות לפני מסי
 $messages['errorsavingsent'] = 'נגרמה שגיאה במהלך שמירת ההודעה בתיק הודעות יוצאות';
 $messages['errorsaving'] = 'נגרמה שגיאה במהלך השמירה';
 $messages['errormoving'] = 'לא ניתן לתייק את ההודעה';
+$messages['errorcopying'] = 'העתקת ההודעות נכשלה';
 $messages['errordeleting'] = 'לא ניתן למחוק את ההודעה';
 $messages['errormarking'] = 'לא ניתן לסמן ההודעה';
 $messages['deletecontactconfirm'] = 'האם למחוק את איש הקשר?';
@@ -85,6 +86,7 @@ $messages['copyerror'] = 'לא ניתן להעתיק אף כתובת';
 $messages['sourceisreadonly'] = 'המקור לכתובת הוא לקריאה בלבד';
 $messages['errorsavingcontact'] = 'לא ניתן לשמור את כתובת איש הקשר';
 $messages['movingmessage'] = 'תיוק ההודעה...';
+$messages['copyingmessage'] = 'הודעת מועתקת...';
 $messages['receiptsent'] = 'אישור הקבלה נשלח בהצלחה';
 $messages['errorsendingreceipt'] = 'לא ניתן לשלוח אישור קבלה';
 $messages['nodeletelastidentity'] = 'זו הזהות האחרונה ולכן לא ניתן לבטלה';
@@ -92,6 +94,8 @@ $messages['addsubfolderhint'] = 'תיקיה זו תוקם תחת התיקיה ש
 $messages['forbiddencharacter'] = 'שם התיקיה מכיל תוים אסורים';
 $messages['selectimportfile'] = 'נא לבחור קובץ לייבוא';
 $messages['addresswriterror'] = 'פנקס הכתובות שנבחר אינו ניתן לכתיבה';
+$messages['contactaddedtogroup'] = 'אנשי הקשר נוספו בהצלחה לקבוצה';
+$messages['contactremovedfromgroup'] = 'אנשי הקשר הוסרו בהצלחה מהקבוצה';
 $messages['importwait'] = 'ייבוא, נא להמתין..';
 $messages['importerror'] = 'חוקי vCard הייבוא נכשל כי הקובץ אינו בפורמט';
 $messages['importconfirm'] = '<b>יובאו $inserted אנשי קשר, $skipped היו קיימים </b>:<p><em>$names</em></p>';
@@ -106,5 +110,8 @@ $messages['smtptoerror'] = 'SMTP ($code): "$to" לא נרשמה כתובת המ�
 $messages['smtprecipientserror'] = 'SMTP : לא ניתן לפענח רשימת נמענים';
 $messages['smtperror'] = 'SMTP: $msg';
 $messages['emailformaterror'] = '$email  כתובת דוא"ל שגויה';
+$messages['toomanyrecipients'] = 'יותר מדי נמענים. יש להקטין מספרם ל - $max';
+$messages['maxgroupmembersreached'] = 'מספרם של חברי הקבוצה אינו יכול לעבור $max';
+$messages['internalerror'] = 'שגיאת מערכת. נא לנסות שנית';
 
 ?>

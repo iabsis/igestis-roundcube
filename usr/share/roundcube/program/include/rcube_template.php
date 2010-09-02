@@ -5,7 +5,7 @@
  | program/include/rcube_template.php                                    |
  |                                                                       |
  | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2006-2009, RoundCube Dev. - Switzerland                 |
+ | Copyright (C) 2006-2010, RoundCube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -16,7 +16,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id$
+ $Id: rcube_template.php 3729 2010-06-08 21:13:20Z thomasb $
 
  */
 
@@ -73,13 +73,14 @@ class rcube_template extends rcube_html_page
         $this->add_script($javascript, 'head_top');
         $this->add_script($javascript_foot, 'foot');
         $this->scripts_path = 'program/js/';
-        $this->include_script('jquery-1.3.min.js');
+        $this->include_script('jquery-1.4.min.js');
         $this->include_script('common.js');
         $this->include_script('app.js');
 
         // register common UI objects
         $this->add_handlers(array(
             'loginform'       => array($this, 'login_form'),
+            'preloader'       => array($this, 'preloader'),
             'username'        => array($this, 'current_username'),
             'message'         => array($this, 'message_container'),
             'charsetselector' => array($this, 'charset_selector'),
@@ -290,7 +291,9 @@ class rcube_template extends rcube_html_page
         if ($templ != 'iframe') {
             // prevent from endless loops
             if ($exit != 'recur' && $this->app->plugins->is_processing('render_page')) {
-                raise_error(array('code' => 505, 'type' => 'php', 'message' => 'Recursion alert: ignoring output->send()'), true, false);
+                raise_error(array('code' => 505, 'type' => 'php',
+                  'file' => __FILE__, 'line' => __LINE__,
+                  'message' => 'Recursion alert: ignoring output->send()'), true, false);
                 return;
             }
             $this->parse($templ, false);
@@ -392,8 +395,8 @@ class rcube_template extends rcube_html_page
         // add debug console
         if ($this->config['debug_level'] & 8) {
             $this->add_footer('<div id="console" style="position:absolute;top:5px;left:5px;width:405px;padding:2px;background:white;z-index:9000;">
-                <a href="#toggle" onclick="con=document.getElementById(\'dbgconsole\');con.style.display=(con.style.display==\'none\'?\'block\':\'none\');return false">console</a>
-                <form action="/" name="debugform" style="display:inline"><textarea name="console" id="dbgconsole" rows="20" cols="40" wrap="off" style="display:none;width:400px;border:none;font-size:x-small" spellcheck="false"></textarea></form></div>'
+                <a href="#toggle" onclick="con=$(\'#dbgconsole\');con[con.is(\':visible\')?\'hide\':\'show\']();return false">console</a>
+                <textarea name="console" id="dbgconsole" rows="20" cols="40" wrap="off" style="display:none;width:400px;border:none;font-size:10px" spellcheck="false"></textarea></div>'
             );
         }
         
@@ -455,7 +458,16 @@ class rcube_template extends rcube_html_page
     {
         $GLOBALS['__version'] = Q(RCMAIL_VERSION);
         $GLOBALS['__comm_path'] = Q($this->app->comm_path);
-        return preg_replace('/\$(__[a-z0-9_\-]+)/e', '$GLOBALS["\\1"]', $input);
+        return preg_replace_callback('/\$(__[a-z0-9_\-]+)/',
+	    array($this, 'globals_callback'), $input);
+    }
+
+    /**
+     * Callback funtion for preg_replace_callback() in parse_with_globals()
+     */
+    private function globals_callback($matches)
+    {
+        return $GLOBALS[$matches[1]];
     }
 
     /**
@@ -524,7 +536,7 @@ class rcube_template extends rcube_html_page
     
     
     /**
-     *
+     * Inserts hidden field with CSRF-prevention-token into POST forms
      */
     private function alter_form_tag($matches)
     {
@@ -544,7 +556,7 @@ class rcube_template extends rcube_html_page
      * Parses expression and replaces variables
      *
      * @param  string Expression statement
-     * @return string Expression statement
+     * @return string Expression value
      */
     private function parse_expression($expression)
     {
@@ -758,7 +770,6 @@ class rcube_template extends rcube_html_page
      */
     public function button($attrib)
     {
-        static $sa_buttons = array();
         static $s_button_count = 100;
 
         // these commands can be called directly via url
@@ -775,25 +786,14 @@ class rcube_template extends rcube_html_page
         else {
             $attrib['type'] = ($attrib['image'] || $attrib['imagepas'] || $attrib['imageact']) ? 'image' : 'link';
         }
+
         $command = $attrib['command'];
 
-        // take the button from the stack
-        if ($attrib['name'] && $sa_buttons[$attrib['name']]) {
-            $attrib = $sa_buttons[$attrib['name']];
-        }
-        else if($attrib['image'] || $attrib['imageact'] || $attrib['imagepas'] || $attrib['class']) {
-            // add button to button stack
-            if (!$attrib['name']) {
-                $attrib['name'] = $command;
-            }
-            if (!$attrib['image']) {
-                $attrib['image'] = $attrib['imagepas'] ? $attrib['imagepas'] : $attrib['imageact'];
-            }
-            $sa_buttons[$attrib['name']] = $attrib;
-        }
-        else if ($command && $sa_buttons[$command]) {
-            // get saved button for this command/name
-            $attrib = $sa_buttons[$command];
+        if ($attrib['task'])
+          $command = $attrib['task'] . '.' . $command;
+          
+        if (!$attrib['image']) {
+            $attrib['image'] = $attrib['imagepas'] ? $attrib['imagepas'] : $attrib['imageact'];
         }
 
         if (!$attrib['id']) {
@@ -837,6 +837,9 @@ class rcube_template extends rcube_html_page
             if (in_array($attrib['command'], rcmail::$main_tasks)) {
                 $attrib['href'] = rcmail_url(null, null, $attrib['command']);
             }
+            else if ($attrib['task'] && in_array($attrib['task'], rcmail::$main_tasks)) {
+                $attrib['href'] = rcmail_url($attrib['command'], null, $attrib['task']);
+            }
             else if (in_array($attrib['command'], $a_static_commands)) {
                 $attrib['href'] = rcmail_url($attrib['command']);
             }
@@ -849,7 +852,11 @@ class rcube_template extends rcube_html_page
         if (!$attrib['href']) {
             $attrib['href'] = '#';
         }
-        if ($command) {
+        if ($attrib['task']) {
+            if ($attrib['classact'])
+                $attrib['class'] = $attrib['classact'];
+        }
+        else if ($command && !$attrib['onclick']) {
             $attrib['onclick'] = sprintf(
                 "return %s.command('%s','%s',this)",
                 JS_OBJECT_NAME,
@@ -975,7 +982,7 @@ class rcube_template extends rcube_html_page
             return $username;
         }
 
-        // get e-mail address form default identity
+        // get e-mail address from default identity
         if ($sql_arr = $this->app->user->get_identity()) {
             $username = $sql_arr['email'];
         }
@@ -1012,7 +1019,7 @@ class rcube_template extends rcube_html_page
         $input_url    = new html_hiddenfield(array('name' => '_url', 'id' => 'rcmloginurl', 'value' => $url));
         $input_host   = null;
 
-        if (is_array($default_host)) {
+        if (is_array($default_host) && count($default_host) > 1) {
             $input_host = new html_select(array('name' => '_host', 'id' => 'rcmloginhost'));
 
             foreach ($default_host as $key => $value) {
@@ -1024,6 +1031,11 @@ class rcube_template extends rcube_html_page
                     break;
                 }
             }
+        }
+        else if (is_array($default_host) && ($host = array_pop($default_host))) {
+            $hide_host = true;
+            $input_host = new html_hiddenfield(array(
+                'name' => '_host', 'id' => 'rcmloginhost', 'value' => $host) + $attrib);
         }
         else if (empty($default_host)) {
             $input_host = new html_inputfield(array('name' => '_host', 'id' => 'rcmloginhost') + $attrib);
@@ -1042,7 +1054,7 @@ class rcube_template extends rcube_html_page
         $table->add(null, $input_pass->show());
 
         // add host selection row
-        if (is_object($input_host)) {
+        if (is_object($input_host) && !$hide_host) {
             $table->add('title', html::label('rcmloginhost', Q(rcube_label('server'))));
             $table->add(null, $input_host->show(get_input_value('_host', RCUBE_INPUT_POST)));
         }
@@ -1051,13 +1063,41 @@ class rcube_template extends rcube_html_page
         $out .= $input_tzone->show();
         $out .= $input_url->show();
         $out .= $table->show();
+        
+        if ($hide_host) {
+            $out .= $input_host->show();
+        }
 
         // surround html output with a form tag
         if (empty($attrib['form'])) {
-            $out = $this->form_tag(array('name' => $form_name, 'method' => "post"), $out);
+            $out = $this->form_tag(array('name' => $form_name, 'method' => 'post'), $out);
         }
 
         return $out;
+    }
+
+
+    /**
+     * GUI object 'preloader'
+     * Loads javascript code for images preloading
+     *
+     * @param array Named parameters
+     * @return void
+     */
+    private function preloader($attrib)
+    {
+        $images = preg_split('/[\s\t\n,]+/', $attrib['images'], -1, PREG_SPLIT_NO_EMPTY);
+        $images = array_map(array($this, 'abs_url'), $images);
+
+        if (empty($images) || $this->app->task == 'logout')
+            return;
+
+        $this->add_script('$(document).ready(function(){
+            var images = ' . json_serialize($images) .';
+            for (var i=0; i<images.length; i++) {
+                img = new Image();
+                img.src = images[i];
+            }});', 'foot');
     }
 
 
@@ -1079,7 +1119,7 @@ class rcube_template extends rcube_html_page
             $attrib['id'] = 'rcmqsearchbox';
         }
         if ($attrib['type'] == 'search' && !$this->browser->khtml) {
-          unset($attrib['type'], $attrib['results']);
+            unset($attrib['type'], $attrib['results']);
         }
         
         $input_q = new html_inputfield($attrib);
@@ -1093,7 +1133,7 @@ class rcube_template extends rcube_html_page
                 'name' => "rcmqsearchform",
                 'onsubmit' => JS_OBJECT_NAME . ".command('search');return false;",
                 'style' => "display:inline"),
-              $out);
+                $out);
         }
 
         return $out;
@@ -1123,39 +1163,67 @@ class rcube_template extends rcube_html_page
      * @param array Named parameters for the select tag
      * @return string HTML code for the gui object
      */
-    static function charset_selector($attrib)
+    function charset_selector($attrib)
     {
         // pass the following attributes to the form class
         $field_attrib = array('name' => '_charset');
         foreach ($attrib as $attr => $value) {
-            if (in_array($attr, array('id', 'class', 'style', 'size', 'tabindex'))) {
+            if (in_array($attr, array('id', 'name', 'class', 'style', 'size', 'tabindex'))) {
                 $field_attrib[$attr] = $value;
             }
         }
+
         $charsets = array(
-            'US-ASCII'     => 'ASCII (English)',
-            'EUC-JP'       => 'EUC-JP (Japanese)',
-            'EUC-KR'       => 'EUC-KR (Korean)',
-            'BIG5'         => 'BIG5 (Chinese)',
-            'GB2312'       => 'GB2312 (Chinese)',
-            'ISO-2022-JP'  => 'ISO-2022-JP (Japanese)',
-            'ISO-8859-1'   => 'ISO-8859-1 (Latin-1)',
-            'ISO-8859-2'   => 'ISO-8895-2 (Central European)',
-            'ISO-8859-7'   => 'ISO-8859-7 (Greek)',
-            'ISO-8859-9'   => 'ISO-8859-9 (Turkish)',
-            'Windows-1251' => 'Windows-1251 (Cyrillic)',
-            'Windows-1252' => 'Windows-1252 (Western)',
-            'Windows-1255' => 'Windows-1255 (Hebrew)',
-            'Windows-1256' => 'Windows-1256 (Arabic)',
-            'Windows-1257' => 'Windows-1257 (Baltic)',
-            'UTF-8'        => 'UTF-8'
-            );
+            'UTF-8'        => 'UTF-8 ('.rcube_label('unicode').')',
+            'US-ASCII'     => 'ASCII ('.rcube_label('english').')',
+            'ISO-8859-1'   => 'ISO-8859-1 ('.rcube_label('westerneuropean').')',
+            'ISO-8859-2'   => 'ISO-8895-2 ('.rcube_label('easterneuropean').')',
+            'ISO-8859-4'   => 'ISO-8895-4 ('.rcube_label('baltic').')',
+            'ISO-8859-5'   => 'ISO-8859-5 ('.rcube_label('cyrillic').')',
+            'ISO-8859-6'   => 'ISO-8859-6 ('.rcube_label('arabic').')',
+            'ISO-8859-7'   => 'ISO-8859-7 ('.rcube_label('greek').')',
+            'ISO-8859-8'   => 'ISO-8859-8 ('.rcube_label('hebrew').')',
+            'ISO-8859-9'   => 'ISO-8859-9 ('.rcube_label('turkish').')',
+            'ISO-8859-10'   => 'ISO-8859-10 ('.rcube_label('nordic').')',
+            'ISO-8859-11'   => 'ISO-8859-11 ('.rcube_label('thai').')',
+            'ISO-8859-13'   => 'ISO-8859-13 ('.rcube_label('baltic').')',
+            'ISO-8859-14'   => 'ISO-8859-14 ('.rcube_label('celtic').')',
+            'ISO-8859-15'   => 'ISO-8859-15 ('.rcube_label('westerneuropean').')',
+            'ISO-8859-16'   => 'ISO-8859-16 ('.rcube_label('southeasterneuropean').')',
+            'WINDOWS-1250' => 'Windows-1250 ('.rcube_label('easterneuropean').')',
+            'WINDOWS-1251' => 'Windows-1251 ('.rcube_label('cyrillic').')',
+            'WINDOWS-1252' => 'Windows-1252 ('.rcube_label('westerneuropean').')',
+            'WINDOWS-1253' => 'Windows-1253 ('.rcube_label('greek').')',
+            'WINDOWS-1254' => 'Windows-1254 ('.rcube_label('turkish').')',
+            'WINDOWS-1255' => 'Windows-1255 ('.rcube_label('hebrew').')',
+            'WINDOWS-1256' => 'Windows-1256 ('.rcube_label('arabic').')',
+            'WINDOWS-1257' => 'Windows-1257 ('.rcube_label('baltic').')',
+            'WINDOWS-1258' => 'Windows-1258 ('.rcube_label('vietnamese').')',
+            'ISO-2022-JP'  => 'ISO-2022-JP ('.rcube_label('japanese').')',
+            'ISO-2022-KR'  => 'ISO-2022-KR ('.rcube_label('korean').')',
+            'ISO-2022-CN'  => 'ISO-2022-CN ('.rcube_label('chinese').')',
+            'EUC-JP'       => 'EUC-JP ('.rcube_label('japanese').')',
+            'EUC-KR'       => 'EUC-KR ('.rcube_label('korean').')',
+            'EUC-CN'       => 'EUC-CN ('.rcube_label('chinese').')',
+            'BIG5'         => 'BIG5 ('.rcube_label('chinese').')',
+            'GB2312'       => 'GB2312 ('.rcube_label('chinese').')',
+        );
 
-            $select = new html_select($field_attrib);
-            $select->add(array_values($charsets), array_keys($charsets));
+        if (!empty($_POST['_charset']))
+	        $set = $_POST['_charset'];
+	    else if (!empty($attrib['selected']))
+	        $set = $attrib['selected'];
+	    else
+	        $set = $this->get_charset();
 
-            $set = $_POST['_charset'] ? $_POST['_charset'] : $this->get_charset();
-            return $select->show($set);
+	    $set = strtoupper($set);
+	    if (!isset($charsets[$set]))
+	        $charsets[$set] = $set;
+
+        $select = new html_select($field_attrib);
+        $select->add(array_values($charsets), array_keys($charsets));
+
+        return $select->show($set);
     }
 
 }  // end class rcube_template

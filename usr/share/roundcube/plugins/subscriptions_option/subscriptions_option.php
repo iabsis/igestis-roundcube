@@ -31,11 +31,11 @@ class subscriptions_option extends rcube_plugin
         $this->add_texts('localization/', false);
         $dont_override = rcmail::get_instance()->config->get('dont_override', array());
         if (!in_array('use_subscriptions', $dont_override)) {
-            $this->add_hook('user_preferences', array($this, 'settings_blocks'));
-            $this->add_hook('save_preferences', array($this, 'save_prefs'));
+            $this->add_hook('preferences_list', array($this, 'settings_blocks'));
+            $this->add_hook('preferences_save', array($this, 'save_prefs'));
         }
-        $this->add_hook('list_mailboxes', array($this, 'list_mailboxes'));
-        $this->add_hook('manage_folders', array($this, 'manage_folders'));
+        $this->add_hook('mailboxes_list', array($this, 'mailboxes_list'));
+        $this->add_hook('folders_list', array($this, 'folders_list'));
     }
 
     function settings_blocks($args)
@@ -65,23 +65,23 @@ class subscriptions_option extends rcube_plugin
             // if the use_subscriptions preference changes, flush the folder cache
             if (($use_subscriptions && !isset($_POST['_use_subscriptions'])) ||
                 (!$use_subscriptions && isset($_POST['_use_subscriptions']))) {
-                    $rcmail->imap_init(true);
+                    $rcmail->imap_connect();
                     $rcmail->imap->clear_cache('mailboxes');
             }
         }
         return $args;
     }
 
-    function list_mailboxes($args)
+    function mailboxes_list($args)
     {
         $rcmail = rcmail::get_instance();
         if (!$rcmail->config->get('use_subscriptions', true)) {
-            $args['folders'] = iil_C_ListMailboxes($rcmail->imap->conn, $rcmail->imap->mod_mailbox($args['root']), $args['filter']);
+            $args['folders'] = $rcmail->imap->conn->listMailboxes($rcmail->imap->mod_mailbox($args['root']), $args['filter']);
         }
         return $args;
     }
 
-    function manage_folders($args)
+    function folders_list($args)
     {
         $rcmail = rcmail::get_instance();
         if (!$rcmail->config->get('use_subscriptions', true)) {

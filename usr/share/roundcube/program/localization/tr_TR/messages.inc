@@ -6,7 +6,7 @@
 | language/tr/messages.inc                                              |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 | Author: Gökdeniz Karadağ <gokdenizk@gmail.com>                        |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 2827 2009-08-02 13:32:47Z yllar $
+@version $Id: messages.inc 3864 2010-08-04 09:15:22Z yllar $
 
 */
 
@@ -29,6 +29,7 @@ $messages['nomessagesfound'] = 'Posta kutusunda ileti bulunamadı';
 $messages['loggedout'] = 'Oturumu başarılı bir şekilde kapattınız. Güle güle!';
 $messages['mailboxempty'] = 'Posta kutusu boş';
 $messages['loading'] = 'Yükleniyor...';
+$messages['uploading'] = 'Dosya yükleniyor...';
 $messages['loadingdata'] = 'Veriler yükleniyor...';
 $messages['checkingmail'] = 'Yeni postalara bakılıyor...';
 $messages['sendingmessage'] = 'Posta gönderiliyor...';
@@ -47,6 +48,7 @@ $messages['senttooquickly'] = 'Lütfen bu postayı göndermeden önce $sec saniy
 $messages['errorsavingsent'] = 'Gönderilen postayı kaydederken hata oluştu';
 $messages['errorsaving'] = 'Kaydederken bir hata oluştu';
 $messages['errormoving'] = 'Posta taşınamadı';
+$messages['errorcopying'] = 'Posta kopyalanamadı';
 $messages['errordeleting'] = 'Posta silinemedi';
 $messages['errormarking'] = 'Posta işaretlenemedi';
 $messages['deletecontactconfirm'] = 'Seçili kişileri silmek istediğinizden emin misiniz?';
@@ -69,6 +71,7 @@ $messages['notsentwarning'] = 'Posta gönderilmedi. Postanızı iptal etmek isti
 $messages['noldapserver'] = 'Lütfen arama için bir LDAP sunucu seçin';
 $messages['nocontactsreturned'] = 'Kişi bulunamadı';
 $messages['nosearchname'] = 'Lütfen bir kişi ismi veya e-posta adresi girin';
+$messages['notuploadedwarning'] = 'Henüz tüm ekli dosyalar yüklenmedi. Lütfen bekleyin ya da yüklemeyi iptal edin.';
 $messages['searchsuccessful'] = '$nr posta bulundu';
 $messages['searchnomatch'] = 'Aramanıza uygun hiçbir sonuç bulunamadı';
 $messages['searching'] = 'Aranıyor...';
@@ -85,6 +88,7 @@ $messages['copyerror'] = 'Hiçbir adres kopyalanamadı';
 $messages['sourceisreadonly'] = 'Adres kaynağı salt okunur durumda';
 $messages['errorsavingcontact'] = 'Kişinin adresi kaydedilemedi';
 $messages['movingmessage'] = 'Posta taşınıyor...';
+$messages['copyingmessage'] = 'Posta kopyalanıyor...';
 $messages['receiptsent'] = 'Okundu onayı gönderildi';
 $messages['errorsendingreceipt'] = 'Okundu onayı gönderilemedi';
 $messages['nodeletelastidentity'] = 'Son kimliğiniz olduğu için bu kimliği silemezsiniz';
@@ -92,6 +96,8 @@ $messages['addsubfolderhint'] = 'Bu klasör, şu an seçili olanın alt klasör�
 $messages['forbiddencharacter'] = 'Klasör ismi yasaklanmış bir karakter içeriyor';
 $messages['selectimportfile'] = 'Lütfen yüklenecek dosyayı seçin';
 $messages['addresswriterror'] = 'Seçili adres defterine yazılamaz';
+$messages['contactaddedtogroup'] = 'Kişiler bu gruba eklendi';
+$messages['contactremovedfromgroup'] = 'Kişiler bu gruptan çıkarıldı';
 $messages['importwait'] = 'Aktarılıyor, lütfen bekleyin...';
 $messages['importerror'] = 'İçe aktarma başarısız! Yüklenen dosya geçerli bir vCard dosyası değil';
 $messages['importconfirm'] = '<b>$inserted kişi başarıyla aktarıldı, halihazırda var olan $skipped kişi atlandı</b>:<p><em>$names</em></p>';
@@ -101,9 +107,13 @@ $messages['editorwarning'] = 'Düz metin düzenleyiciye geçmek, metin üzerinde
 $messages['httpreceivedencrypterror'] = 'Ayarlarda bir hata oluştu. Sistem yöneticinize haber verin. <b>Postanız gönderilemedi</b>';
 $messages['smtpconnerror'] = 'SMTP Hatası ($code): Sunucuya bağlanılamadı';
 $messages['smtpautherror'] = 'SMTP Hatası ($code): Kimlik doğrulama başarısız oldu';
-$messages['smtpfromerror'] = 'SMTP Hatası ($code): Gönderen adresi "$from" olarak ayarlanamadı';
-$messages['smtptoerror'] = 'SMTP Hatası ($code): "$to" alıcısı eklenemedi';
+$messages['smtpfromerror'] = 'SMTP Hatası ($code): Gönderen adresi "$from" olarak ayarlanamadı ($msg)';
+$messages['smtptoerror'] = 'SMTP Hatası ($code): "$to" alıcısı eklenemedi ($msg)';
 $messages['smtprecipientserror'] = 'SMTP Hatası: Posta alıcılarının listesi ayrıştırılamadı';
 $messages['smtperror'] = 'SMTP Hatası: $msg';
+$messages['emailformaterror'] = 'Hatalı e-posta adresi: $email';
+$messages['toomanyrecipients'] = 'Çok fazla alıcı. En fazla $max alıcı girebilirsiniz.';
+$messages['maxgroupmembersreached'] = 'Grup üyelerinin sayısı $max sınırını aşıyor.';
+$messages['internalerror'] = 'Bir hata oluştu. Lütfen tekrar deneyin.';
 
 ?>

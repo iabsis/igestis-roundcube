@@ -6,7 +6,7 @@
 | language/sv_SE/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,7 +15,7 @@
 |         Andreas Henriksson <andreas@fatal.se>                         |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3043 2009-10-14 11:45:28Z yllar $
+@version $Id: messages.inc 3868 2010-08-04 20:06:14Z yllar $
 
 */
 
@@ -47,8 +47,9 @@ $messages['contactnotfound'] = 'Den efterfrågade kontanten hittades inte';
 $messages['sendingfailed'] = 'Meddelandet kunde inte skickas';
 $messages['senttooquickly'] = 'Vänta ytterligare $sec sekunder med att skicka meddelandet';
 $messages['errorsavingsent'] = 'Ett fel inträffade när det skickade meddelandet sparades';
-$messages['errorsaving'] = 'Meddelandet kunde inte sparads';
+$messages['errorsaving'] = 'Meddelandet kunde inte sparas';
 $messages['errormoving'] = 'Meddelandet kunde inte flyttas';
+$messages['errorcopying'] = 'Meddelandet kunde inte kopieras';
 $messages['errordeleting'] = 'Meddelandet kunde inte raderas';
 $messages['errormarking'] = 'Meddelandet kunde inte markeras';
 $messages['deletecontactconfirm'] = 'Vill du verkligen radera valda kontakter?';
@@ -88,6 +89,7 @@ $messages['copyerror'] = 'Kunde inte kopiera några adresser';
 $messages['sourceisreadonly'] = 'Denna adresskälla är skrivskyddad';
 $messages['errorsavingcontact'] = 'Kunde inte spara kontaktadressen';
 $messages['movingmessage'] = 'Flyttar meddelande...';
+$messages['copyingmessage'] = 'Kopierar meddelande...';
 $messages['receiptsent'] = 'Mottagarkvitto har skickats';
 $messages['errorsendingreceipt'] = 'Kunde inte skicka mottagarkvitto';
 $messages['nodeletelastidentity'] = 'Du kan inte radera den här identiteten, det är din sista.';
@@ -95,6 +97,8 @@ $messages['addsubfolderhint'] = 'Den här katalogen kommer att skapas som en und
 $messages['forbiddencharacter'] = 'Katalognamnet innehåller otillåtna tecken';
 $messages['selectimportfile'] = 'Välj en fil att ladda upp';
 $messages['addresswriterror'] = 'Angiven adressbok är skrivskyddad';
+$messages['contactaddedtogroup'] = 'Kontakterna har lagts till i gruppen';
+$messages['contactremovedfromgroup'] = 'Kontakterna har tagits bort från gruppen';
 $messages['importwait'] = 'Importerar, var god vänta...';
 $messages['importerror'] = 'Importen misslyckades! Filen är inte i vCard-format.';
 $messages['importconfirm'] = '<b>Lyckad import av $inserted kontakter, $skipped dubbletter har ignorerats:</b><p><em>$names</em></p>';
@@ -108,5 +112,9 @@ $messages['smtpfromerror'] = 'SMTP-fel ($code): Kan inte sätta avsändaradress 
 $messages['smtptoerror'] = 'SMTP-fel ($code): Kan inte lägga till mottagaradress "$to"';
 $messages['smtprecipientserror'] = 'SMTP-fel: Felaktigt formaterad lista med mottagaradresser';
 $messages['smtperror'] = 'SMTP-fel: $msg';
+$messages['emailformaterror'] = 'Felaktig adress: $email';
+$messages['toomanyrecipients'] = 'Förmånga mottagare. Minska antalet till högst $max.';
+$messages['maxgroupmembersreached'] = 'Antalet gruppmedlemmar får inte överstiga $max';
+$messages['internalerror'] = 'Ett internt fel uppstod. Vänligen försök igen.';
 
 ?>

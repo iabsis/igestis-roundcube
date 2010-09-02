@@ -15,18 +15,16 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: delete.inc 2758 2009-07-16 15:01:05Z thomasb $
+ $Id: delete.inc 3840 2010-07-30 06:34:02Z alec $
 
 */
 
 if ($OUTPUT->ajax_call &&
     ($cid = get_input_value('_cid', RCUBE_INPUT_POST)) &&
-    (preg_match('/^[0-9]+(,[0-9]+)*$/', $cid) ||
-     preg_match('/^[a-zA-Z0-9=]+(,[a-zA-Z0-9=]+)*$/', $cid))
-   )
-  {
-  $plugin = $RCMAIL->plugins->exec_hook('delete_contact', array('id' => $cid, 'source' => get_input_value('_source', RCUBE_INPUT_GPC)));
-  
+    preg_match('/^[a-zA-Z0-9\+\/=_-]+(,[a-zA-Z0-9\+\/=_-]+)*$/', $cid)
+) {
+  $plugin = $RCMAIL->plugins->exec_hook('contact_delete', array('id' => $cid, 'source' => get_input_value('_source', RCUBE_INPUT_GPC)));
+
   $deleted = !$plugin['abort'] ? $CONTACTS->delete($cid) : false;
   if (!$deleted)
     {
@@ -51,4 +49,4 @@ if ($OUTPUT->ajax_call &&
   }
 
 exit;
-?>
+

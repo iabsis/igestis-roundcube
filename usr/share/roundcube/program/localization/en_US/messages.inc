@@ -6,14 +6,14 @@
  | language/en_US/messages.inc                                           |
  |                                                                       |
  | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+ | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- @version $Id: messages.inc 3042 2009-10-14 10:52:27Z alec $
+ @version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -46,9 +46,10 @@ $messages['sendingfailed'] = 'Failed to send message';
 $messages['senttooquickly'] = 'Please wait $sec sec(s). before sending this message';
 $messages['errorsavingsent'] = 'An error occured while saving sent message';
 $messages['errorsaving'] = 'An error occured while saving';
-$messages['errormoving'] = 'Could not move the message';
-$messages['errordeleting'] = 'Could not delete the message';
-$messages['errormarking'] = 'Could not mark the message';
+$messages['errormoving'] = 'Could not move the message(s)';
+$messages['errorcopying'] = 'Could not copy the message(s)';
+$messages['errordeleting'] = 'Could not delete the message(s)';
+$messages['errormarking'] = 'Could not mark the message(s)';
 $messages['deletecontactconfirm']  = 'Do you really want to delete the selected contact(s)?';
 $messages['deletemessagesconfirm'] = 'Do you really want to delete the selected message(s)?';
 $messages['deletefolderconfirm']  = 'Do you really want to delete this folder?';
@@ -76,7 +77,7 @@ $messages['searching'] = 'Searching...';
 $messages['checking'] = 'Checking...';
 $messages['nospellerrors'] = 'No spelling errors found';
 $messages['folderdeleted'] = 'Folder successfully deleted';
-$messages['deletedsuccessfully'] = "Successfully deleted";
+$messages['deletedsuccessfully'] = 'Successfully deleted';
 $messages['converting'] = 'Removing formatting...';
 $messages['messageopenerror'] = 'Could not load message from server';
 $messages['fileuploaderror'] = 'File upload failed';
@@ -86,6 +87,7 @@ $messages['copyerror'] = 'Could not copy any addresses';
 $messages['sourceisreadonly'] = 'This address source is read only';
 $messages['errorsavingcontact'] = 'Could not save the contact address';
 $messages['movingmessage'] = 'Moving message...';
+$messages['copyingmessage'] = 'Copying message...';
 $messages['receiptsent'] = 'Successfully sent a read receipt';
 $messages['errorsendingreceipt'] = 'Could not send the receipt';
 $messages['nodeletelastidentity'] = 'You cannot delete this identity, it\'s your last one.';
@@ -93,6 +95,8 @@ $messages['addsubfolderhint'] = 'This folder will be created as subfolder of the
 $messages['forbiddencharacter'] = 'Folder name contains a forbidden character';
 $messages['selectimportfile'] = 'Please select a file to upload';
 $messages['addresswriterror'] = 'The selected address book is not writeable';
+$messages['contactaddedtogroup'] = 'Successfully added the contacts to this group';
+$messages['contactremovedfromgroup'] = 'Successfully remove contacts from this group';
 $messages['importwait'] = 'Importing, please wait...';
 $messages['importerror'] = 'Import failed! The uploaded file is not a valid vCard file.';
 $messages['importconfirm'] = '<b>Successfully imported $inserted contacts, $skipped existing entries skipped</b>:<p><em>$names</em></p>';
@@ -102,10 +106,13 @@ $messages['editorwarning'] = 'Switching to the plain text editor will cause all 
 $messages['httpreceivedencrypterror'] = 'A fatal configuration error occurred. Contact your administrator immediately. <b>Your message can not be sent.</b>';
 $messages['smtpconnerror'] = 'SMTP Error ($code): Connection to server failed';
 $messages['smtpautherror'] = 'SMTP Error ($code): Authentication failed';
-$messages['smtpfromerror'] = 'SMTP Error ($code): Failed to set sender "$from"';
-$messages['smtptoerror'] = 'SMTP Error ($code): Failed to add recipient "$to"';
+$messages['smtpfromerror'] = 'SMTP Error ($code): Failed to set sender "$from" ($msg)';
+$messages['smtptoerror'] = 'SMTP Error ($code): Failed to add recipient "$to" ($msg)';
 $messages['smtprecipientserror'] = 'SMTP Error: Unable to parse recipients list';
 $messages['smtperror'] = 'SMTP Error: $msg';
-$messages['emailformaterror'] = 'Incorrect e-mail address: $email';
+$messages['emailformaterror'] = 'Invalid e-mail address: $email';
+$messages['toomanyrecipients'] = 'Too many recipients. Reduce the number of recipients to $max.';
+$messages['maxgroupmembersreached'] = 'The number of group members exceeds the maximum of $max';
+$messages['internalerror'] = 'An internal error occured. Please try again';
 
 ?>

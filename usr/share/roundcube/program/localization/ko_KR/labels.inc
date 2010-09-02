@@ -6,14 +6,14 @@
 | localization/kr/labels.inc                                            |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: lordmiss <lordmiss@lordmiss.com>                              |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 560 2007-05-17 15:01:26Z thomasb $
+@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
 
 */
 

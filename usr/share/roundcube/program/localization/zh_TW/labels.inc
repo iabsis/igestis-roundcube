@@ -6,7 +6,7 @@
 | localization/zh_TW/labels.inc                                         |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,7 +15,7 @@
 |         Ting-Hung Chiu <earrl@mmlab.cse.yzu.edu.tw>                   |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 2513 2009-05-21 12:59:19Z alec $
+@version $Id: labels.inc 3818 2010-07-17 22:11:55Z yllar $
 
 */
 
@@ -47,14 +47,14 @@ $labels['organization'] = '組織';
 $labels['reply-to'] = '回覆至';
 $labels['mailboxlist'] = '資料夾';
 $labels['messagesfromto'] = '郵件 $from 至 $to，共有 $count 封郵件';
+$labels['threadsfromto'] = '郵件串 $from 至 $to，共有 $count 個';
 $labels['messagenrof'] = '第 $nr 封郵件，共有 $count 封';
+$labels['copy'] = '複製';
+$labels['move'] = '移動';
 $labels['moveto'] = '移至...';
 $labels['download'] = '下載';
 $labels['filename'] = '檔案名稱';
 $labels['filesize'] = '檔案大小';
-$labels['preferhtml'] = '使用 HTML 顯示';
-$labels['htmlmessage'] = 'HTML 郵件';
-$labels['prettydate'] = '簡短日期顯示';
 $labels['addtoaddressbook'] = '新增至通訊錄';
 $labels['sun'] = '週日';
 $labels['mon'] = '週一';
@@ -118,13 +118,39 @@ $labels['markread'] = '標示為已讀取';
 $labels['markunread'] = '標示為未讀取';
 $labels['markflagged'] = '標上旗標';
 $labels['markunflagged'] = '移除旗標';
+$labels['messageactions'] = '更多動作…';
 $labels['select'] = '選取';
 $labels['all'] = '全部郵件';
 $labels['none'] = '無';
+$labels['currpage'] = '目前頁面';
 $labels['unread'] = '未讀取的郵件';
 $labels['flagged'] = '已加標記的郵件';
 $labels['unanswered'] = '未回覆的郵件';
+$labels['deleted'] = '已刪除的郵件';
+$labels['invert'] = '反選';
 $labels['filter'] = '篩選範圍';
+$labels['list'] = '清單';
+$labels['threads'] = '郵件串';
+$labels['expand-all'] = '全部展開';
+$labels['expand-unread'] = '展開未讀取';
+$labels['collapse-all'] = '全部收起';
+$labels['threaded'] = '郵件串';
+$labels['autoexpand_threads'] = '只展開郵件串';
+$labels['do_expand'] = '所有郵件串';
+$labels['expand_only_unread'] = '只展開未讀訊息';
+$labels['fromto'] = '寄件者/收件者';
+$labels['flag'] = '旗標';
+$labels['attachment'] = '附件';
+$labels['nonesort'] = '無';
+$labels['sentdate'] = '寄送時間';
+$labels['arrival'] = '到達時間';
+$labels['asc'] = '遞增';
+$labels['desc'] = '遞減';
+$labels['listcolumns'] = '列出欄位';
+$labels['listsorting'] = '排序欄位';
+$labels['listorder'] = '排序順序';
+$labels['listmode'] = '清單檢視模式';
+$labels['folderactions'] = '資料夾動作...';
 $labels['compact'] = '壓縮';
 $labels['empty'] = '清空';
 $labels['purge'] = '清除';
@@ -136,7 +162,9 @@ $labels['resetsearch'] = '重設搜尋';
 $labels['searchmod'] = '修改搜尋';
 $labels['msgtext'] = '整封郵件';
 $labels['openinextwin'] = '在新視窗開啟';
+$labels['emlsave'] = '下載（.eml）';
 $labels['compose'] = '撰寫新郵件';
+$labels['editasnew'] = '已新郵件編輯';
 $labels['savemessage'] = '儲存成草稿';
 $labels['sendmessage'] = '立即寄出';
 $labels['addattachment'] = '增加附件檔案';
@@ -149,6 +177,7 @@ $labels['revertto'] = '恢復至';
 $labels['attachments'] = '附加檔案';
 $labels['upload'] = '上傳';
 $labels['close'] = '關閉';
+$labels['messageoptions'] = '郵件選項...';
 $labels['low'] = '低';
 $labels['lowest'] = '最低';
 $labels['normal'] = '普通';
@@ -175,6 +204,7 @@ $labels['surname'] = '姓氏';
 $labels['email'] = '電子郵件';
 $labels['addcontact'] = '新增聯絡人';
 $labels['editcontact'] = '編輯聯絡人';
+$labels['contacts'] = '聯絡人';
 $labels['edit'] = '編輯';
 $labels['cancel'] = '取消';
 $labels['save'] = '儲存';
@@ -186,10 +216,13 @@ $labels['contactsfromto'] = '聯絡人 $from 至 $to，共有 $count 人';
 $labels['print'] = '列印';
 $labels['export'] = '匯出通訊錄';
 $labels['exportvcards'] = '匯出通訊錄為 vCard 格式';
+$labels['newcontactgroup'] = '新增聯絡人群組';
+$labels['groupactions'] = '聯絡人群組的動作';
 $labels['previouspage'] = '顯示上一頁';
 $labels['firstpage'] = '顯示第一頁';
 $labels['nextpage'] = '顯示下一頁';
 $labels['lastpage'] = '顯示最後一頁';
+$labels['group'] = '群組';
 $labels['groups'] = '群組';
 $labels['personaladrbook'] = '個人住址';
 $labels['import'] = '匯入通訊錄';
@@ -207,6 +240,10 @@ $labels['manageidentities'] = '管理此帳號的身份資訊';
 $labels['newidentity'] = '新增身份資訊';
 $labels['newitem'] = '新增項目';
 $labels['edititem'] = '編輯項目';
+$labels['preferhtml'] = '使用 HTML 顯示';
+$labels['defaultcharset'] = '預設編碼';
+$labels['htmlmessage'] = 'HTML 郵件';
+$labels['prettydate'] = '簡短日期顯示';
 $labels['setdefault'] = '設成預設i值';
 $labels['autodetect'] = '自動選擇';
 $labels['language'] = '語言';
@@ -230,6 +267,7 @@ $labels['ignore'] = '完全忽略';
 $labels['readwhendeleted'] = '將刪除的郵件標示為已讀取';
 $labels['flagfordeletion'] = '刪除郵件時將原始郵件標示為已刪除';
 $labels['skipdeleted'] = '不要顯示已刪除的郵件';
+$labels['deletealways'] = '如果移到垃圾桶失敗，就直接刪除';
 $labels['showremoteimages'] = '顯示遠端郵件內文中的圖片';
 $labels['fromknownsenders'] = '從已知的寄件者';
 $labels['always'] = '總是接受';
@@ -238,15 +276,37 @@ $labels['autosavedraft'] = '自動儲存草稿';
 $labels['everynminutes'] = '每 $n 分鐘';
 $labels['keepalive'] = '檢查新郵件的間隔時間';
 $labels['never'] = '絕對不要';
+$labels['immediately'] = '馬上';
 $labels['messagesdisplaying'] = '郵件顯示設定';
 $labels['messagescomposition'] = '撰寫郵件設定';
 $labels['mimeparamfolding'] = '附加檔案名稱的編碼方式';
-$labels['2231folding'] = '完全 RFC 2231 模式 (Thunderbird)';
-$labels['miscfolding'] = 'RFC 2047/2231 混合模式 (MS Outlook)';
-$labels['2047folding'] = '完全 RFC 2047 模式 (其他)';
+$labels['2231folding'] = '完全 RFC 2231 模式（Thunderbird）';
+$labels['miscfolding'] = 'RFC 2047/2231 混合模式（MS Outlook）';
+$labels['2047folding'] = '完全 RFC 2047 模式（其他）';
+$labels['force7bit'] = '使用MIME編碼對於8位元字元';
 $labels['advancedoptions'] = '顯示進階設定選項';
 $labels['focusonnewmessage'] = '收到新郵件時使瀏覽器獲得焦點';
 $labels['checkallfolders'] = '檢查所有資料夾中的新郵件';
+$labels['displaynext'] = '郵件刪除／移動時顯示下一個郵件';
+$labels['mainoptions'] = '主要選項';
+$labels['section'] = '分類';
+$labels['maintenance'] = '管理';
+$labels['newmessage'] = '新郵件';
+$labels['listoptions'] = '排列選項';
+$labels['signatureoptions'] = '簽名檔選項';
+$labels['whenreplying'] = '回覆時';
+$labels['replytopposting'] = '在原來的上方開始新訊息';
+$labels['replybottomposting'] = '在原來的下方開始新訊息';
+$labels['replyremovesignature'] = '回覆時移除原有簽名檔';
+$labels['autoaddsignature'] = '自動附加簽名';
+$labels['newmessageonly'] = '只有新訊息';
+$labels['replyandforwardonly'] = '只有回覆或轉寄';
+$labels['replysignaturepos'] = '當回覆或轉寄時附上簽名檔';
+$labels['belowquote'] = '引用的下方';
+$labels['abovequote'] = '引用的上方';
+$labels['insertsignature'] = '插入簽名檔';
+$labels['previewpanemarkread'] = '標示已預覽訊息為已讀取';
+$labels['afternseconds'] = '$n 秒之後';
 $labels['folder'] = '資料夾';
 $labels['folders'] = '資料夾';
 $labels['foldername'] = '資料夾名稱';
@@ -266,5 +326,23 @@ $labels['B'] = 'B';
 $labels['KB'] = 'KB';
 $labels['MB'] = 'MB';
 $labels['GB'] = 'GB';
+$labels['unicode'] = '萬國碼';
+$labels['english'] = '英語';
+$labels['westerneuropean'] = '西歐語系';
+$labels['easterneuropean'] = '東歐語系';
+$labels['southeasterneuropean'] = '東南歐語系';
+$labels['baltic'] = '波羅的海';
+$labels['cyrillic'] = '西里爾';
+$labels['arabic'] = '阿拉伯語';
+$labels['greek'] = '希臘';
+$labels['hebrew'] = '希伯來語';
+$labels['turkish'] = '土耳其';
+$labels['nordic'] = '北歐';
+$labels['thai'] = '泰國';
+$labels['celtic'] = '塞爾特';
+$labels['vietnamese'] = '越南';
+$labels['japanese'] = '日本';
+$labels['korean'] = '韓國';
+$labels['chinese'] = '國語';
 
 ?>

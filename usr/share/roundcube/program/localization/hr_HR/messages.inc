@@ -6,14 +6,14 @@
 | language/hr/messages.inc                                              |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Edi Budimilic <edi@gemstudio.hr>                              |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 2237 2009-01-17 01:55:39Z till $
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -22,10 +22,13 @@ $messages['loginfailed'] = 'Prijava neuspješna';
 $messages['cookiesdisabled'] = 'Vaš Web preglednik ne podržava kolačiće (cookies)';
 $messages['sessionerror'] = 'Morate se ponovno ulogirati';
 $messages['imaperror'] = 'Neuspješna veza na IMAP server';
+$messages['servererror'] = 'Greška poslužitelja';
+$messages['invalidrequest'] = 'Nepravilan zahtijev! Podaci nisu spremljeni.';
 $messages['nomessagesfound'] = 'Nema poruka u sandučiću';
 $messages['loggedout'] = 'Uspješna odjava.';
 $messages['mailboxempty'] = 'Sandučuć je prazan';
 $messages['loading'] = 'Učitavanje...';
+$messages['uploading'] = 'Presnimavak datoteku na poslužitelj';
 $messages['loadingdata'] = 'Učitavanje podataka...';
 $messages['checkingmail'] = 'Provjera novih poruka u tijeku...';
 $messages['sendingmessage'] = 'Poruka se šalje...';
@@ -45,6 +48,7 @@ $messages['errorsavingsent'] = 'Greška pri spremanju poslane poruke';
 $messages['errorsaving'] = 'Greška pri spremanju';
 $messages['errormoving'] = 'Greška pri premještanju poruke';
 $messages['errordeleting'] = 'Greška pri brisanju poruke';
+$messages['errormarking'] = 'Nije moguće označiti poruku';
 $messages['deletecontactconfirm'] = 'Želite li obrisati izabrane kontakte?';
 $messages['deletemessagesconfirm'] = 'Sigurno želite obrisati odabrane poruke?';
 $messages['deletefolderconfirm'] = 'Želite li obrisati ovu mapu?';
@@ -65,6 +69,7 @@ $messages['notsentwarning'] = 'Poruka nije poslana. Želite li odbaciti ovu poru
 $messages['noldapserver'] = 'Unesite LDAP poslužitelj za pretragu';
 $messages['nocontactsreturned'] = 'Nije pronađen niti jedan kontakt';
 $messages['nosearchname'] = 'Unesite ime ili e-mail adresu';
+$messages['notuploadedwarning'] = 'Svi prilozi još nisu presnimljeni na poslužitelj. Molim pričekajte ili zaustavite prsnimavanje.';
 $messages['searchsuccessful'] = 'Broj pronađenih poruka: $nr';
 $messages['searchnomatch'] = 'Traženi termin nije pronađen ni u jednoj poruci';
 $messages['searching'] = 'Pretraga u tijeku...';
@@ -94,5 +99,13 @@ $messages['importconfirm'] = '<b>Uspješno je uvezeno $inserted kontakt(a), pres
 $messages['opnotpermitted'] = 'Operacija nije dozvoljena!';
 $messages['nofromaddress'] = 'Nije upisana e-mail adresa u odabrani identitet';
 $messages['editorwarning'] = 'Prebacivanje u čisti tekstualni uređivač će prouzrokovati gubljenje formatiranje teksta. Želite li nastaviti?';
+$messages['httpreceivedencrypterror'] = 'Dogodila se fatalna greška u konfiguraciji. Odmah kontaktirajte administratora. <b>Vaša poruka se nemože poslati.</b>';
+$messages['smtpconnerror'] = 'SMTP Greška ($code): Veza na server nije uspjela';
+$messages['smtpautherror'] = 'SMTP Greška ($code): Autentikacija nije uspjela';
+$messages['smtpfromerror'] = 'SMTP Greška ($code): Nije uspjelo postavljanje pošiljatelja "$from" ($msg)';
+$messages['smtptoerror'] = 'SMTP Greška ($code): Nije uspjelo dodavanje primatelja "$to" ($msg)';
+$messages['smtprecipientserror'] = 'SMTP Greška: Nije moguće pročitati listu primatelja';
+$messages['smtperror'] = 'SMTP Greška: $msg';
+$messages['emailformaterror'] = 'Nepravilna e-mail adresa: $email';
 
 ?>

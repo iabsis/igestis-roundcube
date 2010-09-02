@@ -2,7 +2,7 @@
 /*
  +-------------------------------------------------------------------------+
  | RoundCube Webmail IMAP Client                                           |
- | Version 0.3.1-20091031                                                  |
+ | Version 0.4                                                             |
  |                                                                         |
  | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                   |
  |                                                                         |
@@ -23,47 +23,15 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                          |
  +-------------------------------------------------------------------------+
 
- $Id: index.php 3081 2009-10-31 13:20:02Z thomasb $
+ $Id: index.php 3878 2010-08-07 09:44:38Z thomasb $
 
 */
 
 // include environment
 require_once 'program/include/iniset.php';
 
-// Autologin by ishare ////////////////
-function decrypt_ishare_password($password) {
-	$buffer = NULL;
-	for($i = 0; $i < strlen($password); $i+=2) {
-		$buffer .= chr(hexdec($password[$i] . $password[$i+1]));
-	}	
-	return decrypt_string($buffer);
-}
-
-function decrypt_string($string) {
-	// Montage du dossier perso
-	$td = MCRYPT_RIJNDAEL_128; // Encryption cipher (http://www.ciphersbyritter.com/glossary.htm#Cipher)
-	$iv_size = mcrypt_get_iv_size($td, MCRYPT_MODE_ECB); // Dependant on cipher/mode combination (http://www.php.net/manual/en/function.mcrypt-get-iv-size.php)
-	$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND); // Creates an IV (http://www.ciphersbyritter.com/glossary.htm#IV)
-	return trim(mcrypt_decrypt($td, SSH_ENCRYPT_KEY, $string, MCRYPT_MODE_ECB, $iv));
-}	
-
-if($_POST['_crypted_password'] == 1) {
-	@include("/usr/share/igestis/config.php");	
-	$_POST['_pass'] = decrypt_ishare_password($_POST['_pass']);
-	
-}
-// End of autologin by ishare /////////
-
-
-
-// init application and start session with requested task
+// init application, start session, init output class, etc.
 $RCMAIL = rcmail::get_instance();
-
-// init output class
-$OUTPUT = !empty($_REQUEST['_remote']) ? $RCMAIL->init_json() : $RCMAIL->load_gui(!empty($_REQUEST['_framed']));
-
-// init plugin API
-$RCMAIL->plugins->init();
 
 // turn on output buffering
 ob_start();
@@ -93,7 +61,9 @@ if ($RCMAIL->action=='error' && !empty($_GET['_code'])) {
 if (empty($_SESSION['user_id']) && ($force_https = $RCMAIL->config->get('force_https', false))) {
   $https_port = is_bool($force_https) ? 443 : $force_https;
   if (!rcube_https_check($https_port)) {
-    header('Location: https://' . $_SERVER['HTTP_HOST'] . ($https_port != 443 ? ':' . $https_port : '') . $_SERVER['REQUEST_URI']);
+    $host  = preg_replace('/:[0-9]+$/', '', $_SERVER['HTTP_HOST']);
+    $host .= ($https_port != 443 ? ':' . $https_port : '');
+    header('Location: https://' . $host . $_SERVER['REQUEST_URI']);
     exit;
   }
 }
@@ -104,7 +74,7 @@ $RCMAIL->set_task($startup['task']);
 $RCMAIL->action = $startup['action'];
 
 // try to log in
-if ($RCMAIL->action=='login' && $RCMAIL->task=='mail') {
+if ($RCMAIL->task == 'login' && $RCMAIL->action == 'login') {
   // purge the session in case of new login when a session already exists 
   $RCMAIL->kill_session();
   
@@ -112,37 +82,36 @@ if ($RCMAIL->action=='login' && $RCMAIL->task=='mail') {
     'host' => $RCMAIL->autoselect_host(),
     'user' => trim(get_input_value('_user', RCUBE_INPUT_POST)),
     'cookiecheck' => true,
-  )) + array('pass' => get_input_value('_pass', RCUBE_INPUT_POST, true, 'ISO-8859-1'));
+  ));
+  
+  if (!isset($auth['pass']))
+    $auth['pass'] = get_input_value('_pass', RCUBE_INPUT_POST, true,
+        $RCMAIL->config->get('password_charset', 'ISO-8859-1'));
 
   // check if client supports cookies
   if ($auth['cookiecheck'] && empty($_COOKIE)) {
     $OUTPUT->show_message("cookiesdisabled", 'warning');
   }
-  else if ($_SESSION['temp'] && !$auth['abort'] && !empty($auth['host']) &&
-            !empty($auth['user']) && isset($auth['pass']) && 
-            $RCMAIL->login($auth['user'], $auth['pass'], $auth['host'])) {
+  else if ($_SESSION['temp'] && !$auth['abort'] &&
+        !empty($auth['host']) && !empty($auth['user']) &&
+        $RCMAIL->login($auth['user'], $auth['pass'], $auth['host'])) {
     // create new session ID
-    rcube_sess_unset('temp');
-    rcube_sess_regenerate_id();
+    $RCMAIL->session->remove('temp');
+    $RCMAIL->session->regenerate_id();
 
     // send auth cookie if necessary
     $RCMAIL->authenticate_session();
 
     // log successful login
-    if ($RCMAIL->config->get('log_logins')) {
-      write_log('userlogins', sprintf('Successful login for %s (id %d) from %s',
-        $RCMAIL->user->get_username(),
-        $RCMAIL->user->ID,
-        $_SERVER['REMOTE_ADDR']));
-    }
-    
+    rcmail_log_login();
+
     // restore original request parameters
     $query = array();
     if ($url = get_input_value('_url', RCUBE_INPUT_POST))
       parse_str($url, $query);
 
     // allow plugins to control the redirect url after login success
-    $redir = $RCMAIL->plugins->exec_hook('login_after', $query + array('task' => $RCMAIL->task));
+    $redir = $RCMAIL->plugins->exec_hook('login_after', $query);
     unset($redir['abort']);
 
     // send redirect
@@ -156,7 +125,7 @@ if ($RCMAIL->action=='login' && $RCMAIL->task=='mail') {
 }
 
 // end session
-else if ($RCMAIL->task=='logout' && isset($_SESSION['user_id'])) {
+else if ($RCMAIL->task == 'logout' && isset($_SESSION['user_id'])) {
   $userdata = array('user' => $_SESSION['username'], 'host' => $_SESSION['imap_host'], 'lang' => $RCMAIL->user->language);
   $OUTPUT->show_message('loggedout');
   $RCMAIL->logout_actions();
@@ -165,7 +134,7 @@ else if ($RCMAIL->task=='logout' && isset($_SESSION['user_id'])) {
 }
 
 // check session and auth cookie
-else if ($RCMAIL->action != 'login' && $_SESSION['user_id'] && $RCMAIL->action != 'send') {
+else if ($RCMAIL->task != 'login' && $_SESSION['user_id'] && $RCMAIL->action != 'send') {
   if (!$RCMAIL->authenticate_session()) {
     $OUTPUT->show_message('sessionerror', 'error');
     $RCMAIL->kill_session();
@@ -192,7 +161,7 @@ else if (!empty($_POST) && !$request_check_whitelist[$RCMAIL->action] && !$RCMAI
 if (empty($RCMAIL->user->ID)) {
   if ($OUTPUT->ajax_call)
     $OUTPUT->redirect(array(), 2000);
-  
+
   if (!empty($_REQUEST['_framed']))
     $OUTPUT->command('redirect', '?');
 
@@ -239,10 +208,16 @@ $action_map = array(
     'remove-attachment'  => 'attachments.inc',
     'display-attachment' => 'attachments.inc',
     'upload' => 'attachments.inc',
+    'group-expand' => 'autocomplete.inc',
   ),
   
   'addressbook' => array(
     'add' => 'edit.inc',
+    'group-create' => 'groups.inc',
+    'group-rename' => 'groups.inc',
+    'group-delete' => 'groups.inc',
+    'group-addmembers' => 'groups.inc',
+    'group-delmembers' => 'groups.inc',
   ),
   
   'settings' => array(
@@ -252,6 +227,8 @@ $action_map = array(
     'delete-folder' => 'manage_folders.inc',
     'subscribe'     => 'manage_folders.inc',
     'unsubscribe'   => 'manage_folders.inc',
+    'enable-threading'  => 'manage_folders.inc',
+    'disable-threading' => 'manage_folders.inc',
     'add-identity'  => 'edit_identity.inc',
   )
 );
@@ -265,9 +242,13 @@ $redirects = 0; $incstep = null;
 while ($redirects < 5) {
   $stepfile = !empty($action_map[$RCMAIL->task][$RCMAIL->action]) ?
     $action_map[$RCMAIL->task][$RCMAIL->action] : strtr($RCMAIL->action, '-', '_') . '.inc';
-
+    
   // execute a plugin action
-  if (preg_match('/^plugin\./', $RCMAIL->action)) {
+  if ($RCMAIL->plugins->is_plugin_task($RCMAIL->task)) {
+    $RCMAIL->plugins->exec_action($RCMAIL->task.'.'.$RCMAIL->action);
+    break;
+  }
+  else if (preg_match('/^plugin\./', $RCMAIL->action)) {
     $RCMAIL->plugins->exec_action($RCMAIL->action);
     break;
   }
@@ -293,5 +274,4 @@ raise_error(array(
   'line' => __LINE__,
   'file' => __FILE__,
   'message' => "Invalid request"), true, true);
-                      
-?>
+

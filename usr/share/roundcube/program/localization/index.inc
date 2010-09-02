@@ -16,7 +16,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: index.inc 2991 2009-09-25 12:23:46Z alec $
+ $Id: index.inc 3770 2010-06-19 12:46:51Z yllar $
 
 */
 
@@ -29,15 +29,15 @@ $rcube_languages = array(
   'ar_SA' => 'Arabic (العربية)',
   'hy_AM' => 'Armenian (Հայերեն)',
   'ast'	  => 'Asturiana (Asturianu)',
-  'az_AZ' => 'Azerbaijani (Azəri)',
+  'az_AZ' => 'Azerbaijani (Azərbaycanca)',
   'eu_ES' => 'Basque (Euskara)',
   'bn_BD' => 'Bengali (বাংলা)',
   'bs_BA' => 'Bosnian (Bošnjački)',
   'br'	  => 'Breton (Brezhoneg)',
   'bg_BG' => 'Bulgarian (Български)',
   'ca_ES' => 'Catalan (Català)',
-  'zh_CN' => 'Chinese (普通话)',
-  'zh_TW' => 'Chinese (國語)',
+  'zh_CN' => 'Chinese (简体中文)',
+  'zh_TW' => 'Chinese (正體中文)',
   'hr_HR' => 'Croatian (Hrvatski)',
   'cs_CZ' => 'Czech (Česky)',
   'da_DK' => 'Danish (Dansk)',
@@ -87,6 +87,7 @@ $rcube_languages = array(
   'es_AR' => 'Spanish (Argentina)',
   'es_ES' => 'Spanish (Español)',
   'sv_SE' => 'Swedish (Svenska)',
+  'ta_IN' => 'Tamil (தமிழ்)',
   'th_TH' => 'Thai (ไทย)',
   'tr_TR' => 'Turkish (Türkçe)',
   'uk_UA' => 'Ukrainian (Українська)',

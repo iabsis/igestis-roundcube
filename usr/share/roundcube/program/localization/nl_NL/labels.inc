@@ -6,7 +6,7 @@
 | language/nl_NL/labels.inc                                             |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,9 +14,10 @@
 |         Lazlo Westerhof <roundcube@lazlo.me>                          |
 |         Laurens Vets <laurens@daemon.be>                              |
 |         Frits Letteboer <f.letteboer@radiotwenterand.nl>              |
+|         Justin van Beusekom <j.v.beusekom@beus-it.nl>                 |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3029 2009-10-09 11:46:23Z alec $
+@version $Id: labels.inc 3818 2010-07-17 22:11:55Z yllar $
 
 */
 
@@ -48,14 +49,14 @@ $labels['organization'] = 'Organisatie';
 $labels['reply-to'] = 'Antwoord-aan';
 $labels['mailboxlist'] = 'Mappen';
 $labels['messagesfromto'] = 'Bericht $from t/m $to van $count';
+$labels['threadsfromto'] = 'Conversatie $from t/m $to van $count';
 $labels['messagenrof'] = 'Bericht $nr van $count';
+$labels['copy'] = 'Kopiëren';
+$labels['move'] = 'Verplaats';
 $labels['moveto'] = 'Verplaats naar...';
 $labels['download'] = 'Download';
 $labels['filename'] = 'Bestandsnaam';
 $labels['filesize'] = 'Bestandsgrootte';
-$labels['preferhtml'] = 'Toon HTML';
-$labels['htmlmessage'] = 'HTML-Bericht';
-$labels['prettydate'] = 'Gebruiksvriendelijke data';
 $labels['addtoaddressbook'] = 'Toevoegen aan adresboek';
 $labels['sun'] = 'Zo';
 $labels['mon'] = 'Ma';
@@ -123,12 +124,35 @@ $labels['messageactions'] = 'Meer acties...';
 $labels['select'] = 'Selecteer';
 $labels['all'] = 'Allemaal';
 $labels['none'] = 'Geen';
+$labels['currpage'] = 'Huidige pagina';
 $labels['unread'] = 'Ongelezen';
 $labels['flagged'] = 'Geselecteerd';
 $labels['unanswered'] = 'Onbeantwoord';
 $labels['deleted'] = 'Verwijderd';
 $labels['invert'] = 'Selectie omdraaien';
 $labels['filter'] = 'Filter';
+$labels['list'] = 'Lijst';
+$labels['threads'] = 'Conversaties';
+$labels['expand-all'] = 'Alles uitklappen';
+$labels['expand-unread'] = 'Ongelezen uitklappen';
+$labels['collapse-all'] = 'Alles inklappen';
+$labels['threaded'] = 'Conversaties';
+$labels['autoexpand_threads'] = 'Klap alle conversaties uit';
+$labels['do_expand'] = 'alle conversaties';
+$labels['expand_only_unread'] = 'alleen met ongelezen berichten';
+$labels['fromto'] = 'Afzender/Ontvanger';
+$labels['flag'] = 'Markeer';
+$labels['attachment'] = 'Bijlage';
+$labels['nonesort'] = 'Geen';
+$labels['sentdate'] = 'Verzend datum';
+$labels['arrival'] = 'Aankomst datum';
+$labels['asc'] = 'oplopend';
+$labels['desc'] = 'aflopend';
+$labels['listcolumns'] = 'Kolommen';
+$labels['listsorting'] = 'Sorteerkolom';
+$labels['listorder'] = 'Sorteervolgorde';
+$labels['listmode'] = 'Lijstweergave mode';
+$labels['folderactions'] = 'Acties voor map...';
 $labels['compact'] = 'Opschonen';
 $labels['empty'] = 'Legen';
 $labels['purge'] = 'Verwijderen';
@@ -155,6 +179,7 @@ $labels['revertto'] = 'Wijzig terug in';
 $labels['attachments'] = 'Bijlages';
 $labels['upload'] = 'Toevoegen';
 $labels['close'] = 'Sluit';
+$labels['messageoptions'] = 'Acties voor bericht...';
 $labels['low'] = 'Laag';
 $labels['lowest'] = 'Laagste';
 $labels['normal'] = 'Normaal';
@@ -181,6 +206,7 @@ $labels['surname'] = 'Achternaam';
 $labels['email'] = 'E-Mail';
 $labels['addcontact'] = 'Nieuwe contactpersoon toevoegen';
 $labels['editcontact'] = 'Contactpersoon wijzigen';
+$labels['contacts'] = 'Contacten';
 $labels['edit'] = 'Wijzig';
 $labels['cancel'] = 'Annuleer';
 $labels['save'] = 'Opslaan';
@@ -192,10 +218,13 @@ $labels['contactsfromto'] = 'Contacten $from t/m $to van $count';
 $labels['print'] = 'Afdrukken';
 $labels['export'] = 'Exporteren';
 $labels['exportvcards'] = 'Exporteer contactpersonen in vCard formaat';
+$labels['newcontactgroup'] = 'Maak een nieuwe contactgroep';
+$labels['groupactions'] = 'Acties voor contactgroepen...';
 $labels['previouspage'] = 'Vorige pagina';
 $labels['firstpage'] = 'Eerste pagina';
 $labels['nextpage'] = 'Volgende pagina';
 $labels['lastpage'] = 'Laatste pagina';
+$labels['group'] = 'Groep';
 $labels['groups'] = 'Groepen';
 $labels['personaladrbook'] = 'Persoonlijk Adresboek';
 $labels['import'] = 'Importeer';
@@ -208,11 +237,15 @@ $labels['settingsfor'] = 'Instellingen voor';
 $labels['preferences'] = 'Instellingen';
 $labels['userpreferences'] = 'Gebruikersinstellingen';
 $labels['editpreferences'] = 'Wijzig gebruikersinstellingen';
-$labels['identities'] = 'Identititeiten';
+$labels['identities'] = 'Identiteiten';
 $labels['manageidentities'] = 'Beheer identiteiten voor dit account';
 $labels['newidentity'] = 'Identiteit toevoegen';
 $labels['newitem'] = 'Nieuw item';
 $labels['edititem'] = 'Wijzig item';
+$labels['preferhtml'] = 'Toon HTML';
+$labels['defaultcharset'] = 'Standaard karakterset';
+$labels['htmlmessage'] = 'HTML-Bericht';
+$labels['prettydate'] = 'Gebruiksvriendelijke data';
 $labels['setdefault'] = 'Stel in als standaard';
 $labels['autodetect'] = 'Automatisch';
 $labels['language'] = 'Taal';
@@ -236,6 +269,7 @@ $labels['ignore'] = 'negeer';
 $labels['readwhendeleted'] = 'Bericht na verwijderen als gelezen markeren';
 $labels['flagfordeletion'] = 'Bericht niet verwijderen maar als verwijderd markeren ';
 $labels['skipdeleted'] = 'Verwijderde berichten niet tonen';
+$labels['deletealways'] = 'Verwijder bericht wanneer verplaatsen naar Prullenbak mislukt';
 $labels['showremoteimages'] = 'Geef externe toegevoegde berichten weer';
 $labels['fromknownsenders'] = 'Van bekende afzenders';
 $labels['always'] = 'altijd';
@@ -244,12 +278,14 @@ $labels['autosavedraft'] = 'Concept automatisch opslaan';
 $labels['everynminutes'] = 'iedere $n minuten';
 $labels['keepalive'] = 'Controleer op nieuwe berichten';
 $labels['never'] = 'nooit';
+$labels['immediately'] = 'onmiddellijk';
 $labels['messagesdisplaying'] = 'Berichten weergave';
 $labels['messagescomposition'] = 'Berichten aanmaken';
 $labels['mimeparamfolding'] = 'Namen van bijlagen';
 $labels['2231folding'] = 'Volledig RFC 2231 (Thunderbird)';
 $labels['miscfolding'] = 'RFC 2047/2231 (MS Outlook)';
 $labels['2047folding'] = 'Volledig RFC 2047 (andere)';
+$labels['force7bit'] = 'Gebruik MIME codering voor 8-bit karakters';
 $labels['advancedoptions'] = 'Geavanceerde opties';
 $labels['focusonnewmessage'] = 'Focus browserscherm bij nieuw bericht';
 $labels['checkallfolders'] = 'Controleer alle mappen op nieuwe berichten';
@@ -259,6 +295,20 @@ $labels['section'] = 'Sectie';
 $labels['maintenance'] = 'Onderhoud';
 $labels['newmessage'] = 'Nieuw bericht';
 $labels['listoptions'] = 'Lijstopties';
+$labels['signatureoptions'] = 'Instellingen voor ondertekening';
+$labels['whenreplying'] = 'bij antwoorden';
+$labels['replytopposting'] = 'begin bericht boven het origineel';
+$labels['replybottomposting'] = 'begin bericht onder het origineel';
+$labels['replyremovesignature'] = 'Verwijder ondertekening uit het origneel bij het antwoorden';
+$labels['autoaddsignature'] = 'Ondertekening automatisch toevoegen';
+$labels['newmessageonly'] = 'alleen bij nieuwe berichten';
+$labels['replyandforwardonly'] = 'alleen bij antwoorden en doorsturen';
+$labels['replysignaturepos'] = 'Ondertekening plaatsen bij antwoorden of doorsturen';
+$labels['belowquote'] = 'onder het citaat';
+$labels['abovequote'] = 'boven het citaat';
+$labels['insertsignature'] = 'Ondertekening invoegen';
+$labels['previewpanemarkread'] = 'Markeer voorbeeld bericht als gelezen';
+$labels['afternseconds'] = 'Na $n seconden';
 $labels['folder'] = 'Map';
 $labels['folders'] = 'Mappen';
 $labels['foldername'] = 'Mapnaam';
@@ -278,5 +328,23 @@ $labels['B'] = 'B';
 $labels['KB'] = 'KB';
 $labels['MB'] = 'MB';
 $labels['GB'] = 'GB';
+$labels['unicode'] = 'Unicode';
+$labels['english'] = 'Engels';
+$labels['westerneuropean'] = 'West-Europeaans';
+$labels['easterneuropean'] = 'Oost-Europeaans';
+$labels['southeasterneuropean'] = 'Zuidoost Europees';
+$labels['baltic'] = 'Baltisch';
+$labels['cyrillic'] = 'Cyrillisch';
+$labels['arabic'] = 'Arabisch';
+$labels['greek'] = 'Grieks';
+$labels['hebrew'] = 'Hebreeuws';
+$labels['turkish'] = 'Turks';
+$labels['nordic'] = 'Noord-Germaans';
+$labels['thai'] = 'Thais';
+$labels['celtic'] = 'Keltisch';
+$labels['vietnamese'] = 'Vietnamees';
+$labels['japanese'] = 'Japans';
+$labels['korean'] = 'Koreaans';
+$labels['chinese'] = 'Chinees';
 
 ?>

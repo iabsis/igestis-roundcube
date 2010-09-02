@@ -148,7 +148,6 @@ class html2text
         '/[ ]{2,}/',                             // Runs of spaces, pre-handling
         '/<script[^>]*>.*?<\/script>/i',         // <script>s -- which strip_tags supposedly has problems with
         '/<style[^>]*>.*?<\/style>/i',           // <style>s -- which strip_tags supposedly has problems with
-        //'/<!-- .* -->/',                         // Comments -- which strip_tags might have problem a with
         '/<p[^>]*>/i',                           // <P>
         '/<br[^>]*>/i',                          // <br>
         '/<i[^>]*>(.*?)<\/i>/i',                 // <i>
@@ -158,6 +157,7 @@ class html2text
         '/<li[^>]*>(.*?)<\/li>/i',               // <li> and </li>
         '/<li[^>]*>/i',                          // <li>
         '/<hr[^>]*>/i',                          // <hr>
+        '/<div[^>]*>/i',                         // <div>
         '/(<table[^>]*>|<\/table>)/i',           // <table> and </table>
         '/(<tr[^>]*>|<\/tr>)/i',                 // <tr> and </tr>
         '/<td[^>]*>(.*?)<\/td>/i',               // <td> and </td>
@@ -192,8 +192,7 @@ class html2text
         ' ',                                    // Runs of spaces, pre-handling
         '',                                     // <script>s -- which strip_tags supposedly has problems with
         '',                                     // <style>s -- which strip_tags supposedly has problems with
-        //'',                                     // Comments -- which strip_tags might have problem a with
-        "\n\n",                               // <P>
+        "\n\n",                                 // <P>
         "\n",                                   // <br>
         '_\\1_',                                // <i>
         '_\\1_',                                // <em>
@@ -202,6 +201,7 @@ class html2text
         "\t* \\1\n",                            // <li> and </li>
         "\n\t* ",                               // <li>
         "\n-------------------------\n",        // <hr>
+        "<div>\n",                                   // <div>
         "\n\n",                                 // <table> and </table>
         "\n",                                   // <tr> and </tr>
         "\t\t\\1\n",                            // <td> and </td>
@@ -468,13 +468,15 @@ class html2text
 
         // Run our defined search-and-replace
         $text = preg_replace($this->search, $this->replace, $text);
-        $text = preg_replace_callback($this->callback_search, array('html2text', '_preg_callback'), $text);
 
         // Replace known html entities
         $text = html_entity_decode($text, ENT_COMPAT, 'UTF-8');
 
+        // Run our defined search-and-replace with callback
+        $text = preg_replace_callback($this->callback_search, array('html2text', '_preg_callback'), $text);
+
         // Remove unknown/unhandled entities (this cannot be done in search-and-replace block)
-        $text = preg_replace('/&[^&;]+;/i', '', $text); 
+        $text = preg_replace('/&#?[a-z0-9]{2,7};/i', '', $text); 
 
         // Strip any other HTML tags
         $text = strip_tags($text, $this->allowed_tags);
@@ -566,7 +568,7 @@ class html2text
         case 'b':
         case 'strong':
             return $this->_strtoupper($matches[2]);
-        case 'hr':
+        case 'th':
             return $this->_strtoupper("\t\t". $matches[2] ."\n");
         case 'h':
             return $this->_strtoupper("\n\n". $matches[2] ."\n\n");

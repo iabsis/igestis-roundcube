@@ -21,7 +21,7 @@ span.tablink-selected
   height: 22px;
   overflow: hidden;
   text-overflow: ellipsis;
-  background: url('images/tabs.gif') top left no-repeat;
+  background: url(images/tabs.gif) top left no-repeat;
 }
 
 span.tablink-selected
@@ -50,19 +50,13 @@ span.tablink-selected a
   width: 300px;
 }
 
-#identities-list,
 #folder-manager
 {
   position: absolute;
-  top: 95px;
-  left: 20px;
-  overflow: auto;
-}
-
-#folder-manager
-{
   width: 600px;
-  bottom: 140px;
+  top: 0;
+  left: 0;
+  bottom: 105px;
   overflow: auto;
   border: 1px solid #999999;
 }
@@ -71,13 +65,6 @@ span.tablink-selected a
 {
   border: 1px solid #CC3333;
   background-color: #FFFFA6;
-}
-
-#identities-list
-{
-  bottom: 60px;
-  width: 420px;
-  border: 1px solid #999999;
 }
 
 #listbuttons
@@ -89,9 +76,8 @@ span.tablink-selected a
 
 #identities-table
 {
-  width: 420px;
+  width: 100%;
   table-layout: fixed;
-  background-color: #F9F9F9;
 }
 
 #subscription-table
@@ -105,21 +91,13 @@ span.tablink-selected a
 }
 
 #subscription-table tbody td,
-#identities-table tbody td
+#identities-table tbody td,
+#sections-table tbody td
 {
   cursor: default;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-#identities-table thead td.name
-{
-  width: 55%;
-}
-
-#identities-table thead td.email
-{
-  width: 45%;
+  -o-text-overflow: ellipsis;
 }
 
 #subscription-table tbody td
@@ -148,17 +126,15 @@ span.tablink-selected a
 
 #subscription-table thead td.name
 {
-  width: 360px;
+  width: 95%;
 }
 
-#subscription-table thead td.msgcount
+#subscription-table thead td.msgcount,
+#subscription-table thead td.subscribed,
+#subscription-table thead td.threaded
 {
-  width: 90px;
-}
-
-#subscription-table thead td.subscribed
-{
-  width: 90px;
+  white-space: nowrap;
+  min-width: 50px;
 }
 
 #subscription-table tbody td.subscribed,
@@ -177,7 +153,7 @@ span.tablink-selected a
 #subscription-table td.name input
 {
   font: inherit;
-  width: 240px;
+  width: 90%;
 }
 
 #identity-frame
@@ -190,12 +166,12 @@ span.tablink-selected a
 #identity-details
 {
   position: absolute;
-  top: 95px;
-  left: 450px;
-  right: 20px;
-  bottom: 60px;
+  top: 0;
+  right: 0;
+  bottom: 0;
   border: 1px solid #999999;
   overflow: auto;
+  background-color: #F2F2F2;
 }
 
 #identity-details table td.title
@@ -213,19 +189,12 @@ input.disabled
 {
   position: absolute;
   width: 600px;
-  height: 120px;
-  left: 20px;
-  bottom: 20px;
+  height: 95px;
+  left: 0;
+  bottom: 0;
 }
 
-div.settingsbox
-{
-  width: 600px;
-  margin-top: 20px;
-  border: 1px solid #999999;
-}
-
-fieldset 
+fieldset
 {
   margin-bottom: 0.5em;
   border: 1px solid #999999;
@@ -237,24 +206,16 @@ legend
   color: #999999;
 }
 
-#prefsscreen
-{
-  position: absolute;
-  top: 95px;
-  right: 20px;
-  bottom: 30px;
-  left: 20px;
-}
-
+#identities-list,
 #sectionslist
 {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
+  top: 0;
+  left: 0;
+  bottom: 0;
   border: 1px solid #999999;
   background-color: #F9F9F9;
-  overflow: auto;
+  overflow: hidden;
 }
 
 #sections-table
@@ -263,17 +224,12 @@ legend
   table-layout: fixed;
 }
 
-#sections-table tbody td
-{
-  cursor: default;
-}
-
 #prefs-box
 {
   position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
+  top: 0;
+  right: 0;
+  bottom: 0;
   border: 1px solid #999999;
   overflow: hidden;
 }
@@ -281,7 +237,7 @@ legend
 body.iframe,
 #prefs-frame
 {
-  background-color: #F9F9F9;
+  background-color: #F2F2F2;
   border: none;
 }
 

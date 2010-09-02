@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: show.inc 2237 2009-01-17 01:55:39Z till $
+ $Id: show.inc 3780 2010-06-23 09:55:08Z alec $
 
 */
 
@@ -72,4 +72,3 @@ function rcmail_contact_details($attrib)
 //$OUTPUT->framed = $_framed;
 $OUTPUT->add_handler('contactdetails', 'rcmail_contact_details');
 $OUTPUT->send('showcontact');
-?>

@@ -5,7 +5,7 @@
  | program/include/html.php                                              |
  |                                                                       |
  | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2009, RoundCube Dev, - Switzerland                 |
+ | Copyright (C) 2005-2010, RoundCube Dev, - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: $
+ $Id: html.php 3780 2010-06-23 09:55:08Z alec $
 
  */
 
@@ -32,9 +32,9 @@ class html
     protected $allowed = array();
     protected $content;
 
-    public static $common_attrib = array('id','class','style','title','align');
-    public static $containers = array('iframe','div','span','p','h1','h2','h3','form','textarea','table','tr','th','td','style','script');
     public static $lc_tags = true;
+    public static $common_attrib = array('id','class','style','title','align');
+    public static $containers = array('iframe','div','span','p','h1','h2','h3','form','textarea','table','thead','tbody','tr','th','td','style','script');
 
     /**
      * Constructor
@@ -129,7 +129,8 @@ class html
         if (is_string($attr)) {
             $attr = array('src' => $attr);
         }
-        return self::tag('img', $attr + array('alt' => ''), null, array_merge(self::$common_attrib, array('src','alt','width','height','border','usemap')));
+        return self::tag('img', $attr + array('alt' => ''), null, array_merge(self::$common_attrib,
+	    array('src','alt','width','height','border','usemap')));
     }
 
     /**
@@ -145,7 +146,8 @@ class html
         if (is_string($attr)) {
             $attr = array('href' => $attr);
         }
-        return self::tag('a', $attr, $cont, array_merge(self::$common_attrib, array('href','target','name','onclick','onmouseover','onmouseout','onmousedown','onmouseup')));
+        return self::tag('a', $attr, $cont, array_merge(self::$common_attrib,
+	    array('href','target','name','onclick','onmouseover','onmouseout','onmousedown','onmouseup')));
     }
 
     /**
@@ -192,7 +194,8 @@ class html
         if (is_string($attr)) {
             $attr = array('src' => $attr);
         }
-        return self::tag('iframe', $attr, $cont, array_merge(self::$common_attrib, array('src','name','width','height','border','frameborder')));
+        return self::tag('iframe', $attr, $cont, array_merge(self::$common_attrib,
+	    array('src','name','width','height','border','frameborder')));
     }
 
     /**
@@ -263,7 +266,9 @@ class html_inputfield extends html
 {
     protected $tagname = 'input';
     protected $type = 'text';
-    protected $allowed = array('type','name','value','size','tabindex','autocomplete','checked','onchange','onclick','disabled','readonly','spellcheck','results');
+    protected $allowed = array('type','name','value','size','tabindex',
+	'autocomplete','checked','onchange','onclick','disabled','readonly',
+	'spellcheck','results','maxlength','src');
 
     public function __construct($attrib = array())
     {
@@ -431,7 +436,8 @@ class html_checkbox extends html_inputfield
 class html_textarea extends html
 {
     protected $tagname = 'textarea';
-    protected $allowed = array('name','rows','cols','wrap','tabindex','onchange','disabled','readonly','spellcheck');
+    protected $allowed = array('name','rows','cols','wrap','tabindex',
+	'onchange','disabled','readonly','spellcheck');
 
     /**
      * Get HTML code for this object
@@ -461,7 +467,8 @@ class html_textarea extends html
             $value = Q($value, 'strict', false);
         }
 
-        return self::tag($this->tagname, $this->attrib, $value, array_merge(self::$common_attrib, $this->allowed));
+        return self::tag($this->tagname, $this->attrib, $value,
+	    array_merge(self::$common_attrib, $this->allowed));
     }
 }
 
@@ -488,7 +495,8 @@ class html_select extends html
 {
     protected $tagname = 'select';
     protected $options = array();
-    protected $allowed = array('name','size','tabindex','autocomplete','multiple','onchange','disabled');
+    protected $allowed = array('name','size','tabindex','autocomplete',
+	'multiple','onchange','disabled');
     
     /**
      * Add a new option to this drop-down
@@ -546,7 +554,9 @@ class html_select extends html
 class html_table extends html
 {
     protected $tagname = 'table';
-    protected $allowed = array('id','class','style','width','summary','cellpadding','cellspacing','border');
+    protected $allowed = array('id','class','style','width','summary',
+	'cellpadding','cellspacing','border');
+
     private $header = array();
     private $rows = array();
     private $rowindex = 0;
@@ -709,4 +719,3 @@ class html_table extends html
     }
 }
 
-?>

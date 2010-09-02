@@ -42,7 +42,7 @@
 // | Author: Frank M. Kromann <frank@kromann.info>                        |
 // +----------------------------------------------------------------------+
 //
-// $Id: mssql.php,v 1.16 2008/02/17 18:54:08 quipo Exp $
+// $Id: mssql.php 295587 2010-02-28 17:16:38Z quipo $
 //
 
 require_once 'MDB2/Driver/Function/Common.php';
@@ -71,9 +71,9 @@ class MDB2_Driver_Function_mssql extends MDB2_Driver_Function_Common
      * @return mixed a result handle or MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
-    function &executeStoredProc($name, $params = null, $types = null, $result_class = true, $result_wrap_class = false)
+    function executeStoredProc($name, $params = null, $types = null, $result_class = true, $result_wrap_class = false)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -134,7 +134,7 @@ class MDB2_Driver_Function_mssql extends MDB2_Driver_Function_Common
      */
     function substring($value, $position = 1, $length = null)
     {
-        if (!is_null($length)) {
+        if (null !== $length) {
             return "SUBSTRING($value, $position, $length)";
         }
         return "SUBSTRING($value, $position, LEN($value) - $position + 1)";

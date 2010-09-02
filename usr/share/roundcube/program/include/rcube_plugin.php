@@ -15,14 +15,14 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: $
+ $Id: rcube_plugin.php 3700 2010-06-03 06:40:06Z thomasb $
 
 */
 
 /**
  * Plugin interface class
  *
- * @package Core
+ * @package PluginAPI
  */
 abstract class rcube_plugin
 {
@@ -31,6 +31,7 @@ abstract class rcube_plugin
   public $task;
   protected $home;
   protected $urlbase;
+  private $mytask;
 
   /**
    * Default constructor.
@@ -59,8 +60,10 @@ abstract class rcube_plugin
   {
     $fpath = $this->home.'/'.$fname;
     $rcmail = rcmail::get_instance();
-    if (!$rcmail->config->load_from_file($fpath)) {
-      raise_error(array('code' => 527, 'type' => 'php', 'message' => "Failed to load config from $fpath"), true, false);
+    if (is_file($fpath) && !$rcmail->config->load_from_file($fpath)) {
+      raise_error(array('code' => 527, 'type' => 'php',
+        'file' => __FILE__, 'line' => __LINE__,
+        'message' => "Failed to load config from $fpath"), true, false);
       return false;
     }
     
@@ -132,15 +135,8 @@ abstract class rcube_plugin
    */
   public function register_task($task)
   {
-    if ($task != asciiwords($task)) {
-      raise_error(array('code' => 526, 'type' => 'php', 'message' => "Invalid task name: $task. Only characters [a-z0-9_.-] are allowed"), true, false);
-    }
-    else if (in_array(rcmail::$main_tasks, $task)) {
-      raise_error(array('code' => 526, 'type' => 'php', 'message' => "Cannot register taks $task; already taken by another plugin or the application itself"), true, false);
-    }
-    else {
-      rcmail::$main_tasks[] = $task;
-    }
+    if ($this->api->register_task($task, $this->ID))
+      $this->mytask = $task;
   }
 
   /**
@@ -153,7 +149,7 @@ abstract class rcube_plugin
    */
   public function register_action($action, $callback)
   {
-    $this->api->register_action($action, $this->ID, $callback);
+    $this->api->register_action($action, $this->ID, $callback, $this->mytask);
   }
 
   /**

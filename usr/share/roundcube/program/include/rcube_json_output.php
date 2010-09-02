@@ -5,7 +5,7 @@
  | program/include/rcube_json_output.php                                 |
  |                                                                       |
  | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2008-2009, RoundCube Dev. - Switzerland                 |
+ | Copyright (C) 2008-2010, RoundCube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -16,7 +16,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id:  $
+ $Id: rcube_json_output.php 3553 2010-04-23 11:25:37Z alec $
 
 */
 
@@ -47,8 +47,8 @@ class rcube_json_output
     {
         $this->config = rcmail::get_instance()->config;
     }
-    
-    
+
+
     /**
      * Set environment variable
      *
@@ -59,7 +59,8 @@ class rcube_json_output
     {
         $this->env[$name] = $value;
     }
-    
+
+
     /**
      * Issue command to set page title
      *
@@ -70,6 +71,7 @@ class rcube_json_output
         $name = $this->config->get('product_name');
         $this->command('set_pagetitle', empty($name) ? $title : $name.' :: '.$title);
     }
+
 
     /**
      * @ignore
@@ -103,6 +105,7 @@ class rcube_json_output
         // ignore
     }
 
+
     /**
      * Register a list of template object handlers
      *
@@ -113,8 +116,8 @@ class rcube_json_output
     {
         // ignore
     }
-    
-    
+
+
     /**
      * Call a client method
      *
@@ -145,7 +148,7 @@ class rcube_json_output
             $this->texts[$name] = rcube_label($name);
         }
     }
-    
+
 
     /**
      * Invoke display_message command
@@ -167,7 +170,8 @@ class rcube_json_output
             );
         }
     }
-    
+
+
     /**
      * Delete all stored env variables and commands
      */
@@ -177,7 +181,8 @@ class rcube_json_output
         $this->texts = array();
         $this->commands = array();
     }
-    
+
+
     /**
      * Redirect to a certain url
      *
@@ -218,7 +223,6 @@ class rcube_json_output
             $s_header_sent = true;
             send_nocacheing_headers();
             header('Content-Type: text/plain; charset=' . $this->get_charset());
-            print '/** ajax response ['.date('d/M/Y h:i:s O')."] **/\n";
         }
 
         // unset default env vars
@@ -228,21 +232,21 @@ class rcube_json_output
         $response = array('action' => $rcmail->action, 'unlock' => (bool)$_REQUEST['_unlock']);
         
         if (!empty($this->env))
-          $response['env'] = $this->env;
+            $response['env'] = $this->env;
           
         if (!empty($this->texts))
-          $response['texts'] = $this->texts;
+            $response['texts'] = $this->texts;
 
         // send function calls
         $response['exec'] = $this->get_js_commands() . $add;
         
         if (!empty($this->callbacks))
-          $response['callbacks'] = $this->callbacks;
+            $response['callbacks'] = $this->callbacks;
 
         echo json_serialize($response);
     }
-    
-    
+
+
     /**
      * Return executable javascript code for all registered commands
      *
@@ -251,7 +255,7 @@ class rcube_json_output
     private function get_js_commands()
     {
         $out = '';
-        
+
         foreach ($this->commands as $i => $args) {
             $method = array_shift($args);
             foreach ($args as $i => $arg) {
@@ -268,5 +272,3 @@ class rcube_json_output
         return $out;
     }
 }
-
-

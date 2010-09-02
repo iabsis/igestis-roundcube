@@ -5,16 +5,16 @@
 | language/ro_RO/messages.inc                                           |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Daniel Anechitoaie - danieLs <daniels@safereaction.ro>        |
 |         Zeno Popovici <zeno.popovici at ulbsibiu.ro>                  |
-|		  Cristian Nastase <cristian.nastase@itcaffe.net>				|
+|         Cristian Nastase <cristian.nastase@itcaffe.net>               |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 2994 2009-09-27 14:16:33Z yllar $
+@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
 
 */
 
@@ -29,6 +29,7 @@ $messages['nomessagesfound'] = 'Nu a fost găsit nici un mesaj în această căs
 $messages['loggedout'] = 'Sesiune încheiată cu succes. La revedere!';
 $messages['mailboxempty'] = 'Căsuţa poştală este goală';
 $messages['loading'] = 'Se încarcă...';
+$messages['uploading'] = 'Fişierul se încarcă...';
 $messages['loadingdata'] = 'Se încarcă informaţiile...';
 $messages['checkingmail'] = 'Se caută mesaje noi...';
 $messages['sendingmessage'] = 'Trimitere mesaj...';
@@ -46,9 +47,10 @@ $messages['sendingfailed'] = 'Nu s-a reuşit trimiterea mesajului';
 $messages['senttooquickly'] = 'Vă rugăm aşteptaţi $sec sec. înainte de a trimite acest mesaj';
 $messages['errorsavingsent'] = 'A intervenit o eroare în timp ce se efectua salvarea mesajului trimis';
 $messages['errorsaving'] = 'A intervenit o eroare în timp ce se efectua salvarea';
-$messages['errormoving'] = 'Nu s-a putut muta mesajul';
-$messages['errordeleting'] = 'Nu s-a putut şterge mesajul';
-$messages['errormarking'] = 'Nu s-a putut marca mesajul';
+$messages['errormoving'] = 'Mesajul(e) nu a(u) putut fi mutat(e)';
+$messages['errorcopying'] = 'Mesajul(e) nu a(u) putut fi copiat(e)';
+$messages['errordeleting'] = 'Mesajul(e) nu a(u) putut fi şters(e)';
+$messages['errormarking'] = 'Mesajul(e) nu a(u) putut fi marcat(e)';
 $messages['deletecontactconfirm'] = 'Sunteţi sigur că doriţi să ştergeţi contactul(ele) selectate?';
 $messages['deletemessagesconfirm'] = 'Chiar doriţi să ştergeţi mesajele selectate ?';
 $messages['deletefolderconfirm'] = 'Sunteţi sigur că doriţi să ştergeţi acest dosar?';
@@ -69,11 +71,12 @@ $messages['notsentwarning'] = 'Mesajul nu a fost trimis. Vreţi să renunţaţi 
 $messages['noldapserver'] = 'Vă rugăm să alegeţi un server ldap pentru căutare';
 $messages['nocontactsreturned'] = 'Nu s-a găsit nici un contact';
 $messages['nosearchname'] = 'Vă rugăm să introduceţi un nume de contact sau adresă de e-mail';
+$messages['notuploadedwarning'] = 'Nu toate fişierele au fost ataşate. Vă rugăm să aşteptaţi sau să anulaţi încărcarea acestora.';
 $messages['searchsuccessful'] = '$nr mesaje găsite';
-$messages['searchnomatch'] = 'Căutarea nu a returnat nici un rezultat';
+$messages['searchnomatch'] = 'Căutarea nu a returnat niciun rezultat';
 $messages['searching'] = 'Se caută...';
 $messages['checking'] = 'Se verifică...';
-$messages['nospellerrors'] = 'Nu s-a găsit nici-o greşeală de ortografie';
+$messages['nospellerrors'] = 'Nu s-a găsit nicio greşeală de ortografie';
 $messages['folderdeleted'] = 'Dosarul a fost şters cu succes';
 $messages['deletedsuccessfully'] = 'Mesaj şters cu succes !';
 $messages['converting'] = 'Resetez mesajul la parametrii iniţiali...';
@@ -81,10 +84,11 @@ $messages['messageopenerror'] = 'Nu s-a putut încărca mesajul din server';
 $messages['fileuploaderror'] = 'Încărcarea pe server a eşuat';
 $messages['filesizeerror'] = 'Fişierul încărcat depăşeşte mărimea de $size';
 $messages['copysuccess'] = '$nr adrese s-au copiat cu succes';
-$messages['copyerror'] = 'Nu s-a putut copia nici-o adresă';
+$messages['copyerror'] = 'Nu s-a putut copia nicio adresă';
 $messages['sourceisreadonly'] = 'Sursa acestei adrese este "read-only"(se poate doar citi)';
 $messages['errorsavingcontact'] = 'Nu s-a putut salva adresa de contact';
 $messages['movingmessage'] = 'Mutare mesaj....';
+$messages['copyingmessage'] = 'Copiere mesaj...';
 $messages['receiptsent'] = 'Confirmarea de citire a fost trimisă cu succes';
 $messages['errorsendingreceipt'] = 'Confirmarea nu a putut fi trimisă';
 $messages['nodeletelastidentity'] = 'Nu puteţi şterge această identitate, este ultima.';
@@ -92,6 +96,8 @@ $messages['addsubfolderhint'] = 'Acest dosar va fi creat ca subdosar al celui se
 $messages['forbiddencharacter'] = 'Numele dosarului conţine un caracter nepermis.';
 $messages['selectimportfile'] = 'Va rugăm să selectaţi fişierul pentru încărcare';
 $messages['addresswriterror'] = 'Agenda selectată nu poate fi actualizată';
+$messages['contactaddedtogroup'] = 'Contactele au fost adăugate cu succes la acest grup';
+$messages['contactremovedfromgroup'] = 'Contactele au fost şterse cu succes din acest grup';
 $messages['importwait'] = 'Datele sunt importate, vă rugăm să aşteptaţi...';
 $messages['importerror'] = 'Importul a eşuat! Fişierul încărcat nu este un fişier vCard valid.';
 $messages['importconfirm'] = 'Contactele $inserted au fost importate cu succes, $skipped intrări au fost ignorate deoarece ele există deja:$names';
@@ -99,10 +105,14 @@ $messages['opnotpermitted'] = 'Operaţia nu este permisă!';
 $messages['nofromaddress'] = 'Nu există o adresă de e-mail în identitatea selectată';
 $messages['editorwarning'] = 'Trecerea în mod text a editorului va cauza pierderea formatării textului. Doriţi să continuaţi?';
 $messages['httpreceivedencrypterror'] = 'Vă rugăm să luaţi legătura cu administratorul serverului de mail, deoarece există o eroare în configuraţia acestuia. Mesajul d-voastră nu a fost trimis.';
-$messages['smtpconnerror'] = 'Eroare SMTP  ($code): Conexiunea cu serverul a eşuat';
-$messages['smtpautherror'] = 'Eroare SMTP  ($code): Autentificare eşuată';
-$messages['smtpfromerror'] = 'Eroare SMTP  ($code): Nu s-a putut seta expeditorul "$from"';
-$messages['smtptoerror'] = 'Eroare SMTP  ($code): Nu s-a putut adăuga destinatarul "$to"';
+$messages['smtpconnerror'] = 'Eroare SMTP ($code): Conexiunea cu serverul a eşuat';
+$messages['smtpautherror'] = 'Eroare SMTP ($code): Autentificare eşuată';
+$messages['smtpfromerror'] = 'Eroare SMTP ($code): Nu s-a putut seta expeditorul "$from" ($msg)';
+$messages['smtptoerror'] = 'Eroare SMTP ($code): Nu s-a putut adăuga destinatarul "$to" ($msg)';
 $messages['smtprecipientserror'] = 'Eroare SMTP: Nu s-a putut procesa lista cu destinatari';
 $messages['smtperror'] = 'Eroare SMTP: $msg';
+$messages['emailformaterror'] = 'Adresă de e-mail incorectă: $email';
+$messages['toomanyrecipients'] = 'Prea mulţi destinatari. Reduceţi numărul de destinatari la $max.';
+$messages['maxgroupmembersreached'] = 'Numărul de membri ai grupului depăşeşte maximul de $max.';
+
 ?>

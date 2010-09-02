@@ -6,7 +6,7 @@
 | language/it/labels.inc                                                |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         Yusef Maali <contact@yusefmaali.net>                          |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3025 2009-10-07 10:05:48Z alec $
+@version $Id: labels.inc 3607 2010-05-10 11:20:52Z alec $
 
 */
 
@@ -46,14 +46,14 @@ $labels['organization'] = 'Società';
 $labels['reply-to'] = 'Rispondi a';
 $labels['mailboxlist'] = 'Cartelle';
 $labels['messagesfromto'] = 'Messaggi da $from a $to di $count';
+$labels['threadsfromto'] = 'Thread da $from a $to di $count';
 $labels['messagenrof'] = 'Messaggio $nr di $count';
+$labels['copy'] = 'Copia';
+$labels['move'] = 'Sposta';
 $labels['moveto'] = 'Sposta in...';
 $labels['download'] = 'Download';
 $labels['filename'] = 'Nome file';
 $labels['filesize'] = 'Dimensione file';
-$labels['preferhtml'] = 'Mostra HTML';
-$labels['htmlmessage'] = 'Messaggio HTML';
-$labels['prettydate'] = 'Date più leggibili';
 $labels['addtoaddressbook'] = 'Aggiungi alla rubrica';
 $labels['sun'] = 'Dom';
 $labels['mon'] = 'Lun';
@@ -121,11 +121,33 @@ $labels['messageactions'] = 'Altre azioni...';
 $labels['select'] = 'Seleziona';
 $labels['all'] = 'Tutti';
 $labels['none'] = 'Nessuno';
+$labels['currpage'] = 'Pagina corrente';
 $labels['unread'] = 'Non letti';
 $labels['flagged'] = 'Contrassegnati';
 $labels['unanswered'] = 'Senza risposta';
 $labels['deleted'] = 'Cancellato';
+$labels['invert'] = 'Inverti';
 $labels['filter'] = 'Filtra';
+$labels['list'] = 'Elenco';
+$labels['threads'] = 'Argomenti';
+$labels['expand-all'] = 'Espandi tutto';
+$labels['expand-unread'] = 'Espandi non letti';
+$labels['collapse-all'] = 'Richiudi tutti';
+$labels['threaded'] = 'Per argomenti';
+$labels['autoexpand_threads'] = 'Espandi';
+$labels['do_expand'] = 'Tutti i thread';
+$labels['expand_only_unread'] = 'solo con messaggi non letti';
+$labels['fromto'] = 'Mittente/Destinatario';
+$labels['attachment'] = 'Allegato';
+$labels['nonesort'] = 'Nessuno';
+$labels['sentdate'] = 'Data d\'invio';
+$labels['arrival'] = 'Data di arrivo';
+$labels['asc'] = 'Ascendente';
+$labels['desc'] = 'Discendente';
+$labels['listcolumns'] = 'Elenco Colonne';
+$labels['listsorting'] = 'Ordina per';
+$labels['listorder'] = 'Ordinamento';
+$labels['listmode'] = 'Modalit&agrave; di visualizzazione';
 $labels['compact'] = 'Compatta';
 $labels['empty'] = 'Svuota';
 $labels['purge'] = 'Pulisci';
@@ -134,6 +156,8 @@ $labels['unknown'] = 'sconosciuto';
 $labels['unlimited'] = 'illimitato';
 $labels['quicksearch'] = 'Ricerca veloce';
 $labels['resetsearch'] = 'Annulla ricerca';
+$labels['searchmod'] = 'Ambito di ricerca';
+$labels['msgtext'] = 'Intero messaggio';
 $labels['openinextwin'] = 'Apri in una nuova finestra';
 $labels['emlsave'] = 'Scarica (.eml)';
 $labels['compose'] = 'Scrivi un messaggio';
@@ -187,10 +211,13 @@ $labels['contactsfromto'] = 'Contatti da $from a $to di $count';
 $labels['print'] = 'Stampa';
 $labels['export'] = 'Esporta';
 $labels['exportvcards'] = 'Esporta i contatti in formato vCard';
+$labels['newcontactgroup'] = 'Crea un nuovo gruppo';
+$labels['groupactions'] = 'Azioni per i gruppi';
 $labels['previouspage'] = 'Pagina precedente';
 $labels['firstpage'] = 'Prima pagina';
 $labels['nextpage'] = 'Pagina successiva';
 $labels['lastpage'] = 'Ultima pagina';
+$labels['group'] = 'Gruppo';
 $labels['groups'] = 'Gruppi';
 $labels['personaladrbook'] = 'Rubrica Personale';
 $labels['import'] = 'Importa';
@@ -208,6 +235,10 @@ $labels['manageidentities'] = 'Gestisci le identità per questo account';
 $labels['newidentity'] = 'Nuova identità';
 $labels['newitem'] = 'Nuovo elemento';
 $labels['edititem'] = 'Modifica elemento';
+$labels['preferhtml'] = 'Mostra HTML';
+$labels['defaultcharset'] = 'Set di caratteri predefinito';
+$labels['htmlmessage'] = 'Messaggio HTML';
+$labels['prettydate'] = 'Date più leggibili';
 $labels['setdefault'] = 'Imposta predefinita';
 $labels['autodetect'] = 'Auto';
 $labels['language'] = 'Lingua';
@@ -231,6 +262,7 @@ $labels['ignore'] = 'ignora';
 $labels['readwhendeleted'] = 'Marca il messaggio come letto prima di eliminarlo';
 $labels['flagfordeletion'] = 'Marca il messaggio come eliminato invece di eliminarlo';
 $labels['skipdeleted'] = 'Non mostrare i messaggi marcati come eliminati';
+$labels['deletealways'] = 'Quando non è possinile spostare i messaggi nel Cestino eliminali';
 $labels['showremoteimages'] = 'Mostra immagini remote contenute nel messaggio';
 $labels['fromknownsenders'] = 'da mittenti conosciuti';
 $labels['always'] = 'sempre';
@@ -239,21 +271,37 @@ $labels['autosavedraft'] = 'Salva le bozze automaticamente';
 $labels['everynminutes'] = 'ogni $n minuto(i)';
 $labels['keepalive'] = 'Controlla la presenza di nuovi messaggi';
 $labels['never'] = 'mai';
+$labels['immediately'] = 'immediatamente';
 $labels['messagesdisplaying'] = 'Visualizzazione Messaggi';
 $labels['messagescomposition'] = 'Composizione Messaggi';
 $labels['mimeparamfolding'] = 'Nomi allegati';
 $labels['2231folding'] = 'RFC 2231 completo (Thunderbird)';
 $labels['miscfolding'] = 'RFC 2047/2231 (MS Outlook)';
 $labels['2047folding'] = 'RFC 2047 completo (altri)';
+$labels['force7bit'] = 'Usa la codifica MIME per i caratteri a 8-bit';
 $labels['advancedoptions'] = 'Opzioni avanzate';
 $labels['focusonnewmessage'] = 'Attiva la finestra del browser all\'arrivo di un nuovo messaggio';
 $labels['checkallfolders'] = 'Controlla tutte le cartelle per la presenza di nuovi messaggi';
 $labels['displaynext'] = 'Dopo aver cancellato/spostato il messaggio mostra quello successivo';
 $labels['mainoptions'] = 'Opzioni principali';
-$labels['section'] = 'Selezione';
+$labels['section'] = 'Sezione';
 $labels['maintenance'] = 'Manutenzione';
 $labels['newmessage'] = 'Nuovo Messaggio';
 $labels['listoptions'] = 'Mostra Opzioni';
+$labels['signatureoptions'] = 'Opzioni firma';
+$labels['whenreplying'] = 'Quando rispondi';
+$labels['replytopposting'] = 'inizia il nuovo messaggio sopra quello originale';
+$labels['replybottomposting'] = 'inizia il nuovo messaggio sotto quello originale';
+$labels['replyremovesignature'] = 'Quando rispondi, rimuovi la firma dal messaggio originale';
+$labels['autoaddsignature'] = 'Aggiungi automaticamente la firma ';
+$labels['newmessageonly'] = 'solo ai nuovi messaggi';
+$labels['replyandforwardonly'] = 'solo alle risposte e inoltri';
+$labels['replysignaturepos'] = 'In risposta o inoltro, posiziona la firma';
+$labels['belowquote'] = 'sotto la citazione';
+$labels['abovequote'] = 'sopra la citazione';
+$labels['insertsignature'] = 'Inserisci firma';
+$labels['previewpanemarkread'] = 'Segna i messagi in anteprima come letti';
+$labels['afternseconds'] = 'dopo $n secondi';
 $labels['folder'] = 'Cartella';
 $labels['folders'] = 'Cartelle';
 $labels['foldername'] = 'Nome cartella';
@@ -273,5 +321,23 @@ $labels['B'] = 'B';
 $labels['KB'] = 'KB';
 $labels['MB'] = 'MB';
 $labels['GB'] = 'GB';
+$labels['unicode'] = 'Unicode';
+$labels['english'] = 'Inglese';
+$labels['westerneuropean'] = 'Europa occidentale';
+$labels['easterneuropean'] = 'Europa orientale';
+$labels['southeasterneuropean'] = 'Europa sud-orientale';
+$labels['baltic'] = 'Baltiche';
+$labels['cyrillic'] = 'Cirillico';
+$labels['arabic'] = 'Arabo';
+$labels['greek'] = 'Greco';
+$labels['hebrew'] = 'Ebraico';
+$labels['turkish'] = 'Turco';
+$labels['nordic'] = 'Scandinavo';
+$labels['thai'] = 'Tailandese';
+$labels['celtic'] = 'Celtico';
+$labels['vietnamese'] = 'Vietnamita';
+$labels['japanese'] = 'Giapponese';
+$labels['korean'] = 'Coreano';
+$labels['chinese'] = 'Cinese';
 
 ?>

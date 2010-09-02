@@ -6,17 +6,18 @@
 | language/cs_CZ/labels.inc                                             |
 |                                                                       |
 | Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Martin Mrajca <martin@moonlake.cz>                            |
 |        joe <joe@humlak.cz>                                            |
 |        Jiri Kaderavek <jiri.kaderavek@webstep.net>                    |
-|        Milan Kozak <hodza@hodza.net>					|
+|        Milan Kozak <hodza@hodza.net>                                  |
+|        Ales Pospichal <ales@pospichalales.info>                       |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 2994 2009-09-27 14:16:33Z yllar $
+@version $Id: labels.inc 3876 2010-08-06 19:10:43Z yllar $
 
 */
 
@@ -48,14 +49,14 @@ $labels['organization'] = 'Organizace';
 $labels['reply-to'] = 'Odpověď na';
 $labels['mailboxlist'] = 'Složky';
 $labels['messagesfromto'] = 'Zprávy $from až $to z celkem $count';
+$labels['threadsfromto'] = 'Konverzace $from až $to z celkem $count';
 $labels['messagenrof'] = 'Zpráva $nr z $count';
+$labels['copy'] = 'Kopírovat';
+$labels['move'] = 'Přesunout';
 $labels['moveto'] = 'přesunout do...';
 $labels['download'] = 'stáhnout';
 $labels['filename'] = 'Jméno přílohy';
 $labels['filesize'] = 'Velikost přílohy';
-$labels['preferhtml'] = 'Upřednostňovat HTML zobrazení';
-$labels['htmlmessage'] = 'HTML zpráva';
-$labels['prettydate'] = 'Hezčí datum';
 $labels['addtoaddressbook'] = 'Přidat do adresáře';
 $labels['sun'] = 'Ne';
 $labels['mon'] = 'Po';
@@ -101,7 +102,7 @@ $labels['writenewmessage'] = 'Vytvořit novou zprávu';
 $labels['replytomessage'] = 'Odpovědět odesílateli';
 $labels['replytoallmessage'] = 'Odpovědět všem';
 $labels['forwardmessage'] = 'Předat zprávu';
-$labels['deletemessage'] = 'Přesunout do koše';
+$labels['deletemessage'] = 'Odstranit zprávu';
 $labels['movemessagetotrash'] = 'Přesunout zprávu do koše';
 $labels['printmessage'] = 'Vytisknout zprávu';
 $labels['previousmessage'] = 'Zobrazit předchozí zprávu';
@@ -123,12 +124,35 @@ $labels['messageactions'] = 'Další akce ...';
 $labels['select'] = 'Vybrat';
 $labels['all'] = 'Vše';
 $labels['none'] = 'Nic';
+$labels['currpage'] = 'Aktuální stránka';
 $labels['unread'] = 'Nepřečtené';
 $labels['flagged'] = 'Označené';
 $labels['unanswered'] = 'Neoznačené';
 $labels['deleted'] = 'Smazané';
 $labels['invert'] = 'Převrátit';
 $labels['filter'] = 'Filtr';
+$labels['list'] = 'Seznam';
+$labels['threads'] = 'Konverzace';
+$labels['expand-all'] = 'Rozbalit všechny';
+$labels['expand-unread'] = 'Rozbalit nepřečtené';
+$labels['collapse-all'] = 'Sbalit všechny';
+$labels['threaded'] = 'Spojovat do konverzací';
+$labels['autoexpand_threads'] = 'Rozbalit konverzace';
+$labels['do_expand'] = 'všechny konverzace';
+$labels['expand_only_unread'] = 'pouze s nepřečtenými zprávami';
+$labels['fromto'] = 'Odesílatel/Příjemce';
+$labels['flag'] = 'Vlajka';
+$labels['attachment'] = 'Příloha';
+$labels['nonesort'] = 'Nic';
+$labels['sentdate'] = 'Datum odeslání';
+$labels['arrival'] = 'Datum přijetí';
+$labels['asc'] = 'vzestupně';
+$labels['desc'] = 'sestupně';
+$labels['listcolumns'] = 'Seznam sloupců';
+$labels['listsorting'] = 'Třídění sloupců';
+$labels['listorder'] = 'Uspořádání';
+$labels['listmode'] = 'Režim zobrazení seznamu';
+$labels['folderactions'] = 'Akce se složkou...';
 $labels['compact'] = 'Zmenšit';
 $labels['empty'] = 'Vymazat';
 $labels['purge'] = 'Vyprázdnit';
@@ -155,6 +179,7 @@ $labels['revertto'] = 'Přejít na';
 $labels['attachments'] = 'Přílohy';
 $labels['upload'] = 'Nahrát';
 $labels['close'] = 'Zavřít';
+$labels['messageoptions'] = 'Nastavení zprávy...';
 $labels['low'] = 'Nízká';
 $labels['lowest'] = 'Nejnižší';
 $labels['normal'] = 'Normální';
@@ -181,6 +206,7 @@ $labels['surname'] = 'Příjmení';
 $labels['email'] = 'E-mail';
 $labels['addcontact'] = 'Přidat kontakt';
 $labels['editcontact'] = 'Upravit kontakt';
+$labels['contacts'] = 'Kontakty';
 $labels['edit'] = 'Upravit';
 $labels['cancel'] = 'Konec';
 $labels['save'] = 'Uložit';
@@ -192,10 +218,13 @@ $labels['contactsfromto'] = 'Kontakty $from až $to z celkem $count';
 $labels['print'] = 'Tisk';
 $labels['export'] = 'Export';
 $labels['exportvcards'] = 'Exportovat kontakty ve formátu vCard';
+$labels['newcontactgroup'] = 'Vytvořit novou skupinu kontaktů';
+$labels['groupactions'] = 'Akce pro skupiny kontaktů...';
 $labels['previouspage'] = 'Předchozí';
 $labels['firstpage'] = 'Zobrazit první zprávy';
 $labels['nextpage'] = 'Další';
 $labels['lastpage'] = 'Zobrazit poslední zprávy';
+$labels['group'] = 'Skupina';
 $labels['groups'] = 'Skupiny';
 $labels['personaladrbook'] = 'Osobní kontakty';
 $labels['import'] = 'Import';
@@ -213,6 +242,10 @@ $labels['manageidentities'] = 'Spravovat profily u tohoto účtu';
 $labels['newidentity'] = 'Nový profil';
 $labels['newitem'] = 'Nová položka';
 $labels['edititem'] = 'Upravit položku';
+$labels['preferhtml'] = 'Upřednostňovat HTML zobrazení';
+$labels['defaultcharset'] = 'Výchozí kódování';
+$labels['htmlmessage'] = 'HTML zpráva';
+$labels['prettydate'] = 'Hezčí datum';
 $labels['setdefault'] = 'Nastavit výchozí';
 $labels['autodetect'] = 'Automaticky';
 $labels['language'] = 'Jazyk';
@@ -236,6 +269,7 @@ $labels['ignore'] = 'ignorovat';
 $labels['readwhendeleted'] = 'Při odstranění označit zprávu jako přečtenou';
 $labels['flagfordeletion'] = 'Zprávu nemazat, pouze označit pro odstranění';
 $labels['skipdeleted'] = 'Nezobrazovat smazané zprávy';
+$labels['deletealways'] = 'Odstranit zprávy, pokud selže jejich přesun do koše';
 $labels['showremoteimages'] = 'Zobrazovat obrázky uložené mimo mail';
 $labels['fromknownsenders'] = 'od známých uživatelů';
 $labels['always'] = 'vždy';
@@ -244,22 +278,37 @@ $labels['autosavedraft'] = 'Automaticky uložit rozepsané zprávy';
 $labels['everynminutes'] = 'každých $n minut';
 $labels['keepalive'] = 'Zkontrolovat nové zprávy';
 $labels['never'] = 'nikdy';
+$labels['immediately'] = 'ihned';
 $labels['messagesdisplaying'] = 'Zobrazování zpráv';
 $labels['messagescomposition'] = 'Psaní zpráv';
 $labels['mimeparamfolding'] = 'Jména příloh';
 $labels['2231folding'] = 'Podle RFC 2231 (Thunderbird)';
 $labels['miscfolding'] = 'RFC 2047/2231 (MS Outlook)';
 $labels['2047folding'] = 'Podle RFC 2047 (ostatní)';
+$labels['force7bit'] = 'Použít kódování MIME pro 8-bitové znaky';
 $labels['advancedoptions'] = 'Pokročilá nastavení';
-$labels['focusonnewmessage'] = 'Aktivovat okno prohlížeče při príchozí zprávě';
+$labels['focusonnewmessage'] = 'Aktivovat okno prohlížeče při příchozí zprávě';
 $labels['checkallfolders'] = 'Kontrolovat nové zprávy ve všech složkách';
 $labels['displaynext'] = 'Zobrazit další zprávu po smazání/přesunu zprávy';
-$labels['indexsort'] = 'Používat index k řazení zpráv podle data';
 $labels['mainoptions'] = 'Hlavní nastavení';
 $labels['section'] = 'Sekce';
 $labels['maintenance'] = 'Údržba';
 $labels['newmessage'] = 'Nová zpráva';
 $labels['listoptions'] = 'Nastavení stránkování';
+$labels['signatureoptions'] = 'Nastavení podpisu';
+$labels['whenreplying'] = 'Při odpovídání';
+$labels['replytopposting'] = 'začít novou zprávu nad původní';
+$labels['replybottomposting'] = 'začít novou zprávu pod původní';
+$labels['replyremovesignature'] = 'Při odpovídání odstranit ze zprávy původní podpis';
+$labels['autoaddsignature'] = 'Automaticky přidat podpis';
+$labels['newmessageonly'] = 'pouze k novým zprávám';
+$labels['replyandforwardonly'] = 'jen k odpovědi a přeposílané zprávě';
+$labels['replysignaturepos'] = 'Při odpovídání nebo přeposílání zprávy vložit podpis';
+$labels['belowquote'] = 'pod citaci';
+$labels['abovequote'] = 'nad citaci';
+$labels['insertsignature'] = 'Vložit podpis';
+$labels['previewpanemarkread'] = 'Označit zobrazené zprávy jako přečtené';
+$labels['afternseconds'] = 'po $n sekundách';
 $labels['folder'] = 'Složka';
 $labels['folders'] = 'Složky';
 $labels['foldername'] = 'Jméno složky';
@@ -279,5 +328,23 @@ $labels['B'] = 'B';
 $labels['KB'] = 'KB';
 $labels['MB'] = 'MB';
 $labels['GB'] = 'GB';
+$labels['unicode'] = 'Unicode';
+$labels['english'] = 'Angličtina';
+$labels['westerneuropean'] = 'Západní Evropa';
+$labels['easterneuropean'] = 'Východní Evropa';
+$labels['southeasterneuropean'] = 'Jiho-východní Evropa';
+$labels['baltic'] = 'Baltština';
+$labels['cyrillic'] = 'Cyrilice';
+$labels['arabic'] = 'Arabština';
+$labels['greek'] = 'Řečtina';
+$labels['hebrew'] = 'Hebrejština';
+$labels['turkish'] = 'Turečtina';
+$labels['nordic'] = 'Nordština';
+$labels['thai'] = 'Thajština';
+$labels['celtic'] = 'Keltština';
+$labels['vietnamese'] = 'Vietnamština';
+$labels['japanese'] = 'Japonština';
+$labels['korean'] = 'Korejština';
+$labels['chinese'] = 'Čínština';
 
 ?>

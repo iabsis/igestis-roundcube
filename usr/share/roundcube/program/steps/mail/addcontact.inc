@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: addcontact.inc 2758 2009-07-16 15:01:05Z thomasb $
+ $Id: addcontact.inc 3840 2010-07-30 06:34:02Z alec $
 
 */
 
@@ -47,7 +47,7 @@ if (!empty($_POST['_address']) && is_object($CONTACTS))
       $OUTPUT->show_message('contactexists', 'warning');
     else
     {
-      $plugin = $RCMAIL->plugins->exec_hook('create_contact', array('record' => $contact, 'source' => null));
+      $plugin = $RCMAIL->plugins->exec_hook('contact_create', array('record' => $contact, 'source' => null));
       $contact = $plugin['record'];
 
       if (!$plugin['abort'] && ($done = $CONTACTS->insert($contact)))
@@ -60,4 +60,4 @@ if (!$done)
   $OUTPUT->show_message('errorsavingcontact', 'warning');
 
 $OUTPUT->send();
-?>
+

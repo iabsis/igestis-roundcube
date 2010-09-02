@@ -11,6 +11,8 @@
  |         Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
+ $Id: search.inc 3787 2010-06-28 17:36:26Z alec $
+
 */
 
 $REMOTE_REQUEST = TRUE;
@@ -70,12 +72,16 @@ else if (preg_match("/^body:.*/i", $str))
 else if(trim($str))
 {
   if ($headers) {
-    $headers = explode(',', $headers);
-    foreach($headers as $header)
+    foreach(explode(',', $headers) as $header)
       switch ($header) {
         case 'text': $subject['text'] = 'TEXT'; break;
-        default: $subject[$header] = 'HEADER '.$header;
+        default:     $subject[$header] = 'HEADER '.strtoupper($header);
       }
+    
+    // save search modifiers for the current folder to user prefs
+    $search_mods = $RCMAIL->config->get('search_mods', $SEARCH_MODS_DEFAULT);
+    $search_mods[$mbox] = array_fill_keys(array_keys($subject), 1);
+    $RCMAIL->user->save_prefs(array('search_mods' => $search_mods));
   } else {
     // search in subject by default
     $subject['subject'] = 'HEADER SUBJECT';
@@ -88,7 +94,6 @@ if ($subject) {
   $search_str .= str_repeat(' OR', count($subject)-1);
   foreach ($subject as $sub)
     $search_str .= sprintf(" %s {%d}\r\n%s", $sub, strlen($search), $search);
-  $_SESSION['search_mods'] = $subject;
 }
 
 $search_str = trim($search_str);
@@ -99,7 +104,7 @@ if ($search_str)
 
 // Get the headers
 $result_h = $IMAP->list_headers($mbox, 1, $_SESSION['sort_col'], $_SESSION['sort_order']);
-$count = $IMAP->messagecount();
+$count = $IMAP->messagecount(NULL, $IMAP->threading ? 'THREADS' : 'ALL');
 
 // save search results in session
 if (!is_array($_SESSION['search']))
@@ -115,7 +120,7 @@ if (!empty($result_h))
 {
   rcmail_js_message_list($result_h);
   if ($search_str)
-    $OUTPUT->show_message('searchsuccessful', 'confirmation', array('nr' => $count));
+    $OUTPUT->show_message('searchsuccessful', 'confirmation', array('nr' => $IMAP->messagecount(NULL, 'ALL')));
 }
 else
 {
@@ -123,10 +128,10 @@ else
 }
 
 // update message count display
-$OUTPUT->set_env('search_request', $search_str ? $search_request : -1);
+$OUTPUT->set_env('search_request', $search_str ? $search_request : '');
 $OUTPUT->set_env('messagecount', $count);
 $OUTPUT->set_env('pagecount', ceil($count/$IMAP->page_size));
 $OUTPUT->command('set_rowcount', rcmail_get_messagecount_text($count, 1));
 $OUTPUT->send();
 
-?>
+
