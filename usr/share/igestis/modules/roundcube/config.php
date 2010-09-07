@@ -14,7 +14,6 @@ $roundcube['rights_list'][1]['RIGHT_NAME'] = "{LANG_ROUNDCUBE_RIGHT_EMP}";
 $roundcube['rights_list'][1]['RIGHT_CODE'] = "EMP";
 $roundcube['rights_list'][1]['RIGHT_HELP'] = "{LANG_ROUNDCUBE_Help_emp}";
 
-
 $roundcube['module_menu_name']['title'][0] = "{LANG_ROUNDCUBE_My_mails_account}";
 $roundcube['module_menu_name']['script_file'][0] = "gestion_roundcube_my_mails_account.php";
 $roundcube['module_menu_name']['client_access'][0] = false;
