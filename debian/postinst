@@ -58,6 +58,8 @@ case "$1" in
 
         CONFFILE=/etc/igestis/config.php
 
+        chown www-data -R /usr/share/roundcube/logs
+
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
