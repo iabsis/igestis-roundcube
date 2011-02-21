@@ -80,7 +80,7 @@ if ($RCI->configured) {
         // Success!
         if ($write1 && $write2) {
           echo "Done.\n";
-          echo "Your configuration files are now up-tp-date!\n";
+          echo "Your configuration files are now up-to-date!\n";
         }
         else {
           echo "Failed to write config files!\n";
@@ -114,7 +114,8 @@ if ($RCI->configured) {
       $success = false;
     }
     else if ($RCI->db_schema_check($DB, false)) {
-      $updatefile = INSTALL_PATH . 'SQL/' . $DB->db_provider . '.update.sql';
+      $db_map = array('pgsql' => 'postgres', 'mysqli' => 'mysql', 'sqlsrv' => 'mssql');
+      $updatefile = INSTALL_PATH . 'SQL/' . (isset($db_map[$DB->db_provider]) ? $db_map[$DB->db_provider] : $DB->db_provider) . '.update.sql';
       echo "WARNING: Database schema needs to be updated!\n";
       echo "Open $updatefile and execute all queries that are superscribed with the currently installed version number\n";
       $success = false;
@@ -123,12 +124,12 @@ if ($RCI->configured) {
   
   
   if ($success) {
-    echo "This instance of RoundCube is up-to-date.\n";
+    echo "This instance of Roundcube is up-to-date.\n";
     echo "Have fun!\n";
   }
 }
 else {
-  echo "This instance of RoundCube is not yet configured!\n";
+  echo "This instance of Roundcube is not yet configured!\n";
   echo "Open http://url-to-roundcube/installer/ in your browser and follow the instuctions.\n";
 }
 

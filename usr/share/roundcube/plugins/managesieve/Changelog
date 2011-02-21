@@ -1,3 +1,14 @@
+- Added support for SASL proxy authentication (#1486691)
+- Fixed parsing of scripts with \r\n line separator
+- Apply forgotten changes for form errors handling
+
+* version 2.10 [2010-10-10]
+-----------------------------------------------------------
+- Fixed import from Avelsieve
+- Use localized size units (#1486976)
+- Added support for relational operators and i;ascii-numeric comparator
+- Added popups with form errors
+
 * version 2.9 [2010-08-02]
 -----------------------------------------------------------
 - Fixed vacation parameters parsing (#1486883)

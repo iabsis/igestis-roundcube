@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/steps/settings/delete_identity.inc                            |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2009, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: delete_identity.inc 3780 2010-06-23 09:55:08Z alec $
+ $Id: delete_identity.inc 4025 2010-09-30 13:24:33Z alec $
 
 */
 
@@ -30,14 +30,15 @@ if (!$OUTPUT->ajax_call && !$RCMAIL->check_request(RCUBE_INPUT_GPC)) {
 
 if ($iid && preg_match('/^[0-9]+(,[0-9]+)*$/', $iid))
 {
-  $plugin = $RCMAIL->plugins->exec_hook('delete_identity', array('id' => $iid));
+  $plugin = $RCMAIL->plugins->exec_hook('identity_delete', array('id' => $iid));
   
-  if (!$plugin['abort'] && $USER->delete_identity($iid)) {
+  $deleted = !$plugin['abort'] ? $USER->delete_identity($iid) : $plugin['result'];
+
+  if ($deleted)
     $OUTPUT->show_message('deletedsuccessfully', 'confirmation', null, false);
-  }
-  else {
-    $OUTPUT->show_message('nodeletelastidentity', 'error', null, false);
-  }
+  else
+    $OUTPUT->show_message($plugin['message'] ? $plugin['message'] : 'nodeletelastidentity', 'error', null, false);
+
   // send response
   if ($OUTPUT->ajax_call)
     $OUTPUT->send();
@@ -48,5 +49,3 @@ if ($OUTPUT->ajax_call)
 
 // go to identities page
 rcmail_overwrite_action('identities');
-
-

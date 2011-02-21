@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/include/rcmail.php                                            |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2008-2010, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2008-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,42 +15,112 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcmail.php 3875 2010-08-06 14:59:34Z alec $
+ $Id: rcmail.php 4509 2011-02-09 10:51:50Z thomasb $
 
 */
 
 
 /**
- * Application class of RoundCube Webmail
+ * Application class of Roundcube Webmail
  * implemented as singleton
  *
  * @package Core
  */
 class rcmail
 {
+  /**
+   * Main tasks.
+   *
+   * @var array
+   */
   static public $main_tasks = array('mail','settings','addressbook','login','logout','utils','dummy');
 
+  /**
+   * Singleton instace of rcmail
+   *
+   * @var rcmail
+   */
   static private $instance;
 
+  /**
+   * Stores instance of rcube_config.
+   *
+   * @var rcube_config
+   */
   public $config;
+
+  /**
+   * Stores rcube_user instance.
+   *
+   * @var rcube_user
+   */
   public $user;
+
+  /**
+   * Instace of database class.
+   *
+   * @var rcube_mdb2
+   */
   public $db;
+
+  /**
+   * Instace of rcube_session class.
+   *
+   * @var rcube_session
+   */
   public $session;
+
+  /**
+   * Instance of rcube_smtp class.
+   *
+   * @var rcube_smtp
+   */
   public $smtp;
+
+  /**
+   * Instance of rcube_imap class.
+   *
+   * @var rcube_imap
+   */
   public $imap;
+
+  /**
+   * Instance of rcube_template class.
+   *
+   * @var rcube_template
+   */
   public $output;
+
+  /**
+   * Instance of rcube_plugin_api.
+   *
+   * @var rcube_plugin_api
+   */
   public $plugins;
+
+  /**
+   * Current task.
+   *
+   * @var string
+   */
   public $task;
+
+  /**
+   * Current action.
+   *
+   * @var string
+   */
   public $action = '';
   public $comm_path = './';
 
   private $texts;
+  private $books = array();
 
 
   /**
    * This implements the 'singleton' design pattern
    *
-   * @return object rcmail The one and only instance
+   * @return rcmail The one and only instance
    */
   static function get_instance()
   {
@@ -138,7 +208,7 @@ class rcmail
     $task = asciiwords($task);
 
     if ($this->user && $this->user->ID)
-      $task = !$task || $task == 'login' ? 'mail' : $task;
+      $task = !$task ? 'mail' : $task;
     else
       $task = 'login';
 
@@ -153,7 +223,7 @@ class rcmail
   /**
    * Setter for system user object
    *
-   * @param object rcube_user Current user instance
+   * @param rcube_user Current user instance
    */
   public function set_user($user)
   {
@@ -225,7 +295,7 @@ class rcmail
   /**
    * Get the current database connection
    *
-   * @return object rcube_mdb2  Database connection object
+   * @return rcube_mdb2  Database connection object
    */
   public function get_dbh()
   {
@@ -235,7 +305,6 @@ class rcmail
       $this->db = new rcube_mdb2($config_all['db_dsnw'], $config_all['db_dsnr'], $config_all['db_persistent']);
       $this->db->sqlite_initials = INSTALL_PATH . 'SQL/sqlite.initial.sql';
       $this->db->set_debug((bool)$config_all['sql_debug']);
-      $this->db->db_connect('w');
     }
 
     return $this->db;
@@ -247,7 +316,7 @@ class rcmail
    *
    * @param string  Address book identifier
    * @param boolean True if the address book needs to be writeable
-   * @return object rcube_contacts Address book object
+   * @return rcube_contacts Address book object
    */
   public function get_address_book($id, $writeable = false)
   {
@@ -279,6 +348,10 @@ class rcmail
     else { // $id == 'sql'
       $contacts = new rcube_contacts($this->db, $this->user->ID);
     }
+
+    // add to the 'books' array for shutdown function
+    if (!in_array($contacts, $this->books))
+      $this->books[] = $contacts;
 
     return $contacts;
   }
@@ -342,7 +415,7 @@ class rcmail
    * environment vars according to the current session and configuration
    *
    * @param boolean True if this request is loaded in a (i)frame
-   * @return object rcube_template Reference to HTML output object
+   * @return rcube_template Reference to HTML output object
    */
   public function load_gui($framed = false)
   {
@@ -375,7 +448,7 @@ class rcmail
   /**
    * Create an output object for JSON responses
    *
-   * @return object rcube_json_output Reference to JSON output object
+   * @return rcube_json_output Reference to JSON output object
    */
   public function json_init()
   {
@@ -428,9 +501,9 @@ class rcmail
     // can save time detecting them using NAMESPACE and LIST
     $options = array(
       'auth_method' => $this->config->get('imap_auth_type', 'check'),
-      'delimiter'   => isset($_SESSION['imap_delimiter']) ? $_SESSION['imap_delimiter'] : $this->config->get('imap_delimiter'),
-      'rootdir'     => isset($_SESSION['imap_root']) ? $_SESSION['imap_root'] : $this->config->get('imap_root'),
-      'debug_mode'  => (bool) $this->config->get('imap_debug', 0),
+      'auth_cid'    => $this->config->get('imap_auth_cid'),
+      'auth_pw'     => $this->config->get('imap_auth_pw'),
+      'debug'       => (bool) $this->config->get('imap_debug', 0),
       'force_caps'  => (bool) $this->config->get('imap_force_caps'),
       'timeout'     => (int) $this->config->get('imap_timeout', 0),
     );
@@ -447,8 +520,11 @@ class rcmail
     // support this parameter for backward compatibility but log warning
     if ($connect) {
       $this->imap_connect();
-      raise_error(array('code' => 800, 'type' => 'imap', 'file' => __FILE__,
-        'message' => "rcube::imap_init(true) is deprecated, use rcube::imap_connect() instead"), true, false);
+      raise_error(array(
+        'code' => 800, 'type' => 'imap',
+        'file' => __FILE__, 'line' => __LINE__,
+        'message' => "rcube::imap_init(true) is deprecated, use rcube::imap_connect() instead"),
+        true, false);
     }
   }
 
@@ -466,7 +542,7 @@ class rcmail
     if ($_SESSION['imap_host'] && !$this->imap->conn->connected()) {
       if (!$this->imap->connect($_SESSION['imap_host'], $_SESSION['username'], $this->decrypt($_SESSION['password']), $_SESSION['imap_port'], $_SESSION['imap_ssl'])) {
         if ($this->output)
-          $this->output->show_message($this->imap->error_code == -1 ? 'imaperror' : 'sessionerror', 'error');
+          $this->output->show_message($this->imap->get_error_code() == -1 ? 'imaperror' : 'sessionerror', 'error');
       }
       else {
         $this->set_imap_prop();
@@ -583,7 +659,7 @@ class rcmail
     if ($a_host['host']) {
       $host = $a_host['host'];
       $imap_ssl = (isset($a_host['scheme']) && in_array($a_host['scheme'], array('ssl','imaps','tls'))) ? $a_host['scheme'] : null;
-      if(!empty($a_host['port']))
+      if (!empty($a_host['port']))
         $imap_port = $a_host['port'];
       else if ($imap_ssl && $imap_ssl != 'tls' && (!$config['default_port'] || $config['default_port'] == 143))
         $imap_port = 993;
@@ -597,19 +673,31 @@ class rcmail
     // Check if we need to add domain
     if (!empty($config['username_domain']) && strpos($username, '@') === false) {
       if (is_array($config['username_domain']) && isset($config['username_domain'][$host]))
-        $username .= '@'.rcube_parse_host($config['username_domain'][$host]);
+        $username .= '@'.rcube_parse_host($config['username_domain'][$host], $host);
       else if (is_string($config['username_domain']))
-        $username .= '@'.rcube_parse_host($config['username_domain']);
+        $username .= '@'.rcube_parse_host($config['username_domain'], $host);
+    }
+
+    // Convert username to lowercase. If IMAP backend
+    // is case-insensitive we need to store always the same username (#1487113)
+    if ($config['login_lc']) {
+      $username = mb_strtolower($username);
     }
 
     // try to resolve email address from virtuser table
-    if (strpos($username, '@'))
-      if ($virtuser = rcube_user::email2user($username))
-        $username = $virtuser;
+    if (strpos($username, '@') && ($virtuser = rcube_user::email2user($username))) {
+      $username = $virtuser;
+    }
 
-    // lowercase username if it's an e-mail address (#1484473)
-    if (strpos($username, '@'))
-      $username = mb_strtolower($username);
+    // Here we need IDNA ASCII
+    // Only rcube_contacts class is using domain names in Unicode
+    $host = rcube_idn_to_ascii($host);
+    if (strpos($username, '@')) {
+      // lowercase domain name
+      list($local, $domain) = explode('@', $username);
+      $username = $local . '@' . mb_strtolower($domain);
+      $username = rcube_idn_to_ascii($username);
+    }
 
     // user already registered -> overwrite username
     if ($user = rcube_user::query($username, $host))
@@ -618,8 +706,22 @@ class rcmail
     if (!$this->imap)
       $this->imap_init();
 
+    // try IMAP login
+    if (!($imap_login = $this->imap->connect($host, $username, $pass, $imap_port, $imap_ssl))) {
+      // try with lowercase
+      $username_lc = mb_strtolower($username);
+      if ($username_lc != $username) {
+        // try to find user record again -> overwrite username
+        if (!$user && ($user = rcube_user::query($username_lc, $host)))
+          $username_lc = $user->data['username'];
+
+        if ($imap_login = $this->imap->connect($host, $username_lc, $pass, $imap_port, $imap_ssl))
+          $username = $username_lc;
+      }
+    }
+
     // exit if IMAP login failed
-    if (!($imap_login  = $this->imap->connect($host, $username, $pass, $imap_port, $imap_ssl)))
+    if (!$imap_login)
       return false;
 
     $this->set_imap_prop();
@@ -642,7 +744,7 @@ class rcmail
       else {
         raise_error(array(
           'code' => 600, 'type' => 'php',
-	      'file' => __FILE__, 'line' => __LINE__,
+          'file' => __FILE__, 'line' => __LINE__,
           'message' => "Failed to create a user record. Maybe aborted by a plugin?"
           ), true, false);
       }
@@ -692,16 +794,12 @@ class rcmail
     if ($default_folders = $this->config->get('default_imap_folders')) {
       $this->imap->set_default_mailboxes($default_folders);
     }
-    if (!empty($_SESSION['mbox'])) {
+    if (isset($_SESSION['mbox'])) {
       $this->imap->set_mailbox($_SESSION['mbox']);
     }
     if (isset($_SESSION['page'])) {
       $this->imap->set_page($_SESSION['page']);
     }
-
-    // cache IMAP root and delimiter in session for performance reasons
-    $_SESSION['imap_root'] = $this->imap->root_dir;
-    $_SESSION['imap_delimiter'] = $this->imap->delimiter;
   }
 
 
@@ -810,9 +908,9 @@ class rcmail
     if (($attrib['uppercase'] && strtolower($attrib['uppercase']=='first')) || $attrib['ucfirst'])
       return ucfirst($text);
     else if ($attrib['uppercase'])
-      return strtoupper($text);
+      return mb_strtoupper($text);
     else if ($attrib['lowercase'])
-      return strtolower($text);
+      return mb_strtolower($text);
 
     return $text;
   }
@@ -830,6 +928,9 @@ class rcmail
     // load localized texts
     if (empty($this->texts) || $lang != $_SESSION['language']) {
       $this->texts = array();
+
+      // handle empty lines after closing PHP tag in localization files
+      ob_start();
 
       // get english labels (these should be complete)
       @include(INSTALL_PATH . 'program/localization/en_US/labels.inc');
@@ -850,6 +951,8 @@ class rcmail
         if (is_array($messages))
           $this->texts = array_merge($this->texts, $messages);
       }
+
+      ob_end_clean();
 
       $_SESSION['language'] = $lang;
     }
@@ -874,7 +977,7 @@ class rcmail
 
       if ($dh = @opendir(INSTALL_PATH . 'program/localization')) {
         while (($name = readdir($dh)) !== false) {
-          if ($name{0}=='.' || !is_dir(INSTALL_PATH . 'program/localization/' . $name))
+          if ($name[0] == '.' || !is_dir(INSTALL_PATH . 'program/localization/' . $name))
             continue;
 
           if ($label = $rcube_languages[$name])
@@ -974,8 +1077,9 @@ class rcmail
     if (is_object($this->smtp))
       $this->smtp->disconnect();
 
-    if (is_object($this->contacts))
-      $this->contacts->close();
+    foreach ($this->books as $book)
+      if (is_object($book))
+        $book->close();
 
     // before closing the database connection, write session data
     if ($_SERVER['REMOTE_ADDR'])
@@ -1071,7 +1175,7 @@ class rcmail
     if (function_exists('mcrypt_module_open') &&
         ($td = mcrypt_module_open(MCRYPT_TripleDES, "", MCRYPT_MODE_CBC, "")))
     {
-      $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+      $iv = $this->create_iv(mcrypt_enc_get_iv_size($td));
       mcrypt_generic_init($td, $this->config->get_crypto_key($key), $iv);
       $cipher = $iv . mcrypt_generic($td, $clear);
       mcrypt_generic_deinit($td);
@@ -1082,9 +1186,7 @@ class rcmail
 
       if (function_exists('des')) {
         $des_iv_size = 8;
-        $iv = '';
-        for ($i = 0; $i < $des_iv_size; $i++)
-          $iv .= sprintf("%c", mt_rand(0, 255));
+        $iv = $this->create_iv($des_iv_size);
         $cipher = $iv . des($this->config->get_crypto_key($key), $clear, 1, 1, $iv);
       }
       else {
@@ -1118,8 +1220,14 @@ class rcmail
     if (function_exists('mcrypt_module_open') &&
         ($td = mcrypt_module_open(MCRYPT_TripleDES, "", MCRYPT_MODE_CBC, "")))
     {
-      $iv = substr($cipher, 0, mcrypt_enc_get_iv_size($td));
-      $cipher = substr($cipher, mcrypt_enc_get_iv_size($td));
+      $iv_size = mcrypt_enc_get_iv_size($td);
+      $iv = substr($cipher, 0, $iv_size);
+
+      // session corruption? (#1485970)
+      if (strlen($iv) < $iv_size)
+        return '';
+
+      $cipher = substr($cipher, $iv_size);
       mcrypt_generic_init($td, $this->config->get_crypto_key($key), $iv);
       $clear = mdecrypt_generic($td, $cipher);
       mcrypt_generic_deinit($td);
@@ -1153,7 +1261,23 @@ class rcmail
   }
 
   /**
-   * Build a valid URL to this instance of RoundCube
+   * Generates encryption initialization vector (IV)
+   *
+   * @param int Vector size
+   * @return string Vector string
+   */
+  private function create_iv($size)
+  {
+    // mcrypt_create_iv() can be slow when system lacks entrophy
+    // we'll generate IV vector manually
+    $iv = '';
+    for ($i = 0; $i < $size; $i++)
+        $iv .= chr(mt_rand(0, 255));
+    return $iv;
+  }
+
+  /**
+   * Build a valid URL to this instance of Roundcube
    *
    * @param mixed Either a string with the action or url parameters as key-value pairs
    * @return string Valid application URL

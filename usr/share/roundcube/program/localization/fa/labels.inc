@@ -4,8 +4,8 @@
 +-----------------------------------------------------------------------+
 | language/fa/labels.inc                                                |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         Nader Aghazadeh <Nader.aghazadeh at gmail.com>                |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: labels.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -247,13 +247,9 @@ $labels['checkallfolders'] = 'همه پوشه ها رو برای مشاهده پ
 $labels['folder'] = 'پوشه';
 $labels['folders'] = 'پوشه‌ها';
 $labels['foldername'] = 'نام پوشه';
-$labels['subscribed'] = 'مورد اشتراک';
 $labels['messagecount'] = 'پیغام‌ها';
 $labels['create'] = 'ایجاد';
 $labels['createfolder'] = 'ایجاد پوشه‌ی جدید';
-$labels['rename'] = 'تغییر نام';
-$labels['renamefolder'] = 'تغییر نام پوشه';
-$labels['deletefolder'] = 'حذف پوشه';
 $labels['managefolders'] = 'مدیریت پوشه‌ها';
 $labels['specialfolders'] = 'پوشه های ویژه';
 $labels['sortby'] = 'مرتب‌سازی بر اساس';

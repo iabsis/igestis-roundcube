@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/nb_NO/messages.inc                                           |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -16,7 +16,7 @@
 | Author: Odd Henriksen <odd@digicon.no>                                |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
+@version $Id: messages.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -57,9 +57,7 @@ $messages['deletecontactconfirm'] = 'Vil du virkelig slette valgte kontakt(er)?'
 $messages['deletemessagesconfirm'] = 'Vil du virkelig slette de(n) valgte meldingen(e)?';
 $messages['deletefolderconfirm'] = 'Vil du virkelig slette denne mappen?';
 $messages['purgefolderconfirm'] = 'Vil du virkelig slette alle meldingene i denne mappen?';
-$messages['foldercreating'] = 'Oppretter mappe...';
 $messages['folderdeleting'] = 'Sletter mappe...';
-$messages['folderrenaming'] = 'Gir nytt navn til mappe...';
 $messages['foldermoving'] = 'Flytter mappe...';
 $messages['formincomplete'] = 'Skjemaet var ikke fullstendig fylt ut';
 $messages['noemailwarning'] = 'Skriv inn en gyldig e-postadresse';
@@ -94,7 +92,6 @@ $messages['copyingmessage'] = 'Kopierer e-post...';
 $messages['receiptsent'] = 'Kvittering er sent';
 $messages['errorsendingreceipt'] = 'Kunne ikke sende kvittering';
 $messages['nodeletelastidentity'] = 'Du kan ikke slette denne identiteten, det er din eneste.';
-$messages['addsubfolderhint'] = 'Mappen vil bli opprettet som en undermappe av nåværende valgt mappe';
 $messages['forbiddencharacter'] = 'Mappenavnet inneholder tegn som ikke er tillatt';
 $messages['selectimportfile'] = 'Vennligst velg en fil for opplasting';
 $messages['addresswriterror'] = 'Den valgte adresseboken er ikke skrivbar';

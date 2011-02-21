@@ -4,15 +4,15 @@
  +-----------------------------------------------------------------------+
  | language/ga/labels.inc                                                |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author:   Noel Bourke  (cros13)                                       |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -167,9 +167,6 @@ $labels['foldername'] = 'Ainm fillteán';
 $labels['subscribed'] = 'Síntiú';
 $labels['create'] = 'Cruthaigh';
 $labels['createfolder'] = 'Cruthaigh fillteán nua';
-$labels['rename'] = 'Ainmnigh arís';
-$labels['renamefolder'] = 'Ainmnigh fillteán arís';
-$labels['deletefolder'] = 'Scrios fillteán';
 $labels['managefolders'] = 'Stiúir na fillteán';
 $labels['sortby'] = 'Sórtáil trí';
 $labels['sortasc'] = 'Sórtáil in ord méadaitheach';

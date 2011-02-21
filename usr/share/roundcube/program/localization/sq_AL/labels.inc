@@ -5,15 +5,15 @@
  +-----------------------------------------------------------------------+
  | language/sq_AL/labels.inc                                             |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Dashamir Hoxha <dhoxha@albaniaonline.net>                     |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -180,9 +180,6 @@ $labels['subscribed'] = 'Regjistruar';
 $labels['messagecount'] = 'Mesazhe';
 $labels['create'] = 'Krijo';
 $labels['createfolder'] = 'Krijo kuti të re';
-$labels['rename'] = 'Riemëro';
-$labels['renamefolder'] = 'Riemëro kutinë';
-$labels['deletefolder'] = 'Fshi kutinë';
 $labels['managefolders'] = 'Sistemo kutitë';
 $labels['sortby'] = 'Rradhit sipas';
 $labels['sortasc'] = 'Rradhitje rritëse';

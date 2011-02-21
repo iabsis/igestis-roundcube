@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/steps/mail/attachments.inc                                    |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2009, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: attachments.inc 3840 2010-07-30 06:34:02Z alec $
+ $Id: attachments.inc 3989 2010-09-25 13:03:53Z alec $
 
 */
 

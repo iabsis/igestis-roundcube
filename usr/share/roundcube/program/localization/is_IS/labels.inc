@@ -5,15 +5,15 @@
 +-----------------------------------------------------------------------+
 | language/is_IS/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2009, RoundCube Dev. - Switzerland                      |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2009, Roundcube Dev. - Switzerland                      |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Hakon Orri Asgeirsson <hakon at opex.is>                      |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3370 2010-03-17 13:33:14Z alec $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -250,9 +250,6 @@ $labels['subscribed'] = 'Valin';
 $labels['messagecount'] = 'Skeyti';
 $labels['create'] = 'Búa til';
 $labels['createfolder'] = 'Búa til nýja möppu';
-$labels['rename'] = 'Endurnefna';
-$labels['renamefolder'] = 'Breyta nafni möppu';
-$labels['deletefolder'] = 'Eyða möppu';
 $labels['managefolders'] = 'Sýsla með möppum';
 $labels['specialfolders'] = 'Sérstakar möppur';
 $labels['sortby'] = 'Raða eftir';

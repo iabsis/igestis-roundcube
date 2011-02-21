@@ -5,15 +5,15 @@
 +-----------------------------------------------------------------------+
 | language/ms_MY/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Muhammad Zamri MS <myzamri@gmail.com>                        |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -215,9 +215,6 @@ $labels['subscribed'] = 'Dilanggan';
 $labels['messagecount'] = 'Mesej-mesej';
 $labels['create'] = 'Cipta';
 $labels['createfolder'] = 'Cipta kabinet fail baru';
-$labels['rename'] = 'Namakan semula';
-$labels['renamefolder'] = 'Namakan semula kabinet fail';
-$labels['deletefolder'] = 'Hapus kabinet fail';
 $labels['managefolders'] = 'Urus kabinet fail';
 $labels['sortby'] = 'Susun dengan';
 $labels['sortasc'] = 'Susun menaik';

@@ -5,15 +5,15 @@
  +-----------------------------------------------------------------------+
  | language/sr_cyrillic/messages.inc                                     |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Branko Kokanovic <branko.kokanovic@gmail.com>                 |
  +-----------------------------------------------------------------------+
 
- @version $Id: messages.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: messages.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -77,6 +77,5 @@ $messages['movingmessage'] = 'Премештам поруку...';
 $messages['receiptsent'] = 'Успешно послато обавештење о приспећу';
 $messages['errorsendingreceipt'] = 'Неуспело слање обавештења о приспећу';
 $messages['nodeletelastidentity'] = 'Не можете обрисати овај идентитет, он Вам је последњи.';
-$messages['addsubfolderhint'] = 'Ова фасцикла ће бити креирана као подфасцикла тренутне';
 
 ?>

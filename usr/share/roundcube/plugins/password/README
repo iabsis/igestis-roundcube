@@ -26,18 +26,19 @@
 
  1. 	Configuration
  2.	Drivers
- 2.1. 	Database (sql)
- 2.2.	Cyrus/SASL (sasl)
- 2.3.	Poppassd/Courierpassd (poppassd)
- 2.4.	LDAP (ldap)
- 2.5.	DirectAdmin Control Panel (directadmin)
- 2.6.   cPanel (cpanel)
- 2.7.   XIMSS/Communigate (ximms)
- 2.8.	Virtualmin (virtualmin)
- 2.9.   hMailServer (hmail)
- 2.10.  PAM (pam)
- 2.11.  Chpasswd (chpasswd)
- 2.12.  LDAP - no PEAR (ldap_simple)
+ 2.1.  Database (sql)
+ 2.2.  Cyrus/SASL (sasl)
+ 2.3.  Poppassd/Courierpassd (poppassd)
+ 2.4.  LDAP (ldap)
+ 2.5.  DirectAdmin Control Panel (directadmin)
+ 2.6.  cPanel (cpanel)
+ 2.7.  XIMSS/Communigate (ximms)
+ 2.8.  Virtualmin (virtualmin)
+ 2.9.  hMailServer (hmail)
+ 2.10. PAM (pam)
+ 2.11. Chpasswd (chpasswd)
+ 2.12. LDAP - no PEAR (ldap_simple)
+ 2.13. XMail (xmail)
  3.	Driver API
 
 
@@ -59,7 +60,7 @@
  -------------------
 
  You can specify which database to connect by 'password_db_dsn' option and
- what SQL query to execute by 'password_query'. See main.inc.php file for
+ what SQL query to execute by 'password_query'. See main.inc.php.dist file for
  more info.
 
  Example implementations of an update_passwd function:
@@ -112,7 +113,7 @@
  2.2. Cyrus/SASL (sasl)
  ----------------------
 
- Cyrus SASL database authentication allows your Cyrus+RoundCube
+ Cyrus SASL database authentication allows your Cyrus+Roundcube
  installation to host mail users without requiring a Unix Shell account!
 
  This driver only covers the "sasldb" case when using Cyrus SASL. Kerberos
@@ -164,20 +165,20 @@
  -------------------------------------
 
  You can specify which host to connect to via 'password_pop_host' and
- what port via 'password_pop_port'. See config.inc.php file for more info.
+ what port via 'password_pop_port'. See config.inc.php.dist file for more info.
 
 
  2.4. LDAP (ldap)
  ----------------
 
- See config.inc.php file. Requires PEAR::Net_LDAP2 package.
+ See config.inc.php.dist file. Requires PEAR::Net_LDAP2 package.
 
 
  2.5. DirectAdmin Control Panel (directadmin)
  --------------------------------------------
 
- You can specify which host to connect to via 'password_directadmin_host' 
- and what port via 'password_direactadmin_port'. See config.inc.php file 
+ You can specify which host to connect to via 'password_directadmin_host'
+ and what port via 'password_direactadmin_port'. See config.inc.php.dist file
  for more info.
 
 
@@ -185,14 +186,14 @@
  --------------------
 
  You can specify parameters for HTTP connection to cPanel's admin
- interface. See config.inc.php file for more info.
+ interface. See config.inc.php.dist file for more info.
 
 
  2.7. XIMSS/Communigate (ximms)
  ------------------------------
 
  You can specify which host and port to connect to via 'password_ximss_host' 
- and 'password_ximss_port'. See config.inc.php file for more info.
+ and 'password_ximss_port'. See config.inc.php.dist file for more info.
 
 
  2.8. Virtualmin (virtualmin)
@@ -205,22 +206,27 @@
 
  2.9. hMailServer (hmail)
  ------------------------
- 
- Requires PHP COM (Windows only).
+
+ Requires PHP COM (Windows only). For access to hMail server on remote host
+ you'll need to define 'hmailserver_remote_dcom' and 'hmailserver_server'.
+ See config.inc.php.dist file for more info.
 
 
  2.10. PAM (pam)
  ---------------
- 
+
  This driver is for changing passwords of shell users authenticated with PAM.
  Requires PECL's PAM exitension to be installed (http://pecl.php.net/package/PAM).
 
 
  2.11. Chpasswd (chpasswd)
  -------------------------
- 
+
  Driver that adds functionality to change the systems user password via 
- the 'chpasswd' command. See config.inc.php file.
+ the 'chpasswd' command. See config.inc.php.dist file.
+
+ Attached wrapper script (chpass-wrapper.py) restricts password changes
+ to uids >= 1000 and can deny requests based on a blacklist.
 
 
  2.12.  LDAP - no PEAR (ldap_simple)
@@ -238,6 +244,13 @@
       why the 'force replace' is always used).
 
 
+ 2.13.  XMail (xmail)
+ -----------------------------------
+
+ Driver for XMail (www.xmailserver.org). See config.inc.php.dist file
+ for configuration description.
+
+
  3. Driver API
  -------------
 
@@ -246,3 +259,4 @@
  may return PASSWORD_SUCCESS on success or any of PASSWORD_CONNECT_ERROR,
  PASSWORD_CRYPT_ERROR, PASSWORD_ERROR when driver was unable to change password.
  See existing drivers in drivers/ directory for examples.
+

@@ -4,15 +4,15 @@
  +-----------------------------------------------------------------------+
  | language/ga/messages.inc                                              |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author:   Noel Bourke  (cros13)                                       |
  +-----------------------------------------------------------------------+
 
- @version $Id: messages.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: messages.inc 3989 2010-09-25 13:03:53Z alec $
 
 */
 

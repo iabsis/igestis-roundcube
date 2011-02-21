@@ -4,8 +4,8 @@
 +-----------------------------------------------------------------------+
 | language/fi_FI/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,7 +15,7 @@
 |         Olli <ollinpostit@gmail.com>                                  |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3522 2010-04-21 14:47:34Z thomasb $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -308,9 +308,6 @@ $labels['subscribed'] = 'Näytetään';
 $labels['messagecount'] = 'Viestejä';
 $labels['create'] = 'Luo uusi';
 $labels['createfolder'] = 'Luo uusi kansio';
-$labels['rename'] = 'Nimeä uudelleen';
-$labels['renamefolder'] = 'Nimeä kansio uudelleen';
-$labels['deletefolder'] = 'Poista kansio';
 $labels['managefolders'] = 'Kansioiden hallinta';
 $labels['specialfolders'] = 'Erikoiskansiot';
 $labels['sortby'] = 'Järjestä';

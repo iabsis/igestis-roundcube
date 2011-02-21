@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/include/rcube_mdb2.php                                        |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2009, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -16,7 +16,7 @@
  | Author: Lukas Kahwe Smith <smith@pooteeweet.org>                      |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_mdb2.php 3581 2010-04-30 14:14:23Z alec $
+ $Id: rcube_mdb2.php 4057 2010-10-07 07:03:25Z alec $
 
 */
 
@@ -30,7 +30,7 @@
  * @author     David Saez Padros <david@ols.es>
  * @author     Thomas Bruederli <roundcube@gmail.com>
  * @author     Lukas Kahwe Smith <smith@pooteeweet.org>
- * @version    1.16
+ * @version    1.17
  * @link       http://pear.php.net/package/MDB2
  */
 class rcube_mdb2
@@ -52,8 +52,8 @@ class rcube_mdb2
     /**
      * Object constructor
      *
-     * @param  string  DSN for read/write operations
-     * @param  string  Optional DSN for read only operations
+     * @param  string $db_dsnw DSN for read/write operations
+     * @param  string $db_dsnr Optional DSN for read only operations
      */
     function __construct($db_dsnw, $db_dsnr='', $pconn=false)
     {
@@ -72,8 +72,8 @@ class rcube_mdb2
     /**
      * Connect to specific database
      *
-     * @param  string  DSN for DB connections
-     * @return object  PEAR database handle
+     * @param  string $dsn  DSN for DB connections
+     * @return MDB2 PEAR database handle
      * @access private
      */
     private function dsn_connect($dsn)
@@ -116,22 +116,22 @@ class rcube_mdb2
     /**
      * Connect to appropiate database depending on the operation
      *
-     * @param  string  Connection mode (r|w)
+     * @param  string $mode Connection mode (r|w)
      * @access public
      */
     function db_connect($mode)
     {
-        $this->db_mode = $mode;
-
         // Already connected
         if ($this->db_connected) {
-            // no replication, current connection is ok
-            if ($this->db_dsnw == $this->db_dsnr)
-                return;
-
-            // connected to master, current connection is ok
+            // connected to read-write db, current connection is ok
             if ($this->db_mode == 'w')
                 return;
+
+            // no replication, current connection is ok for read and write
+            if (empty($this->db_dsnr) || $this->db_dsnw == $this->db_dsnr) {
+                $this->db_mode = 'w';
+                return;
+            }
 
             // Same mode, current connection is ok
             if ($this->db_mode == $mode)
@@ -141,14 +141,15 @@ class rcube_mdb2
         $dsn = ($mode == 'r') ? $this->db_dsnr : $this->db_dsnw;
 
         $this->db_handle = $this->dsn_connect($dsn);
-        $this->db_connected = true;
+        $this->db_connected = !PEAR::isError($this->db_handle);
+        $this->db_mode = $mode;
     }
 
 
     /**
      * Activate/deactivate debug mode
      *
-     * @param boolean True if SQL queries should be logged
+     * @param boolean $dbg True if SQL queries should be logged
      * @access public
      */
     function set_debug($dbg = true)
@@ -195,11 +196,12 @@ class rcube_mdb2
      */
     function query()
     {
-        if (!$this->is_connected())
-            return null;
-
         $params = func_get_args();
         $query = array_shift($params);
+
+        // Support one argument of type array, instead of n arguments
+        if (count($params) == 1 && is_array($params[0]))
+            $params = $params[0];
 
         return $this->_query($query, 0, 0, $params);
     }
@@ -229,10 +231,10 @@ class rcube_mdb2
     /**
      * Execute a SQL query with limits
      *
-     * @param  string  SQL query to execute
-     * @param  number  Offset for LIMIT statement
-     * @param  number  Number of rows for LIMIT statement
-     * @param  array   Values to be inserted in query
+     * @param  string $query   SQL query to execute
+     * @param  number $offset  Offset for LIMIT statement
+     * @param  number $numrows Number of rows for LIMIT statement
+     * @param  array  $params  Values to be inserted in query
      * @return number  Query handle identifier
      * @access private
      */
@@ -242,6 +244,10 @@ class rcube_mdb2
         $mode = (strtolower(substr(trim($query),0,6)) == 'select') ? 'r' : 'w';
 
         $this->db_connect($mode);
+
+        // check connection before proceeding
+        if (!$this->is_connected())
+            return null;
 
         if ($this->db_provider == 'sqlite')
             $this->_sqlite_prepare();
@@ -277,7 +283,7 @@ class rcube_mdb2
      * Get number of rows for a SQL query
      * If no query handle is specified, the last query will be taken as reference
      *
-     * @param  number  Optional query handle identifier
+     * @param  number $res_id  Optional query handle identifier
      * @return mixed   Number of rows or false on failure
      * @access public
      */
@@ -296,7 +302,7 @@ class rcube_mdb2
     /**
      * Get number of affected rows for the last query
      *
-     * @param  number  Optional query handle identifier
+     * @param  number $res_id Optional query handle identifier
      * @return mixed   Number of rows or false on failure
      * @access public
      */
@@ -313,7 +319,7 @@ class rcube_mdb2
      * Get last inserted record ID
      * For Postgres databases, a sequence name is required
      *
-     * @param  string  Table name (to find the incremented sequence)
+     * @param  string $table  Table name (to find the incremented sequence)
      * @return mixed   ID or false on failure
      * @access public
      */
@@ -341,7 +347,7 @@ class rcube_mdb2
      * Get an associative array for one row
      * If no query handle is specified, the last query will be taken as reference
      *
-     * @param  number  Optional query handle identifier
+     * @param  number $res_id Optional query handle identifier
      * @return mixed   Array with col values or false on failure
      * @access public
      */
@@ -356,7 +362,7 @@ class rcube_mdb2
      * Get an index array for one row
      * If no query handle is specified, the last query will be taken as reference
      *
-     * @param  number  Optional query handle identifier
+     * @param  number $res_id  Optional query handle identifier
      * @return mixed   Array with col values or false on failure
      * @access public
      */
@@ -370,8 +376,8 @@ class rcube_mdb2
     /**
      * Get col values for a result row
      *
-     * @param  object  Query result handle
-     * @param  number  Fetch mode identifier
+     * @param  MDB2_Result_Common Query $result result handle
+     * @param  number                   $mode   Fetch mode identifier
      * @return mixed   Array with col values or false on failure
      * @access private
      */
@@ -409,8 +415,8 @@ class rcube_mdb2
     /**
      * Formats input so it can be safely used in a query
      *
-     * @param  mixed   Value to quote
-     * @param  string  Type of data
+     * @param  mixed  $input  Value to quote
+     * @param  string $type   Type of data
      * @return string  Quoted/converted string for use in query
      * @access public
      */
@@ -431,7 +437,7 @@ class rcube_mdb2
     /**
      * Quotes a string so it can be safely used as a table or column name
      *
-     * @param  string  Value to quote
+     * @param  string $str Value to quote
      * @return string  Quoted string for use in query
      * @deprecated     Replaced by rcube_MDB2::quote_identifier
      * @see            rcube_mdb2::quote_identifier
@@ -446,7 +452,7 @@ class rcube_mdb2
     /**
      * Quotes a string so it can be safely used as a table or column name
      *
-     * @param  string  Value to quote
+     * @param  string $str Value to quote
      * @return string  Quoted string for use in query
      * @access public
      */
@@ -462,7 +468,7 @@ class rcube_mdb2
     /**
      * Escapes a string
      *
-     * @param  string  The string to be escaped
+     * @param  string $str The string to be escaped
      * @return string  The escaped string
      * @access public
      * @since  0.1.1
@@ -498,8 +504,8 @@ class rcube_mdb2
     /**
      * Return list of elements for use with SQL's IN clause
      *
-     * @param  array  Input array
-     * @param  string Type of data
+     * @param  array  $arr  Input array
+     * @param  string $type Type of data
      * @return string Comma-separated list of quoted values for use in query
      * @access public
      */
@@ -518,7 +524,7 @@ class rcube_mdb2
     /**
      * Return SQL statement to convert a field value into a unix timestamp
      *
-     * @param  string  Field name
+     * @param  string $field Field name
      * @return string  SQL statement to use in query
      * @access public
      */
@@ -541,7 +547,7 @@ class rcube_mdb2
     /**
      * Return SQL statement to convert from a unix timestamp
      *
-     * @param  string  Field name
+     * @param  string $timestamp Field name
      * @return string  SQL statement to use in query
      * @access public
      */
@@ -562,8 +568,8 @@ class rcube_mdb2
     /**
      * Return SQL statement for case insensitive LIKE
      *
-     * @param  string  Field name
-     * @param  string  Search value
+     * @param  string $column  Field name
+     * @param  string $value   Search value
      * @return string  SQL statement to use in query
      * @access public
      */
@@ -582,7 +588,7 @@ class rcube_mdb2
     /**
      * Encodes non-UTF-8 characters in string/array/object (recursive)
      *
-     * @param  mixed  Data to fix
+     * @param  mixed  $input Data to fix
      * @return mixed  Properly UTF-8 encoded data
      * @access public
      */
@@ -606,7 +612,7 @@ class rcube_mdb2
     /**
      * Decodes encoded UTF-8 string/object/array (recursive)
      *
-     * @param  mixed  Input data
+     * @param  mixed $input Input data
      * @return mixed  Decoded data
      * @access public
      */
@@ -630,7 +636,7 @@ class rcube_mdb2
     /**
      * Adds a query result and returns a handle ID
      *
-     * @param  object  Query handle
+     * @param  object $res Query handle
      * @return mixed   Handle ID
      * @access private
      */
@@ -658,7 +664,7 @@ class rcube_mdb2
      * Resolves a given handle ID and returns the according query handle
      * If no ID is specified, the last resource handle will be returned
      *
-     * @param  number  Handle ID
+     * @param  number $res_id Handle ID
      * @return mixed   Resource handle or false on failure
      * @access private
      */
@@ -678,8 +684,8 @@ class rcube_mdb2
     /**
      * Create a sqlite database from a file
      *
-     * @param  object  SQLite database handle
-     * @param  string  File path to use for DB creation
+     * @param  MDB2   $dbh       SQLite database handle
+     * @param  string $file_name File path to use for DB creation
      * @access private
      */
     private function _sqlite_create_database($dbh, $file_name)
@@ -725,7 +731,8 @@ class rcube_mdb2
 function mdb2_debug_handler(&$db, $scope, $message, $context = array())
 {
     if ($scope != 'prepare') {
-        $debug_output = $scope . '('.$db->db_index.'): ' . $message;
+        $debug_output = sprintf('%s(%d): %s;',
+            $scope, $db->db_index, rtrim($message, ';'));
         write_log('sql', $debug_output);
     }
 }

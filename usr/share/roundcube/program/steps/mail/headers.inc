@@ -3,8 +3,8 @@
  +-----------------------------------------------------------------------+
  | program/steps/mail/headers.inc                                        |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2007, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2007, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -14,7 +14,7 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: headers.inc 3780 2010-06-23 09:55:08Z alec $
+ $Id: headers.inc 3989 2010-09-25 13:03:53Z alec $
 
 */
 

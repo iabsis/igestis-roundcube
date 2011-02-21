@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/el/labels.inc                                                |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         John Economou <hsoc@irc.gr>                                   |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3745 2010-06-13 09:06:04Z alec $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -238,9 +238,6 @@ $labels['subscribed'] = 'Εγγραφή';
 $labels['messagecount'] = 'Μηνύματα';
 $labels['create'] = 'Δημιουργία';
 $labels['createfolder'] = 'Δημιουργία νέου φακέλου';
-$labels['rename'] = 'Μετονομασία';
-$labels['renamefolder'] = 'Μετονομασία φακέλου';
-$labels['deletefolder'] = 'Διαγραφή φακέλου';
 $labels['managefolders'] = 'Διαχείριση φακέλων';
 $labels['specialfolders'] = 'Ειδικοί Φάκελοι';
 $labels['sortby'] = 'Ταξινόμηση κατά';

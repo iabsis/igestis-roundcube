@@ -4,8 +4,8 @@
 +-----------------------------------------------------------------------+
 | language/fa/messages.inc                                              |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         Nader Aghazadeh <Nader.aghazadeh at gmail.com>                |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: messages.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -50,9 +50,7 @@ $messages['deletecontactconfirm'] = 'آیا واقعاً می‌خواهید ت�
 $messages['deletemessagesconfirm'] = 'آیا واقعاً می‌خواهید پیغام (های) انتخاب شده را حذف کنید؟';
 $messages['deletefolderconfirm'] = 'آیا واقعاً می‌خواهید این پوشه را حذف کنید؟';
 $messages['purgefolderconfirm'] = 'آیا واقعاً می‌خواهید همه‌ی پیغام‌های داخل این پوشه را حذف کنید؟';
-$messages['foldercreating'] = '...در حال ایجاد پوشه ';
 $messages['folderdeleting'] = '...در حال حذف پوشه ';
-$messages['folderrenaming'] = '...در حال تغییر نام پوشه ';
 $messages['foldermoving'] = '...در حال انتقال پوشه ';
 $messages['formincomplete'] = 'فرم کاملاً پر نشده بود';
 $messages['noemailwarning'] = 'لطفاً یک نشانی ایمیل معتبر وارد کنید';
@@ -85,7 +83,6 @@ $messages['movingmessage'] = '...در حال انتقال پیغام';
 $messages['receiptsent'] = 'رسید خواندن با موفقیت ارسال شد';
 $messages['errorsendingreceipt'] = 'ناتوان در ارسال رسید';
 $messages['nodeletelastidentity'] = '.نمی‌توانید این هویت را حذف کنید، زیرا آخرین هویت شماست';
-$messages['addsubfolderhint'] = 'پوشه به عنوان زیرپوشه ای ساخته خواهد شد که هم اکنون انتخاب شده است';
 $messages['forbiddencharacter'] = 'نام پوشه شامل یک حرف غیر مجاز است';
 $messages['selectimportfile'] = 'لطفاً فایل را جهت بارگذاری انتخاب کنید';
 $messages['addresswriterror'] = 'در دفترچه تلفن انتخابی ، اجازه نوشتن ندارید';

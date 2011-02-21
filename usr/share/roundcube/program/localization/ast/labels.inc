@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/ast/labels.inc                                               |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,7 +15,7 @@
 |         http://softastur.org                                          |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -265,9 +265,6 @@ $labels['subscribed'] = 'Soscrita';
 $labels['messagecount'] = 'Mensaxes';
 $labels['create'] = 'Facer';
 $labels['createfolder'] = 'Facer una bandexa nueva';
-$labels['rename'] = 'Renomar';
-$labels['renamefolder'] = 'Renomar bandexa';
-$labels['deletefolder'] = 'Desaniciar bandexa';
 $labels['managefolders'] = 'Alministrar bandexes';
 $labels['specialfolders'] = 'Bandexes especiales';
 $labels['sortby'] = 'Ordenar por';

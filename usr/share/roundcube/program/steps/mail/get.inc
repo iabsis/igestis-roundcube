@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/steps/mail/get.inc                                            |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2009, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: get.inc 3804 2010-07-06 10:38:58Z alec $
+ $Id: get.inc 4115 2010-10-20 11:41:48Z alec $
 
 */
 
@@ -34,6 +34,29 @@ if (!empty($_GET['_preload'])) {
 }
 
 ob_end_clean();
+
+// Now we need IMAP connection
+if (!$RCMAIL->imap_connect()) {
+  // Get action is often executed simultanously.
+  // Some servers have MAXPERIP or other limits.
+  // To workaround this we'll wait for some time
+  // and try again (once).
+  // Note: Random sleep interval is used to minimize concurency
+  // in getting message parts
+  if (!isset($_GET['_redirected'])) {
+    usleep(rand(10,30)*100000); // 1-3 sec.
+    header('Location: ' . $_SERVER['REQUEST_URI'] . '&_redirected=1');
+  }
+  else {
+    raise_error(array(
+      'code' => 500, 'type' => 'php',
+      'file' => __FILE__, 'line' => __LINE__,
+      'message' => 'Unable to get/display message part. IMAP connection error'),
+      true, true);
+  }
+  // Don't kill session, just quit (#1486995)
+  exit;
+}
 
 // similar code as in program/steps/mail/show.inc
 if (!empty($_GET['_uid'])) {
@@ -56,7 +79,7 @@ else if ($pid = get_input_value('_part', RCUBE_INPUT_GET)) {
     $ctype_secondary = strtolower($part->ctype_secondary);
     $mimetype = sprintf('%s/%s', $ctype_primary, $ctype_secondary);
 
-    $browser = new rcube_browser;
+    $browser = $RCMAIL->output->browser;
 
     // send download headers
     if ($_GET['_download']) {
@@ -68,6 +91,7 @@ else if ($pid = get_input_value('_part', RCUBE_INPUT_GET)) {
       header("Content-Type: text/$ctype_secondary; charset=" . ($part->charset ? $part->charset : RCMAIL_CHARSET));
     }
     else {
+      $mimetype = rcmail_fix_mimetype($mimetype);
       header("Content-Type: $mimetype");
       header("Content-Transfer-Encoding: binary");
     }

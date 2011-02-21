@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/lv/messages.inc                                              |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,7 +15,7 @@
 |         Lauris Bukšis-Haberkorns <lauris@nix.lv>                      |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
+@version $Id: messages.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -55,9 +55,7 @@ $messages['deletecontactconfirm'] = 'Vai tiešām vēlaties dzēst iezīmēto(ā
 $messages['deletemessagesconfirm'] = 'Vai tiešām vēlaties dzēst iezīmēto(ās) vēstules?';
 $messages['deletefolderconfirm'] = 'Vai tiešām vēlaties dzēst šo mapi?';
 $messages['purgefolderconfirm'] = 'Vai tiešām vēlaties dzēst visas vēstules, kas atrodas šajā mapē?';
-$messages['foldercreating'] = 'Izveidoju mapi...';
 $messages['folderdeleting'] = 'Dzēšu mapi...';
-$messages['folderrenaming'] = 'Pārsaucu mapi...';
 $messages['foldermoving'] = 'Pārvietoju mapi...';
 $messages['formincomplete'] = 'Formulārs nav pilnībā aizpildīts';
 $messages['noemailwarning'] = 'Lūdzu ievadiet pareizu e-pasta adresi';
@@ -91,7 +89,6 @@ $messages['movingmessage'] = 'Pārvietoju vēstules...';
 $messages['receiptsent'] = 'Saņemšanas apstiprinājums nosūtīts';
 $messages['errorsendingreceipt'] = 'Neizdevās nosūtīt apstiprinājumu';
 $messages['nodeletelastidentity'] = 'Šo identitāti nevar izdzēst, tā ir pati pēdējā.';
-$messages['addsubfolderhint'] = 'Šis folderis tiks izveidots kā apakšfolderis tam, kurš patreiz ir izvēlēts';
 $messages['forbiddencharacter'] = 'Mapes nosaukums satur aizliegtus simbolus';
 $messages['selectimportfile'] = 'Lūdzu izvēlieties failu, ko vēlaties augšupielādēt';
 $messages['addresswriterror'] = 'Izvēlētās adrešu grāmatas datus nevar labot';

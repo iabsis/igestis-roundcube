@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/include/rcube_result_set.php                                  |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2006-2010, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2006-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,13 +15,13 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_result_set.php 3553 2010-04-23 11:25:37Z alec $
+ $Id: rcube_result_set.php 3989 2010-09-25 13:03:53Z alec $
 
 */
 
 
 /**
- * RoundCube result set class.
+ * Roundcube result set class.
  * Representing an address directory result set.
  *
  * @package Addressbook

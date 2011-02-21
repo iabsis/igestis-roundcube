@@ -4,8 +4,8 @@
 +-----------------------------------------------------------------------+
 | language/eu_ES/messages.inc                                           |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -13,7 +13,7 @@
 |         Bihar <gaurdabihar@gmail.com>                                 |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: messages.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -78,7 +78,6 @@ $messages['movingmessage'] = 'Mezua mugitzen...';
 $messages['receiptsent'] = 'Ondo bidalia irakurritako agiria';
 $messages['errorsendingreceipt'] = 'Ezin da agiria bidali';
 $messages['nodeletelastidentity'] = 'Ezin da izaera hau ezabatu, zure bakarra da';
-$messages['addsubfolderhint'] = 'Aukeratutakoaren azpikarpeta bezala sortuko da karpeta hau';
 $messages['forbiddencharacter'] = 'Karpeta izenak debekatutako karaktereak ditu';
 
 ?>

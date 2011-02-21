@@ -4,15 +4,15 @@
  +-----------------------------------------------------------------------+
  | language/si/labels.inc                                                |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Melanga Dissanayake <Melanga.Dissanayake@pabcbank.com>        |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -179,9 +179,6 @@ $labels['subscribed'] = 'සාමාජික';
 $labels['messagecount'] = 'පනිවුඩ';
 $labels['create'] = 'සෑදීම';
 $labels['createfolder'] = 'අඵත් ෆෝල්ඩරයක් සෑදීම';
-$labels['rename'] = 'නැවත නම් කිරීම';
-$labels['renamefolder'] = 'ෆෝල්ඩරය නැවත නම් කිරීම';
-$labels['deletefolder'] = 'ෆෝල්ඩරය මකා දැමීම';
 $labels['managefolders'] = 'හැසිරවීම හැසිරවීම';
 $labels['sortby'] = 'චිසින් වර්ග කිරීම';
 $labels['sortasc'] = 'ආරෝහණ වර්ග කිරීම';

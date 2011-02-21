@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/ast/messages.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2008, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2008, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -15,7 +15,7 @@
 |         http://softastur.org                                          |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
+@version $Id: messages.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -54,9 +54,7 @@ $messages['deletecontactconfirm'] = '¿Tas seguru de desaniciar los contautos qu
 $messages['deletemessagesconfirm'] = '¿Tas seguru de desaniciar los mensaxes que marcaste?';
 $messages['deletefolderconfirm'] = '¿Tas seguru de desaniciar esta bandexa?';
 $messages['purgefolderconfirm'] = '¿Tas seguru de desaniciar tolos mensaxes d\'esta bandexa?';
-$messages['foldercreating'] = 'Faciendo la bandexa...';
 $messages['folderdeleting'] = 'Desaniciando la bandexa...';
-$messages['folderrenaming'] = 'Renomando la bandexa...';
 $messages['foldermoving'] = 'Moviendo la bandexa...';
 $messages['formincomplete'] = 'Tienes de rellenar tolos campos del formulariu';
 $messages['noemailwarning'] = 'Por favor, dame un corréu válidu';
@@ -89,7 +87,6 @@ $messages['movingmessage'] = 'Moviendo\'l mensaxe...';
 $messages['receiptsent'] = 'Unviose correchamente l\'avisu de llectura.';
 $messages['errorsendingreceipt'] = 'Nun fui a unviar l\'avisu de llectura.';
 $messages['nodeletelastidentity'] = 'Nun puedo desaniciar esa identidá porque ye la última.';
-$messages['addsubfolderhint'] = 'Esta bandexa va ser subandexa de la que ta marcada';
 $messages['forbiddencharacter'] = 'El nome de la bandexa tien un caráuter que nun val';
 $messages['selectimportfile'] = 'Por favor escueye el ficheru que quies xubir';
 $messages['addresswriterror'] = 'Nun puedo escribir nel llibru de direiciones qu\'escoyisti';

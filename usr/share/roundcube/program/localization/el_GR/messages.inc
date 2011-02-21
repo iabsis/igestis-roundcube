@@ -3,8 +3,8 @@
 +-----------------------------------------------------------------------+
 | language/el/messages.inc                                              |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -12,7 +12,7 @@
 |         John Economou <hsoc@irc.gr>                                   |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
+@version $Id: messages.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -52,9 +52,7 @@ $messages['deletecontactconfirm'] = 'Θέλετε να διαγράψετε τη
 $messages['deletemessagesconfirm'] = 'Θέλετε να διαγράψετε το συγκεκριμένο μήνυμα/τα;';
 $messages['deletefolderconfirm'] = 'Θέλετε να διαγράψετε το συγκεκριμένο φάκελο;';
 $messages['purgefolderconfirm'] = 'Θέλετε να διαγράψετε όλα τα μηνύματα στο συγκεκριμένο φάκελο;';
-$messages['foldercreating'] = 'Δημιουργία φακέλου';
 $messages['folderdeleting'] = 'Διαγραφή φακέλου';
-$messages['folderrenaming'] = 'Μετονομασία φακέλου';
 $messages['foldermoving'] = 'Μεταφορά φακέλου';
 $messages['formincomplete'] = 'Η φόρμα δεν έχει συμπληρωθεί πλήρως';
 $messages['noemailwarning'] = 'Παρακαλώ εισάγετε έγκυρη διεύθυνση email';
@@ -88,7 +86,6 @@ $messages['movingmessage'] = 'Μετακίνηση μηνύματος...';
 $messages['receiptsent'] = 'Επιτυχής αποστολή αναφοράς ανάγνωσης';
 $messages['errorsendingreceipt'] = 'Αποστολή αναφοράς απέτυχε';
 $messages['nodeletelastidentity'] = 'Δε μπορείτε να διαγράψετε αυτήν την ταυτότητα, είναι η τελευταία.';
-$messages['addsubfolderhint'] = 'Αυτός ο φάκελος θα δημιουργηθεί ως υποφάκελος του επιλεγμένου';
 $messages['forbiddencharacter'] = 'Η ονομασία φακέλου περιέχει μη επιτρεπτό χαρακτήρα';
 $messages['selectimportfile'] = 'Επιλέξτε αρχείο για ανέβασμα';
 $messages['addresswriterror'] = 'Η επιλεγμένη ατζέντα διευθύνσεων δεν είνα εγγράψιμη';

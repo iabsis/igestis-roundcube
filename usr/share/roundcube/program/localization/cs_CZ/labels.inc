@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/cs_CZ/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -17,7 +17,7 @@
 |        Ales Pospichal <ales@pospichalales.info>                       |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3876 2010-08-06 19:10:43Z yllar $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -173,6 +173,7 @@ $labels['addattachment'] = 'Přidat přílohu';
 $labels['charset'] = 'Znaková sada';
 $labels['editortype'] = 'Typ editoru zpráv';
 $labels['returnreceipt'] = 'Doručenka';
+$labels['editidents'] = 'Editovat identity';
 $labels['checkspelling'] = 'Zkontrolovat pravopis';
 $labels['resumeediting'] = 'Pokračovat v úpravách';
 $labels['revertto'] = 'Přejít na';
@@ -264,7 +265,8 @@ $labels['serversettings'] = 'Nastavení serveru';
 $labels['mailboxview'] = 'Zobrazení schránky';
 $labels['mdnrequests'] = 'Oznámení o doručení';
 $labels['askuser'] = 'zeptat se';
-$labels['autosend'] = 'poslat automaticky';
+$labels['autosend'] = 'poslat potvrzení automaticky';
+$labels['autosendknown'] = 'poslat potvrzení pouze mým kontaktům';
 $labels['ignore'] = 'ignorovat';
 $labels['readwhendeleted'] = 'Při odstranění označit zprávu jako přečtenou';
 $labels['flagfordeletion'] = 'Zprávu nemazat, pouze označit pro odstranění';
@@ -309,6 +311,7 @@ $labels['abovequote'] = 'nad citaci';
 $labels['insertsignature'] = 'Vložit podpis';
 $labels['previewpanemarkread'] = 'Označit zobrazené zprávy jako přečtené';
 $labels['afternseconds'] = 'po $n sekundách';
+$labels['reqmdn'] = 'Vždy požadovat doručenku';
 $labels['folder'] = 'Složka';
 $labels['folders'] = 'Složky';
 $labels['foldername'] = 'Jméno složky';
@@ -316,9 +319,6 @@ $labels['subscribed'] = 'Vybráno';
 $labels['messagecount'] = 'Počet zpráv';
 $labels['create'] = 'Vytvořit';
 $labels['createfolder'] = 'Vytvořit novou složku';
-$labels['rename'] = 'Přejmenovat';
-$labels['renamefolder'] = 'Přejmenovat složku';
-$labels['deletefolder'] = 'Smazat složku';
 $labels['managefolders'] = 'Spravovat složky';
 $labels['specialfolders'] = 'Speciální složky';
 $labels['sortby'] = 'Seřadit podle';

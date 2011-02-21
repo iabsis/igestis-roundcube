@@ -5,7 +5,7 @@
 
   Author: Aleksander Machniak <alec@alec.pl>
 
-  $Id: rcube_sieve.php 3855 2010-08-02 13:23:37Z alec $
+  $Id: rcube_sieve.php 4241 2010-11-20 17:59:50Z alec $
 
 */
 
@@ -44,23 +44,35 @@ class rcube_sieve
      * @param boolean Enable/disable TLS use
      * @param array   Disabled extensions
      * @param boolean Enable/disable debugging
+     * @param string  Proxy authentication identifier
+     * @param string  Proxy authentication password
      */
     public function __construct($username, $password='', $host='localhost', $port=2000,
-        $auth_type=null, $usetls=true, $disabled=array(), $debug=false)
+        $auth_type=null, $usetls=true, $disabled=array(), $debug=false,
+        $auth_cid=null, $auth_pw=null)
     {
         $this->sieve = new Net_Sieve();
 
         if ($debug) {
             $this->sieve->setDebug(true, array($this, 'debug_handler'));
         }
+
         if (PEAR::isError($this->sieve->connect($host, $port, NULL, $usetls))) {
             return $this->_set_error(SIEVE_ERROR_CONNECTION);
         }
+
+        if (!empty($auth_cid)) {
+            $authz    = $username;
+            $username = $auth_cid;
+            $password = $auth_pw;
+        }
+
         if (PEAR::isError($this->sieve->login($username, $password,
-            $auth_type ? strtoupper($auth_type) : null))
+            $auth_type ? strtoupper($auth_type) : null, $authz))
         ) {
             return $this->_set_error(SIEVE_ERROR_LOGIN);
         }
+
         $this->disabled = $disabled;
     }
 
@@ -332,13 +344,17 @@ class rcube_sieve
         $name = array();
 
         // Squirrelmail (Avelsieve)
-        if ($tokens = preg_split('/(#START_SIEVE_RULE.*END_SIEVE_RULE)\n/', $script, -1, PREG_SPLIT_DELIM_CAPTURE)) {
+        if ($tokens = preg_split('/(#START_SIEVE_RULE.*END_SIEVE_RULE)\r?\n/', $script, -1, PREG_SPLIT_DELIM_CAPTURE)) {
             foreach($tokens as $token) {
                 if (preg_match('/^#START_SIEVE_RULE.*/', $token, $matches)) {
                     $name[$i] = "unnamed rule ".($i+1);
                     $content .= "# rule:[".$name[$i]."]\n";
                 }
                 elseif (isset($name[$i])) {
+                    // This preg_replace is added because I've found some Avelsieve scripts
+                    // with rules containing "if" here. I'm not sure it was working
+                    // before without this or not.
+                    $token = preg_replace('/^if\s+/', '', trim($token));
                     $content .= "if $token\n";
                     $i++;
                 }
@@ -388,6 +404,7 @@ class rcube_sieve_script
         'ereject',
         'copy',                     // RFC3894
         'vacation',                 // RFC5230
+        'relational',               // RFC3431
     // TODO: (most wanted first) body, imapflags, notify, regex
     );
 
@@ -507,15 +524,26 @@ class rcube_sieve_script
                     break;
                 case 'header':
                     $tests[$i] .= ($test['not'] ? 'not ' : '');
-                    $tests[$i] .= 'header :' . $test['type'];
+
+                    // relational operator + comparator
+					if (preg_match('/^(value|count)-([gteqnl]{2})/', $test['type'], $m)) {
+						array_push($exts, 'relational');
+						array_push($exts, 'comparator-i;ascii-numeric');
+                        $tests[$i] .= 'header :' . $m[1] . ' "' . $m[2] . '" :comparator "i;ascii-numeric"';
+                    }
+                    else
+                        $tests[$i] .= 'header :' . $test['type'];
+                    
                     if (is_array($test['arg1']))
                         $tests[$i] .= ' ["' . implode('", "', $this->_escape_string($test['arg1'])) . '"]';
                     else
                         $tests[$i] .= ' "' . $this->_escape_string($test['arg1']) . '"';
+
                     if (is_array($test['arg2']))
                         $tests[$i] .= ' ["' . implode('", "', $this->_escape_string($test['arg2'])) . '"]';
                     else
                         $tests[$i] .= ' "' . $this->_escape_string($test['arg2']) . '"';
+
                     break;
                 }
                 $i++;
@@ -715,7 +743,7 @@ class rcube_sieve_script
         if (in_array('vacation', $this->supported))
             $patterns[] = '^\s*vacation\s+(.*?[^\\\]);';
 
-        $pattern = '/(' . implode('$)|(', $patterns) . '$)/ms';
+        $pattern = '/(' . implode('\s*$)|(', $patterns) . '$\s*)/ms';
 
         // parse actions body
         if (preg_match_all($pattern, $content, $mm, PREG_SET_ORDER)) {
@@ -814,10 +842,14 @@ class rcube_sieve_script
         $patterns[] = '(not\s+)?(exists)\s+(".*?[^\\\]")';
         $patterns[] = '(not\s+)?(true)';
         $patterns[] = '(not\s+)?(size)\s+:(under|over)\s+([0-9]+[KGM]{0,1})';
-        $patterns[] = '(not\s+)?(header)\s+:(contains|is|matches)\s+\[(.*?[^\\\]")\]\s+\[(.*?[^\\\]")\]';
-        $patterns[] = '(not\s+)?(header)\s+:(contains|is|matches)\s+(".*?[^\\\]")\s+(".*?[^\\\]")';
-        $patterns[] = '(not\s+)?(header)\s+:(contains|is|matches)\s+\[(.*?[^\\\]")\]\s+(".*?[^\\\]")';
-        $patterns[] = '(not\s+)?(header)\s+:(contains|is|matches)\s+(".*?[^\\\]")\s+\[(.*?[^\\\]")\]';
+        $patterns[] = '(not\s+)?(header)\s+:(contains|is|matches)((\s+))\[(.*?[^\\\]")\]\s+\[(.*?[^\\\]")\]';
+        $patterns[] = '(not\s+)?(header)\s+:(contains|is|matches)((\s+))(".*?[^\\\]")\s+(".*?[^\\\]")';
+        $patterns[] = '(not\s+)?(header)\s+:(contains|is|matches)((\s+))\[(.*?[^\\\]")\]\s+(".*?[^\\\]")';
+        $patterns[] = '(not\s+)?(header)\s+:(contains|is|matches)((\s+))(".*?[^\\\]")\s+\[(.*?[^\\\]")\]';
+		$patterns[] = '(not\s+)?(header)\s+:(count\s+"[gtleqn]{2}"|value\s+"[gtleqn]{2}")(\s+:comparator\s+"(.*?[^\\\])")?\s+\[(.*?[^\\\]")\]\s+\[(.*?[^\\\]")\]';
+		$patterns[] = '(not\s+)?(header)\s+:(count\s+"[gtleqn]{2}"|value\s+"[gtleqn]{2}")(\s+:comparator\s+"(.*?[^\\\])")?\s+(".*?[^\\\]")\s+(".*?[^\\\]")';
+		$patterns[] = '(not\s+)?(header)\s+:(count\s+"[gtleqn]{2}"|value\s+"[gtleqn]{2}")(\s+:comparator\s+"(.*?[^\\\])")?\s+\[(.*?[^\\\]")\]\s+(".*?[^\\\]")';
+		$patterns[] = '(not\s+)?(header)\s+:(count\s+"[gtleqn]{2}"|value\s+"[gtleqn]{2}")(\s+:comparator\s+"(.*?[^\\\])")?\s+(".*?[^\\\]")\s+\[(.*?[^\\\]")\]';
 
         // join patterns...
         $pattern = '/(' . implode(')|(', $patterns) . ')/';
@@ -836,10 +868,14 @@ class rcube_sieve_script
                     );
                 }
                 else if (preg_match('/^(not\s+)?header/', $match[0])) {
+                    $type = $match[$size-5];
+                    if (preg_match('/^(count|value)\s+"([gtleqn]{2})"/', $type, $m))
+                        $type = $m[1] . '-' . $m[2];
+                    
                     $result[] = array(
                         'test' => 'header',
-                        'not'  => $match[$size-5] ? true : false,
-                        'type' => $match[$size-3], // is/contains/matches
+                        'type' => $type, // is/contains/matches
+						'not'  => $match[$size-7] ? true : false,
                         'arg1' => $this->_parse_list($match[$size-2]), // header(s)
                         'arg2' => $this->_parse_list($match[$size-1]), // string(s)
                     );
@@ -952,4 +988,3 @@ class rcube_sieve_script
         return '["' . implode('","', $list) . '"]';
     }
 }
-

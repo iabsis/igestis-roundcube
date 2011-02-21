@@ -5,17 +5,17 @@
 +-----------------------------------------------------------------------+
 | language/ca_ES/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Miguel Canteras i Cañizares <miguel@canteras.org>             |
 |         Simo <sim6@graciasensefils.net>                               |
-|         Jordi Sanfeliu <jordi@fibranet.cat>                           |         
+|         Jordi Sanfeliu <jordi@fibranet.cat>                           |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3770 2010-06-19 12:46:51Z yllar $
+@version $Id: labels.inc 4386 2011-01-04 08:35:46Z yllar $
 
 */
 
@@ -40,11 +40,12 @@ $labels['to'] = 'Destinatari';
 $labels['cc'] = 'CC';
 $labels['bcc'] = 'BCC';
 $labels['replyto'] = 'Respon a';
+$labels['followupto'] = 'Seguiment-Per';
 $labels['date'] = 'Data';
 $labels['size'] = 'Grandària';
 $labels['priority'] = 'Prioritat';
 $labels['organization'] = 'Organització';
-$labels['reply-to'] = 'Respon a';
+$labels['readstatus'] = 'Estat de lectura';
 $labels['mailboxlist'] = 'Carpetes';
 $labels['messagesfromto'] = 'Missatges des de $from a $to de $count';
 $labels['threadsfromto'] = 'Fils $from a $to de $count';
@@ -99,6 +100,8 @@ $labels['checkmail'] = 'Recupera missatges nous';
 $labels['writenewmessage'] = 'Crea nou missatge';
 $labels['replytomessage'] = 'Respon al missatge';
 $labels['replytoallmessage'] = 'Respon al remitent i a tots els destinataris';
+$labels['replyall'] = 'Respondre a tots';
+$labels['replylist'] = 'Llista de resposta';
 $labels['forwardmessage'] = 'Reenvia missatge';
 $labels['deletemessage'] = 'Suprimeix missatge';
 $labels['movemessagetotrash'] = 'Mou missatge a la paperera';
@@ -153,7 +156,6 @@ $labels['listmode'] = 'Mode de vista de llista';
 $labels['folderactions'] = 'Accions de carpeta';
 $labels['compact'] = 'Compacta';
 $labels['empty'] = 'Buida';
-$labels['purge'] = 'Purga';
 $labels['quota'] = 'Utilització de disc';
 $labels['unknown'] = 'desconegut';
 $labels['unlimited'] = 'il·limitat';
@@ -171,12 +173,15 @@ $labels['addattachment'] = 'Afegeix un fitxer';
 $labels['charset'] = 'Codificació de caràcters';
 $labels['editortype'] = 'Tipus d\'editor';
 $labels['returnreceipt'] = 'Confirmació de recepció';
+$labels['dsn'] = 'Notificació d\'estat de lliurament';
+$labels['editidents'] = 'Editar identitats';
 $labels['checkspelling'] = 'Comprova l\'ortografia';
 $labels['resumeediting'] = 'Continua l\'edició';
 $labels['revertto'] = 'Torna a';
 $labels['attachments'] = 'Adjunts';
 $labels['upload'] = 'Afegeix';
 $labels['close'] = 'Cancel·la';
+$labels['messageoptions'] = 'Opcions de missatge...';
 $labels['low'] = 'Baixa';
 $labels['lowest'] = 'Molt baixa';
 $labels['normal'] = 'Normal';
@@ -193,6 +198,7 @@ $labels['maxuploadsize'] = 'El tamany màxim de fitxer és $size';
 $labels['addcc'] = 'Afegeix Cc';
 $labels['addbcc'] = 'Afegeix Bcc';
 $labels['addreplyto'] = 'Afegeix Reply-To';
+$labels['addfollowupto'] = 'Afegir Seguiment-Per';
 $labels['mdnrequest'] = 'El remitent d\'aquest missatge ha demanat ser notificat quan llegiu aquest missatge. Voleu notificar al remitent?';
 $labels['receiptread'] = 'Confirmació de recepció';
 $labels['yourmessage'] = 'Aquesta és una confirmació de recepció per al vostre missatge';
@@ -203,10 +209,13 @@ $labels['surname'] = 'Cognom';
 $labels['email'] = 'E-Mail';
 $labels['addcontact'] = 'Afegeix nou contacte';
 $labels['editcontact'] = 'Edita contacte';
+$labels['contacts'] = 'Contactes';
+$labels['contactproperties'] = 'Propietats del contacte';
 $labels['edit'] = 'Edita';
 $labels['cancel'] = 'Cancel·la';
 $labels['save'] = 'Desa';
 $labels['delete'] = 'Suprimeix';
+$labels['rename'] = 'Renombrar';
 $labels['newcontact'] = 'Crea nou contacte';
 $labels['deletecontact'] = 'Suprimeix contactes seleccionats';
 $labels['composeto'] = 'Redacta correu per a';
@@ -250,6 +259,7 @@ $labels['pagesize'] = 'Files per pàgina';
 $labels['signature'] = 'Signatura';
 $labels['dstactive'] = 'Horari d\'estiu';
 $labels['htmleditor'] = 'Escriu missatges en HTML';
+$labels['htmlonreply'] = 'només en resposta a missatge HTML';
 $labels['htmlsignature'] = 'Signatura HTML';
 $labels['previewpane'] = 'Mostra el panell de previsualització';
 $labels['skin'] = 'Aparença d\'interfície';
@@ -261,6 +271,8 @@ $labels['mailboxview'] = 'Vista de la bústia';
 $labels['mdnrequests'] = 'Notificacions de recepció';
 $labels['askuser'] = 'Pregunta-ho a l\'usuari';
 $labels['autosend'] = 'Envia-les automàticament';
+$labels['autosendknown'] = 'Envia-les automàticament només als meus contactes';
+$labels['autosendknownignore'] = 'enviar recepció als meus contactes, sinó ignora';
 $labels['ignore'] = 'Ignora-les';
 $labels['readwhendeleted'] = 'Marca el missatge com a llegit quan se suprimeixi';
 $labels['flagfordeletion'] = 'Afegeix marca d\'esborrat en comptes d\'esborrar-lo';
@@ -305,6 +317,9 @@ $labels['abovequote'] = 'sobre les cometes';
 $labels['insertsignature'] = 'Inserta signatura';
 $labels['previewpanemarkread'] = 'Marca missatges previsualitzats com a llegits';
 $labels['afternseconds'] = 'després de $n segons';
+$labels['reqmdn'] = 'Demana sempre la confirmació de recepció';
+$labels['reqdsn'] = 'Sempre demanar una notificació d\'estat de lliurament';
+$labels['replysamefolder'] = 'Col·locar respostes a la carpeta del missatge que es respon';
 $labels['folder'] = 'Carpeta';
 $labels['folders'] = 'Carpetes';
 $labels['foldername'] = 'Nom de carpeta';
@@ -312,11 +327,15 @@ $labels['subscribed'] = 'Subscriure\'s';
 $labels['messagecount'] = 'Missatges';
 $labels['create'] = 'Crea';
 $labels['createfolder'] = 'Crea nova carpeta';
-$labels['rename'] = 'Canvia el nom';
-$labels['renamefolder'] = 'Canvia el nom de la carpeta';
-$labels['deletefolder'] = 'Suprimeix carpeta';
 $labels['managefolders'] = 'Gestiona carpetes';
 $labels['specialfolders'] = 'Carpetes Especials';
+$labels['properties'] = 'Propietats';
+$labels['folderproperties'] = 'Propietats de la carpeta';
+$labels['parentfolder'] = 'Carpeta pare';
+$labels['location'] = 'Localització';
+$labels['info'] = 'Informació';
+$labels['getfoldersize'] = 'Clica per a veure la mida de la carpeta';
+$labels['changesubscription'] = 'Clica per a canviar la subscripció';
 $labels['sortby'] = 'Ordena per';
 $labels['sortasc'] = 'Ordena ascendentment';
 $labels['sortdesc'] = 'Ordena descendentment';

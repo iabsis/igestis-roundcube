@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | localization/zh_CN/labels.inc                                         |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         Zhang Huang bin <michaelbibby@gmail.com>                      |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3770 2010-06-19 12:46:51Z yllar $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -311,9 +311,6 @@ $labels['subscribed'] = '已订阅';
 $labels['messagecount'] = '邮件数量';
 $labels['create'] = '建立';
 $labels['createfolder'] = '建立新邮件夹';
-$labels['rename'] = '重命名';
-$labels['renamefolder'] = '重命名邮件夹';
-$labels['deletefolder'] = '删除邮件夹';
 $labels['managefolders'] = '管理邮件夹';
 $labels['specialfolders'] = '指定邮件夹';
 $labels['sortby'] = '排序';

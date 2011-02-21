@@ -5,15 +5,15 @@
  +-----------------------------------------------------------------------+
  | language/bs_BA/labels.inc                                             |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Begzudin Omerovic <Begzudin.Omerovic@gmail.com>               |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -221,9 +221,6 @@ $labels['foldername']  = 'Ime fascikle';
 $labels['subscribed']  = 'Pretplaćen';
 $labels['create']  = 'Napravi';
 $labels['createfolder']  = 'Napravi novu fasciklu';
-$labels['rename'] = 'Preimenuj';
-$labels['renamefolder'] = 'Preimenuj fasciklu';
-$labels['deletefolder']  = 'Obriši fasciklu';
 $labels['managefolders']  = 'Podesi fasciklu';
 
 $labels['sortby'] = 'Sortiraj po';

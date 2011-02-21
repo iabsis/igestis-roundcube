@@ -5,15 +5,15 @@
 +-----------------------------------------------------------------------+
 | language/hr/messages.inc                                              |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Edi Budimilic <edi@gemstudio.hr>                              |
 +-----------------------------------------------------------------------+
 
-@version $Id: messages.inc 3727 2010-06-08 13:39:57Z alec $
+@version $Id: messages.inc 4304 2010-12-03 10:58:40Z alec $
 
 */
 
@@ -53,9 +53,7 @@ $messages['deletecontactconfirm'] = 'Želite li obrisati izabrane kontakte?';
 $messages['deletemessagesconfirm'] = 'Sigurno želite obrisati odabrane poruke?';
 $messages['deletefolderconfirm'] = 'Želite li obrisati ovu mapu?';
 $messages['purgefolderconfirm'] = 'Želite li obrisati sve poruke u mapi?';
-$messages['foldercreating'] = 'Kreiram mapu...';
 $messages['folderdeleting'] = 'Brišem mapu...';
-$messages['folderrenaming'] = 'Mijenjam naziv mape...';
 $messages['foldermoving'] = 'Premještam mapu...';
 $messages['formincomplete'] = 'Obrazac nije u cjelosti popunjen';
 $messages['noemailwarning'] = 'Unesite valjanu e-mail adresu';
@@ -89,7 +87,6 @@ $messages['movingmessage'] = 'Premještanje poruke...';
 $messages['receiptsent'] = 'Uspješno poslana potvrda (pročitano)';
 $messages['errorsendingreceipt'] = 'Ne može poslati potvrdu';
 $messages['nodeletelastidentity'] = 'Ne možete izbrisati zadnji identitet.';
-$messages['addsubfolderhint'] = 'Ova mapa će biti stvorena kao podmapa na trenutno označenoj';
 $messages['forbiddencharacter'] = 'Naziv mape sadrži zabranjene znakove';
 $messages['selectimportfile'] = 'Odaberite datoteku za prijenos';
 $messages['addresswriterror'] = 'U odabrani adresar nije moguće zapisivat...';

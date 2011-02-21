@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/steps/settings/func.inc                                       |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2007, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2007, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: func.inc 3840 2010-07-30 06:34:02Z alec $
+ $Id: func.inc 4509 2011-02-09 10:51:50Z thomasb $
 
 */
 
@@ -25,7 +25,7 @@ if (!$OUTPUT->ajax_call)
 
 // similar function as /steps/settings/identities.inc::rcmail_identity_frame()
 function rcmail_preferences_frame($attrib)
-  {
+{
   global $OUTPUT;
 
   if (!$attrib['id'])
@@ -35,21 +35,21 @@ function rcmail_preferences_frame($attrib)
 
   $OUTPUT->set_env('contentframe', $attrib['name']);
   $OUTPUT->set_env('blankpage', $attrib['src'] ? $OUTPUT->abs_url($attrib['src']) : 'program/blank.gif');
-  
+
   return html::iframe($attrib);
-  }
+}
 
 
 function rcmail_sections_list($attrib)
-  {
+{
   global $RCMAIL;
-  
+
   // add id to message list table if not specified
   if (!strlen($attrib['id']))
     $attrib['id'] = 'rcmsectionslist';
 
   list($list, $cols) = rcmail_user_prefs();
-	    
+
   // create XHTML table
   $out = rcube_table_output($attrib, $list, $cols, 'id');
 
@@ -58,11 +58,11 @@ function rcmail_sections_list($attrib)
   $RCMAIL->output->include_script('list.js');
 
   return $out;
-  }
+}
 
 
 function rcmail_identities_list($attrib)
-  {
+{
   global $OUTPUT, $USER, $RCMAIL;
 
   // add id to message list table if not specified
@@ -72,7 +72,7 @@ function rcmail_identities_list($attrib)
   // get identities list and define 'mail' column
   $list = $USER->list_identities();
   foreach ($list as $idx => $row)
-    $list[$idx]['mail'] = trim($row['name'] . ' <' . $row['email'] .'>');
+    $list[$idx]['mail'] = trim($row['name'] . ' <' . rcube_idn_to_utf8($row['email']) .'>');
 
   // get all identites from DB and define list of cols to be displayed
   $plugin = $RCMAIL->plugins->exec_hook('identities_list', array(
@@ -87,28 +87,32 @@ function rcmail_identities_list($attrib)
   $OUTPUT->add_gui_object('identitieslist', $attrib['id']);
 
   return $out;
-  }
+}
 
 
 // similar function as in /steps/addressbook/edit.inc
 function get_form_tags($attrib, $action, $id = null, $hidden = null)
-  {
+{
   global $EDIT_FORM, $RCMAIL;
 
   $form_start = $form_end = '';
-  
+
   if (empty($EDIT_FORM)) {
     $request_key = $action . (isset($id) ? '.'.$id : '');
     $form_start = $RCMAIL->output->request_form(array(
-	'name' => 'form', 'method' => 'post',
-	'task' => $RCMAIL->task, 'action' => $action,
-	'request' => $request_key, 'noclose' => true) + $attrib);
-    
+	  'name'    => 'form',
+	  'method'  => 'post',
+	  'task'    => $RCMAIL->task,
+	  'action'  => $action,
+	  'request' => $request_key,
+	  'noclose' => true
+	) + $attrib);
+
     if (is_array($hidden)) {
       $hiddenfields = new html_hiddenfield($hidden);
       $form_start .= $hiddenfields->show();
     }
-    
+
     $form_end = !strlen($attrib['form']) ? '</form>' : '';
 
     $EDIT_FORM = !empty($attrib['form']) ? $attrib['form'] : 'form';
@@ -116,7 +120,7 @@ function get_form_tags($attrib, $action, $id = null, $hidden = null)
   }
 
   return array($form_start, $form_end);
-  }
+}
 
 
 function rcmail_user_prefs($current=null)
@@ -135,26 +139,26 @@ function rcmail_user_prefs($current=null)
         array('list' => $sections, 'cols' => array('section')));
 
   $sections = $plugin['list'];
-	
+
   $config = $RCMAIL->config->all();
   $no_override = array_flip($RCMAIL->config->get('dont_override', array()));
-  
+
   foreach ($sections as $idx => $sect) {
-  
+
     if ($current && $sect['id'] != $current)
       continue;
-  
+
     $blocks = array();
-    
+
     switch ($sect['id']) {
     // general
     case 'general':
-    
+
     $blocks = array(
       'main' => array('name' => Q(rcube_label('mainoptions'))),
       'list' => array('name' => Q(rcube_label('listoptions'))),
     );
-    
+
     // language selection
     if (!isset($no_override['language'])) {
       $a_lang = $RCMAIL->list_languages();
@@ -271,12 +275,12 @@ function rcmail_user_prefs($current=null)
         );
       }
     }
-    
-    break;    
-    
+
+    break;
+
     // Mailbox view (mail screen)
     case 'mailbox':
-    
+
     $blocks = array(
       'main' => array('name' => Q(rcube_label('mainoptions'))),
       'new_message' => array('name' => Q(rcube_label('newmessage'))),
@@ -298,7 +302,7 @@ function rcmail_user_prefs($current=null)
     if (!isset($no_override['preview_pane_mark_read'])) {
       // apply default if config option is not set at all
       $config['preview_pane_mark_read'] = $RCMAIL->config->get('preview_pane_mark_read', 0);
-      
+
       $field_id = 'rcmfd_preview_pane_mark_read';
       $select_delay = new html_select(array('name' => '_preview_pane_mark_read', 'id' => $field_id,
         'disabled' => $config['preview_pane']?0:1));
@@ -319,6 +323,8 @@ function rcmail_user_prefs($current=null)
       $select_mdn_requests = new html_select(array('name' => '_mdn_requests', 'id' => $field_id));
       $select_mdn_requests->add(rcube_label('askuser'), 0);
       $select_mdn_requests->add(rcube_label('autosend'), 1);
+      $select_mdn_requests->add(rcube_label('autosendknown'), 3);
+      $select_mdn_requests->add(rcube_label('autosendknownignore'), 4);
       $select_mdn_requests->add(rcube_label('ignore'), 2);
 
       $blocks['main']['options']['mdn_requests'] = array(
@@ -328,9 +334,7 @@ function rcmail_user_prefs($current=null)
     }
 
     $RCMAIL->imap_connect();
-    $threading_supported = $RCMAIL->imap->get_capability('thread=references')
-      || $RCMAIL->imap->get_capability('thread=orderedsubject')
-      || $RCMAIL->imap->get_capability('thread=refs');
+    $threading_supported = $RCMAIL->imap->get_capability('THREAD');
 
     if (!isset($no_override['autoexpand_threads']) && $threading_supported) {
       $field_id = 'rcmfd_autoexpand_threads';
@@ -338,10 +342,10 @@ function rcmail_user_prefs($current=null)
       $select_autoexpand_threads->add(rcube_label('never'), 0);
       $select_autoexpand_threads->add(rcube_label('do_expand'), 1);
       $select_autoexpand_threads->add(rcube_label('expand_only_unread'), 2);
-      
+
       $blocks['main']['options']['autoexpand_threads'] = array(
-	'title' => html::label($field_id, Q(rcube_label('autoexpand_threads'))),
-	'content' => $select_autoexpand_threads->show($config['autoexpand_threads']),
+        'title' => html::label($field_id, Q(rcube_label('autoexpand_threads'))),
+        'content' => $select_autoexpand_threads->show($config['autoexpand_threads']),
       );
     }
 
@@ -382,10 +386,10 @@ function rcmail_user_prefs($current=null)
     }
 
     break;
-    
+
     // Message viewing
     case 'mailview':
-    
+
     $blocks = array(
       'main' => array('name' => Q(rcube_label('mainoptions'))),
     );
@@ -448,10 +452,10 @@ function rcmail_user_prefs($current=null)
     }
 
     break;
-    
+
     // Mail composition
     case 'compose':
-    
+
     $blocks = array(
       'main' => array('name' => Q(rcube_label('mainoptions'))),
       'sig' => array('name' => Q(rcube_label('signatureoptions'))),
@@ -460,11 +464,14 @@ function rcmail_user_prefs($current=null)
     // Show checkbox for HTML Editor
     if (!isset($no_override['htmleditor'])) {
       $field_id = 'rcmfd_htmleditor';
-      $input_htmleditor = new html_checkbox(array('name' => '_htmleditor', 'id' => $field_id, 'value' => 1));
+      $select_htmleditor = new html_select(array('name' => '_htmleditor', 'id' => $field_id));
+      $select_htmleditor->add(rcube_label('never'), 0);
+      $select_htmleditor->add(rcube_label('always'), 1);
+      $select_htmleditor->add(rcube_label('htmlonreply'), 2);
 
       $blocks['main']['options']['htmleditor'] = array(
         'title' => html::label($field_id, Q(rcube_label('htmleditor'))),
-        'content' => $input_htmleditor->show($config['htmleditor']?1:0),
+        'content' => $select_htmleditor->show(intval($config['htmleditor'])),
       );
     }
 
@@ -502,6 +509,36 @@ function rcmail_user_prefs($current=null)
       $blocks['main']['options']['force_7bit'] = array(
         'title' => html::label($field_id, Q(rcube_label('force7bit'))),
         'content' => $input_7bit->show($config['force_7bit']?1:0),
+      );
+    }
+
+    if (!isset($no_override['mdn_default'])) {
+      $field_id = 'rcmfd_mdn_default';
+      $input_mdn = new html_checkbox(array('name' => '_mdn_default', 'id' => $field_id, 'value' => 1));
+
+      $blocks['main']['options']['mdn_default'] = array(
+        'title' => html::label($field_id, Q(rcube_label('reqmdn'))),
+        'content' => $input_mdn->show($config['mdn_default']?1:0),
+      );
+    }
+
+    if (!isset($no_override['dsn_default'])) {
+      $field_id = 'rcmfd_dsn_default';
+      $input_dsn = new html_checkbox(array('name' => '_dsn_default', 'id' => $field_id, 'value' => 1));
+
+      $blocks['main']['options']['dsn_default'] = array(
+        'title' => html::label($field_id, Q(rcube_label('reqdsn'))),
+        'content' => $input_dsn->show($config['dsn_default']?1:0),
+      );
+    }
+
+    if (!isset($no_override['reply_same_folder'])) {
+      $field_id = 'rcmfd_reply_same_folder';
+      $input_reply_same_folder = new html_checkbox(array('name' => '_reply_same_folder', 'id' => $field_id, 'value' => 1));
+
+      $blocks['main']['options']['reply_same_folder'] = array(
+        'title' => html::label($field_id, Q(rcube_label('replysamefolder'))),
+        'content' => $input_reply_same_folder->show($config['reply_same_folder']?1:0),
       );
     }
 
@@ -554,10 +591,10 @@ function rcmail_user_prefs($current=null)
     }
 
     break;
-    
+
     // Special IMAP folders
     case 'folders':
-    
+
     $blocks = array(
       'main' => array('name' => Q(rcube_label('mainoptions'))),
     );
@@ -601,10 +638,10 @@ function rcmail_user_prefs($current=null)
     }
 
     break;
-    
+
     // Server settings
     case 'server':
-    
+
     $blocks = array(
       'main' => array('name' => Q(rcube_label('mainoptions'))),
       'maintenance' => array('name' => Q(rcube_label('maintenance'))),
@@ -672,20 +709,18 @@ function rcmail_user_prefs($current=null)
         'content' => $input_expunge->show($config['logout_expunge']?1:0),
       );
     }
-    
+
     break;
     }
 
     $data = $RCMAIL->plugins->exec_hook('preferences_list', array('section' => $sect['id'], 'blocks' => $blocks));
     $found = false;
-    
+
     // create output
     foreach ($data['blocks'] as $block) {
-      if ($block['options']) {
-        foreach ($block['options'] as $option) {
-          $found = true;
-	  break 2;
-	}
+      if (!empty($block['content']) || !empty($block['options'])) {
+        $found = true;
+	    break;
       }
     }
 
@@ -705,10 +740,10 @@ function rcmail_get_skins()
   $skins = array();
 
   $dir = opendir($path);
-  
+
   if (!$dir)
 	return false;
-  
+
   while (($file = readdir($dir)) !== false)
   {
     $filename = $path.'/'.$file;
@@ -720,7 +755,6 @@ function rcmail_get_skins()
 
   return $skins;
 }
-
 
 // register UI objects
 $OUTPUT->add_handlers(array(

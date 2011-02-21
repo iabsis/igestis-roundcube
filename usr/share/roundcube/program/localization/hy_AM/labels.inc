@@ -4,15 +4,15 @@
 +-----------------------------------------------------------------------+
 | language/hy_AM/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author: Vahan Yerkanian <vahan@arminco.com>                           |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -249,9 +249,6 @@ $labels['subscribed'] = 'Բաժանորդագրված';
 $labels['messagecount'] = 'Նամակներ';
 $labels['create'] = 'Ստեղծել';
 $labels['createfolder'] = 'Բացել նոր դարակ';
-$labels['rename'] = 'Վերանվանել';
-$labels['renamefolder'] = 'Վերանվանել դարակը';
-$labels['deletefolder'] = 'Ջնջել դարակը';
 $labels['managefolders'] = 'Կարգավորել դարակները';
 $labels['specialfolders'] = 'Հատուկ դարակներ';
 $labels['sortby'] = 'Դասավորել';

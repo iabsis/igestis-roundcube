@@ -4,8 +4,8 @@
 +-----------------------------------------------------------------------+
 | language/bn_BD/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2008, RoundCube Dev. - Switzerland                      |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2008, Roundcube Dev. - Switzerland                      |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -243,13 +243,10 @@ $labels['checkallfolders'] = 'সবগুলো মেইলবক্সে ন
 $labels['folder'] = 'ফোল্ডার/মেইলবক্স';
 $labels['folders'] = 'ফোল্ডার/মেইলবক্স';
 $labels['foldername'] = 'ফোল্ডার/মেইলবক্স এর নাম';
-$labels['subscribed'] = 'গ্রহনকারি(Subscribed) ';
+$labels['subscribed'] = 'গ্রহনকারি';
 $labels['messagecount'] = 'মেইল/চিঠি';
 $labels['create'] = 'প্রস্তুত করুন';
 $labels['createfolder'] = 'নতুন ফোল্ডার / মেইলবক্স প্রস্তুত করুন';
-$labels['rename'] = 'নাম বদলান';
-$labels['renamefolder'] = 'ফোল্ডার/মেইলবক্স এর নাম বদলান';
-$labels['deletefolder'] = 'ফোল্ডার/মেইলবক্স ফেলে দিন';
 $labels['managefolders'] = 'ফোল্ডার/মেইলবক্স গুলো কে গুছান';
 $labels['specialfolders'] = 'বিশেষ ফোল্ডার/মেইলবক্স';
 $labels['sortby'] = 'সাজান';

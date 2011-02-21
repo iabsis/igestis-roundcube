@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/steps/addressbook/import.inc                                  |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2008-2009, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2008-2009, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -134,6 +134,9 @@ if ($_FILES['_file']['tmp_name'] && is_uploaded_file($_FILES['_file']['tmp_name'
         $IMPORT_STATS->nomail++;
         continue;
       }
+
+      // We're using UTF8 internally
+      $email = rcube_idn_to_utf8($email);
       
       if (!$replace) {
         // compare e-mail address
@@ -159,7 +162,12 @@ if ($_FILES['_file']['tmp_name'] && is_uploaded_file($_FILES['_file']['tmp_name'
       $a_record = $plugin['record'];
 
       // insert record and send response
-      if (!$plugin['abort'] && ($success = $CONTACTS->insert($a_record))) {
+      if (!$plugin['abort'])
+        $success = $CONTACTS->insert($a_record);
+      else
+        $success = $plugin['result'];
+
+      if ($success) {
         $IMPORT_STATS->inserted++;
         $IMPORT_STATS->names[] = $vcard->displayname;
       } else {

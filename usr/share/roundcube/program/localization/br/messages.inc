@@ -5,8 +5,8 @@
  +-----------------------------------------------------------------------+
  | language/bzg/messages.inc                                              |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2007, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2007, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
@@ -15,7 +15,7 @@
  |         Mickaël Wolff <rcw@lupusmic.org>                              |
  +-----------------------------------------------------------------------+
 
- @version $Id: messages.inc 3370 2010-03-17 13:33:14Z alec $
+ @version $Id: messages.inc 3989 2010-09-25 13:03:53Z alec $
 
 */
 

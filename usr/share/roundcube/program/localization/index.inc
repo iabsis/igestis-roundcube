@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/localization/index.inc                                        |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2009, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -16,7 +16,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: index.inc 3770 2010-06-19 12:46:51Z yllar $
+ $Id: index.inc 3989 2010-09-25 13:03:53Z alec $
 
 */
 
@@ -63,6 +63,7 @@ $rcube_languages = array(
   'ga_IE' => 'Irish (Gaedhilge)',
   'it_IT' => 'Italian (Italiano)',
   'ja_JP' => 'Japanese (日本語)',
+  'kh_KH' => 'Khmer (ភាសាខ្មែរ)',
   'ko_KR' => 'Korean (한국어)',
   'ku'    => 'Kurdish (Kurmancî)',
   'lv_LV' => 'Latvian (Latviešu)',

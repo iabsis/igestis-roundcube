@@ -5,15 +5,15 @@
  +-----------------------------------------------------------------------+
  | language/sr_cyrillic/labels.inc                                       |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Branko Kokanovic <branko.kokanovic@gmail.com                  |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -180,9 +180,6 @@ $labels['subscribed'] = 'Потписана';
 $labels['messagecount'] = 'Поруке';
 $labels['create'] = 'Креирај';
 $labels['createfolder'] = 'Креирај нову фасциклу';
-$labels['rename'] = 'Преименуј';
-$labels['renamefolder'] = 'Преименуј фасциклу';
-$labels['deletefolder'] = 'Обриши фасциклу';
 $labels['managefolders'] = 'Подеси фасциклу';
 $labels['sortby'] = 'Сортирај по';
 $labels['sortasc'] = 'Сортирај растуће';

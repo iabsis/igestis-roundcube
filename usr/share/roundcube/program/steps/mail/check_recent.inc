@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/steps/mail/check_recent.inc                                   |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,15 +15,24 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: check_recent.inc 3780 2010-06-23 09:55:08Z alec $
+ $Id: check_recent.inc 4084 2010-10-13 19:15:51Z alec $
 
 */
 
 $current = $IMAP->get_mailbox_name();
 $check_all = !empty($_GET['_refresh']) || (bool)$RCMAIL->config->get('check_all_folders');
-$a_mailboxes = $check_all ? $IMAP->list_mailboxes() : (array)$current;
 
-// check recent/unseen counts for all mailboxes
+// list of folders to check
+if ($check_all) {
+    $a_mailboxes = $IMAP->list_mailboxes();
+}
+else {
+    $a_mailboxes = (array) $current;
+    if ($a_mailboxes[0] != 'INBOX')
+        $a_mailboxes[] = 'INBOX';
+}
+
+// check recent/unseen counts
 foreach ($a_mailboxes as $mbox_name) {
     if ($mbox_name == $current && ($status = $IMAP->mailbox_status($mbox_name))) {
 
@@ -31,8 +40,10 @@ foreach ($a_mailboxes as $mbox_name) {
 
         // refresh saved search set
         $search_request = get_input_value('_search', RCUBE_INPUT_GPC);
-        if ($search_request && isset($_SESSION['search'][$search_request])) {
-            $_SESSION['search'][$search_request] = $IMAP->refresh_search();
+        if ($search_request && isset($_SESSION['search'])
+            && $_SESSION['search_request'] == $search_request
+        ) {
+            $_SESSION['search'] = $IMAP->refresh_search();
         }
 
         if (!empty($_GET['_quota']))
@@ -83,5 +94,3 @@ foreach ($a_mailboxes as $mbox_name) {
 }
 
 $OUTPUT->send();
-
-

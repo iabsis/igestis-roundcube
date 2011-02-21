@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/include/rcube_json_output.php                                 |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2008-2010, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2008-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -16,7 +16,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_json_output.php 3553 2010-04-23 11:25:37Z alec $
+ $Id: rcube_json_output.php 4139 2010-10-26 13:20:34Z alec $
 
 */
 
@@ -28,32 +28,39 @@
  */
 class rcube_json_output
 {
+    /**
+     * Stores configuration object.
+     *
+     * @var rcube_config
+     */
     private $config;
     private $charset = RCMAIL_CHARSET;
-    private $env = array();
     private $texts = array();
     private $commands = array();
     private $callbacks = array();
     private $message = null;
 
+    public $browser;
+    public $env = array();
     public $type = 'js';
     public $ajax_call = true;
-    
-    
+
+
     /**
      * Constructor
      */
-    public function __construct($task)
+    public function __construct($task=null)
     {
-        $this->config = rcmail::get_instance()->config;
+        $this->config  = rcmail::get_instance()->config;
+        $this->browser = new rcube_browser();
     }
 
 
     /**
      * Set environment variable
      *
-     * @param string Property name
-     * @param mixed Property value
+     * @param string $name Property name
+     * @param mixed $value Property value
      */
     public function set_env($name, $value)
     {
@@ -64,7 +71,7 @@ class rcube_json_output
     /**
      * Issue command to set page title
      *
-     * @param string New page title
+     * @param string $title New page title
      */
     public function set_pagetitle($title)
     {
@@ -96,8 +103,8 @@ class rcube_json_output
     /**
      * Register a template object handler
      *
-     * @param  string Object name
-     * @param  string Function name to call
+     * @param  string $obj Object name
+     * @param  string $func Function name to call
      * @return void
      */
     public function add_handler($obj, $func)
@@ -109,7 +116,7 @@ class rcube_json_output
     /**
      * Register a list of template object handlers
      *
-     * @param  array Hash array with object=>handler pairs
+     * @param  array $arr Hash array with object=>handler pairs
      * @return void
      */
     public function add_handlers($arr)
@@ -127,14 +134,14 @@ class rcube_json_output
     public function command()
     {
         $cmd = func_get_args();
-        
+
         if (strpos($cmd[0], 'plugin.') === 0)
           $this->callbacks[] = $cmd;
         else
           $this->commands[] = $cmd;
     }
-    
-    
+
+
     /**
      * Add a localized label to the client environment
      */
@@ -143,7 +150,7 @@ class rcube_json_output
         $args = func_get_args();
         if (count($args) == 1 && is_array($args[0]))
             $args = $args[0];
-        
+
         foreach ($args as $name) {
             $this->texts[$name] = rcube_label($name);
         }
@@ -153,10 +160,10 @@ class rcube_json_output
     /**
      * Invoke display_message command
      *
-     * @param string Message to display
-     * @param string Message type [notice|confirm|error]
-     * @param array Key-value pairs to be replaced in localized text
-     * @param boolean Override last set message
+     * @param string  $message  Message to display
+     * @param string  $type     Message type [notice|confirm|error]
+     * @param array   $vars     Key-value pairs to be replaced in localized text
+     * @param boolean $override Override last set message
      * @uses self::command()
      */
     public function show_message($message, $type='notice', $vars=null, $override=true)
@@ -186,7 +193,8 @@ class rcube_json_output
     /**
      * Redirect to a certain url
      *
-     * @param mixed Either a string with the action or url parameters as key-value pairs
+     * @param mixed $p Either a string with the action or url parameters as key-value pairs
+     * @param int $delay Delay in seconds
      * @see rcmail::url()
      */
     public function redirect($p = array(), $delay = 1)
@@ -195,8 +203,8 @@ class rcube_json_output
         $this->remote_response("window.setTimeout(\"location.href='{$location}'\", $delay);");
         exit;
     }
-    
-    
+
+
     /**
      * Send an AJAX response to the client.
      */
@@ -205,12 +213,12 @@ class rcube_json_output
         $this->remote_response();
         exit;
     }
-    
-    
+
+
     /**
      * Send an AJAX response with executable JS code
      *
-     * @param  string  Additional JS code
+     * @param  string  $add Additional JS code
      * @param  boolean True if output buffer should be flushed
      * @return void
      * @deprecated
@@ -229,17 +237,21 @@ class rcube_json_output
         unset($this->env['task'], $this->env['action'], $this->env['comm_path']);
 
         $rcmail = rcmail::get_instance();
-        $response = array('action' => $rcmail->action, 'unlock' => (bool)$_REQUEST['_unlock']);
-        
+        $response['action'] = $rcmail->action;
+
+        if ($unlock = get_input_value('_unlock', RCUBE_INPUT_GPC)) {
+            $response['unlock'] = $unlock;
+        }
+
         if (!empty($this->env))
             $response['env'] = $this->env;
-          
+
         if (!empty($this->texts))
             $response['texts'] = $this->texts;
 
         // send function calls
         $response['exec'] = $this->get_js_commands() . $add;
-        
+
         if (!empty($this->callbacks))
             $response['callbacks'] = $this->callbacks;
 

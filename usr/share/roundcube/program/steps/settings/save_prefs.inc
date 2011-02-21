@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/steps/settings/save_prefs.inc                                 |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2009, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: save_prefs.inc 3840 2010-07-30 06:34:02Z alec $
+ $Id: save_prefs.inc 4469 2011-01-29 14:55:12Z thomasb $
 
 */
 
@@ -58,14 +58,16 @@ switch ($CURR_SECTION)
       'default_charset' => get_input_value('_default_charset', RCUBE_INPUT_POST),
     );
 
-
   break;
   case 'compose':
     $a_user_prefs = array(
-      'htmleditor'         => isset($_POST['_htmleditor']) ? TRUE : FALSE,
+      'htmleditor'         => intval($_POST['_htmleditor']),
       'draft_autosave'     => isset($_POST['_draft_autosave']) ? intval($_POST['_draft_autosave']) : 0,
       'mime_param_folding' => isset($_POST['_mime_param_folding']) ? intval($_POST['_mime_param_folding']) : 0,
       'force_7bit'         => isset($_POST['_force_7bit']) ? TRUE : FALSE,
+      'mdn_default'        => isset($_POST['_mdn_default']) ? TRUE : FALSE,
+      'dsn_default'        => isset($_POST['_dsn_default']) ? TRUE : FALSE,
+      'reply_same_folder'  => isset($_POST['_reply_same_folder']) ? TRUE : FALSE,
       'show_sig'           => isset($_POST['_show_sig']) ? intval($_POST['_show_sig']) : 1,
       'top_posting'        => !empty($_POST['_top_posting']),
       'strip_existing_sig' => isset($_POST['_strip_existing_sig']),
@@ -116,8 +118,9 @@ switch ($CURR_SECTION)
       $OUTPUT->command('reload', 500);
     }
 
-    // switch skin
-    $OUTPUT->set_skin($a_user_prefs['skin']);
+    // switch skin (if valid, otherwise unset the pref and fall back to default)
+    if (!$OUTPUT->set_skin($a_user_prefs['skin']))
+      unset($a_user_prefs['skin']);
 
     // force min size
     if ($a_user_prefs['pagesize'] < 1)
@@ -125,6 +128,8 @@ switch ($CURR_SECTION)
 
     if (isset($CONFIG['max_pagesize']) && ($a_user_prefs['pagesize'] > $CONFIG['max_pagesize']))
       $a_user_prefs['pagesize'] = (int) $CONFIG['max_pagesize'];
+
+    $a_user_prefs['timezone'] = $_SESSION['timezone'] = (string) $a_user_prefs['timezone'];
 
   break;
   case 'mailbox':

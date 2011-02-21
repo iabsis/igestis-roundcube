@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | rcube_shared.inc                                                      |
  |                                                                       |
- | This file is part of the RoundCube PHP suite                          |
- | Copyright (C) 2005-2007, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube PHP suite                          |
+ | Copyright (C) 2005-2007, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | CONTENTS:                                                             |
@@ -15,13 +15,13 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_shared.inc 3833 2010-07-28 09:02:41Z alec $
+ $Id: rcube_shared.inc 4509 2011-02-09 10:51:50Z thomasb $
 
 */
 
 
 /**
- * RoundCube shared functions
+ * Roundcube shared functions
  * 
  * @package Core
  */
@@ -227,7 +227,7 @@ function make_absolute_url($path, $base_url)
   // cut base_url to the last directory
   if (strrpos($base_url, '/')>7)
   {
-    $host_url = substr($base_url, 0, strpos($base_url, '/'));
+    $host_url = substr($base_url, 0, strpos($base_url, '/', 7));
     $base_url = substr($base_url, 0, strrpos($base_url, '/'));
   }
 
@@ -407,20 +407,24 @@ function get_offset_time($offset_str, $factor=1)
 
 
 /**
- * Replace the middle part of a string with ...
- * if it is longer than the allowed length
+ * Truncate string if it is longer than the allowed length
+ * Replace the middle or the ending part of a string with a placeholder
  *
  * @param string Input string
  * @param int    Max. length
  * @param string Replace removed chars with this
+ * @param bool   Set to True if string should be truncated from the end
  * @return string Abbreviated string
  */
-function abbreviate_string($str, $maxlength, $place_holder='...')
+function abbreviate_string($str, $maxlength, $place_holder='...', $ending=false)
 {
   $length = mb_strlen($str);
   
   if ($length > $maxlength)
   {
+    if ($ending)
+      return mb_substr($str, 0, $maxlength) . $place_holder;
+
     $place_holder_length = mb_strlen($place_holder);
     $first_part_length = floor(($maxlength - $place_holder_length)/2);
     $second_starting_location = $length - $maxlength + $first_part_length + $place_holder_length;
@@ -471,6 +475,11 @@ function rc_mime_content_type($path, $name, $failover = 'application/octet-strea
     // fall back to user-submitted string
     if (!$mime_type) {
         $mime_type = $failover;
+    }
+    else {
+        // Sometimes (PHP-5.3?) content-type contains charset definition,
+        // Remove it (#1487122) also "charset=binary" is useless
+        $mime_type = array_shift(preg_split('/[; ]/', $mime_type));
     }
 
     return $mime_type;
@@ -673,6 +682,54 @@ if (!extension_loaded('mbstring'))
     function mb_strrpos($haystack, $needle, $offset=0)
     {
         return strrpos($haystack, $needle, $offset);
+    }
+}
+
+/**
+ * intl replacement functions
+ */
+
+if (!function_exists('idn_to_utf8'))
+{
+    function idn_to_utf8($domain, $flags=null)
+    {
+        static $idn, $loaded;
+
+        if (!$loaded) {
+            $idn = new Net_IDNA2();
+            $loaded = true;
+        }
+
+        if ($idn && $domain && preg_match('/(^|\.)xn--/i', $domain)) {
+            try {
+                $domain = $idn->decode($domain);
+            }
+            catch (Exception $e) {
+            }
+        }
+        return $domain;
+    }
+}
+
+if (!function_exists('idn_to_ascii'))
+{
+    function idn_to_ascii($domain, $flags=null)
+    {
+        static $idn, $loaded;
+
+        if (!$loaded) {
+            $idn = new Net_IDNA2();
+            $loaded = true;
+        }
+
+        if ($idn && $domain && preg_match('/[^\x20-\x7E]/', $domain)) {
+            try {
+                $domain = $idn->encode($domain);
+            }
+            catch (Exception $e) {
+            }
+        }
+        return $domain;
     }
 }
 

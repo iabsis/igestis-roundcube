@@ -1,5 +1,5 @@
 /**
- * RoundCube functions for default skin interface
+ * Roundcube functions for default skin interface
  */
 
 /**
@@ -21,6 +21,62 @@ function rcube_show_advanced(visible)
   $('tr.advanced').css('display', (visible ? (bw.ie ? 'block' : 'table-row') : 'none'));
 }
 
+// Fieldsets-to-tabs converter
+// Warning: don't place "caller" <script> inside page element (id)
+function rcube_init_tabs(id, current)
+{
+  var content = document.getElementById(id),
+    // get fieldsets of the higher-level (skip nested fieldsets)
+    fs = $('fieldset', content).not('fieldset > fieldset');
+
+  if (!fs.length)
+    return;
+
+  current = current ? current : 0;
+
+  // first hide not selected tabs
+  fs.each(function(idx) { if (idx != current) $(this).hide(); });
+
+  // create tabs container
+  var tabs = $('<div>').addClass('tabsbar').appendTo($(content));
+
+  // convert fildsets into tabs
+  fs.each(function(idx) {
+    var tab, a, elm = $(this),
+      // get first legend element
+      legend = $(elm).children('legend');
+
+    // create a tab
+    a   = $('<a>').text(legend.text()).attr('href', '#');
+    tab = $('<span>').attr({'id': 'tab'+idx, 'class': 'tablink'})
+        .click(function() { rcube_show_tab(id, idx); return false })
+
+    // remove legend
+    legend.remove();
+    // style fieldset
+    elm.addClass('tabbed');
+    // style selected tab
+    if (idx == current)
+      tab.addClass('tablink-selected');
+
+    // add the tab to container
+    tab.append(a).appendTo(tabs);
+  });
+}
+
+function rcube_show_tab(id, index)
+{
+  var content = document.getElementById(id),
+    fs = $('fieldset', content).not('fieldset > fieldset');
+
+  fs.each(function(idx) {
+    // Show/hide fieldset (tab content)
+    $(this)[index==idx ? 'show' : 'hide']();
+    // Select/unselect tab
+    $('#tab'+idx).toggleClass('tablink-selected', idx==index);
+  });
+}
+
 /**
  * Mail UI
  */
@@ -29,6 +85,7 @@ function rcube_mail_ui()
 {
   this.popups = {
     markmenu:       {id:'markmessagemenu'},
+    replyallmenu:   {id:'replyallmenu'},
     searchmenu:     {id:'searchmenu', editable:1},
     messagemenu:    {id:'messagemenu'},
     listmenu:       {id:'listmenu', editable:1},
@@ -36,7 +93,8 @@ function rcube_mail_ui()
     groupmenu:      {id:'groupoptionsmenu', above:1},
     mailboxmenu:    {id:'mailboxoptionsmenu', above:1},
     composemenu:    {id:'composeoptionsmenu', editable:1},
-    uploadmenu:     {id:'attachment-form', editable:1, above:1, toggle:bw.safari&&bw.win }
+    // toggle: #1486823, #1486930
+    uploadmenu:     {id:'attachment-form', editable:1, above:1, toggle:!bw.ie&&!bw.linux }
   };
 
   var obj;
@@ -72,9 +130,12 @@ show_popupmenu: function(popup, show)
     show = false;
 
   if (show && ref) {
-    var pos = $(ref).offset();
+    var parent = $(ref).parent(),
+      pos = parent.hasClass('dropbutton') ? parent.offset() : $(ref).offset();
+
     if (!above && pos.top + ref.offsetHeight + obj.height() > window.innerHeight)
       above = true;
+
     obj.css({ left:pos.left, top:(pos.top + (above ? -obj.height() : ref.offsetHeight)) });
   }
 
@@ -237,7 +298,7 @@ target_overlaps: function (target, elementid)
   return false;
 },
 
-body_keypress: function(evt, p)
+body_keydown: function(evt, p)
 {
   if (rcube_event.get_keycode(evt) == 27) {
     for (var k in this.popups) {
@@ -267,7 +328,6 @@ switch_preview_pane: function(elem)
 
     if (uid = rcmail.message_list.get_single_selection())
       rcmail.show_message(uid, false, true);
-    rcmail.http_post('save-pref', '_name=preview_pane&_value=1');
   }
   else {
     prev_frm.hide();
@@ -286,23 +346,22 @@ switch_preview_pane: function(elem)
 
     rcmail.env.contentframe = null;
     rcmail.show_contentframe(false);
-    rcmail.http_post('save-pref', '_name=preview_pane&_value=0');
   }
+  rcmail.http_post('save-pref', '_name=preview_pane&_value='+(elem.checked?1:0));
 },
 
 /* Message composing */
 init_compose_form: function()
 {
-  var cc_field = document.getElementById('_cc'),
-    bcc_field = document.getElementById('_bcc'),
+  var f, field, fields = ['cc', 'bcc', 'replyto', 'followupto'],
     div = document.getElementById('compose-div'),
     headers_div = document.getElementById('compose-headers-div');
 
-  if (cc_field && cc_field.value != '')
-    rcmail_ui.show_header_form('cc');
-
-  if (bcc_field && bcc_field.value != '')
-    rcmail_ui.show_header_form('bcc');
+  // Show input elements with non-empty value
+  for (f=0; f<fields.length; f++) {
+    if ((field = $('#_'+fields[f])) && field.length && field.val() != '')
+      rcmail_ui.show_header_form(fields[f]);
+  }
 
   // prevent from form data loss when pressing ESC key in IE
   if (bw.ie) {
@@ -426,7 +485,7 @@ function rcube_init_mail_ui()
 {
   rcmail_ui = new rcube_mail_ui();
   rcube_event.add_listener({ object:rcmail_ui, method:'body_mouseup', event:'mouseup' });
-  rcube_event.add_listener({ object:rcmail_ui, method:'body_keypress', event:'keypress' });
+  rcube_event.add_listener({ object:rcmail_ui, method:'body_keydown', event:'keydown' });
 
   $('iframe').load(iframe_events)
     .contents().mouseup(function(e){rcmail_ui.body_mouseup(e)});

@@ -4,8 +4,8 @@
 +-----------------------------------------------------------------------+
 | localization/ka_GE/labels.inc                                         |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -274,9 +274,6 @@ $labels['subscribed'] = 'გამოწერილია';
 $labels['messagecount'] = 'შეტყობინებები';
 $labels['create'] = 'შექმნა';
 $labels['createfolder'] = 'საქაღალდის შექმნა';
-$labels['rename'] = 'სახელის გადარქმევა';
-$labels['renamefolder'] = 'სახელის გადარქმევა საქაღალდისთვის';
-$labels['deletefolder'] = 'საქაღალდის წაშლა';
 $labels['managefolders'] = 'საქაღალდეების მართვა';
 $labels['specialfolders'] = 'სპეციალური საქაღალდე';
 $labels['sortby'] = 'დალაგება';

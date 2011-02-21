@@ -4,8 +4,8 @@
 +-----------------------------------------------------------------------+
 | language/ro_RO/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 |         Cristian Nastase <cristian.nastase@itcaffe.net>               |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3522 2010-04-21 14:47:34Z thomasb $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -310,9 +310,6 @@ $labels['subscribed'] = 'Înscris';
 $labels['messagecount'] = 'Mesaje';
 $labels['create'] = 'Creează';
 $labels['createfolder'] = 'Creează dosar nou';
-$labels['rename'] = 'Redenumeşte';
-$labels['renamefolder'] = 'Redenumeşte dosar';
-$labels['deletefolder'] = 'Şterge dosar';
 $labels['managefolders'] = 'Administrează dosare';
 $labels['specialfolders'] = 'Dosare speciale';
 $labels['sortby'] = 'Sortează după';

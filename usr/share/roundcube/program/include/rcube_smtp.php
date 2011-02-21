@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/include/rcube_smtp.php                                        |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_smtp.php 3727 2010-06-08 13:39:57Z alec $
+ $Id: rcube_smtp.php 4509 2011-02-09 10:51:50Z thomasb $
 
 */
 
@@ -38,21 +38,16 @@ class rcube_smtp
 
 
   /**
-   * Object constructor
-   *
-   * @param 
-   */
-  function __construct()
-  {
-  }
-
-
-  /**
    * SMTP Connection and authentication
+   *
+   * @param string Server host
+   * @param string Server port
+   * @param string User name
+   * @param string Password
    *
    * @return bool  Returns true on success, or false on error
    */
-  public function connect()
+  public function connect($host=null, $port=null, $user=null, $pass=null)
   {
     $RCMAIL = rcmail::get_instance();
   
@@ -64,10 +59,12 @@ class rcube_smtp
   
     // let plugins alter smtp connection config
     $CONFIG = $RCMAIL->plugins->exec_hook('smtp_connect', array(
-      'smtp_server' => $RCMAIL->config->get('smtp_server'),
-      'smtp_port'   => $RCMAIL->config->get('smtp_port', 25),
-      'smtp_user'   => $RCMAIL->config->get('smtp_user'),
-      'smtp_pass'   => $RCMAIL->config->get('smtp_pass'),
+      'smtp_server'    => $host ? $host : $RCMAIL->config->get('smtp_server'),
+      'smtp_port'      => $port ? $port : $RCMAIL->config->get('smtp_port', 25),
+      'smtp_user'      => $user ? $user : $RCMAIL->config->get('smtp_user'),
+      'smtp_pass'      => $pass ? $pass : $RCMAIL->config->get('smtp_pass'),
+      'smtp_auth_cid'  => $RCMAIL->config->get('smtp_auth_cid'),
+      'smtp_auth_pw'   => $RCMAIL->config->get('smtp_auth_pw'),
       'smtp_auth_type' => $RCMAIL->config->get('smtp_auth_type'),
       'smtp_helo_host' => $RCMAIL->config->get('smtp_helo_host'),
       'smtp_timeout'   => $RCMAIL->config->get('smtp_timeout'),
@@ -103,15 +100,18 @@ class rcube_smtp
     else
       $helo_host = 'localhost';
 
+    // IDNA Support
+    $smtp_host = rcube_idn_to_ascii($smtp_host);
+
     $this->conn = new Net_SMTP($smtp_host, $smtp_port, $helo_host);
 
     if($RCMAIL->config->get('smtp_debug'))
       $this->conn->setDebug(true, array($this, 'debug_handler'));
-    
+
     // try to connect to server and exit on failure
     $result = $this->conn->connect($smtp_timeout);
-    if (PEAR::isError($result))
-    {
+
+    if (PEAR::isError($result)) {
       $this->response[] = "Connection failed: ".$result->getMessage();
       $this->error = array('label' => 'smtpconnerror', 'vars' => array('code' => $this->conn->_code));
       $this->conn = null;
@@ -121,11 +121,22 @@ class rcube_smtp
     $smtp_user = str_replace('%u', $_SESSION['username'], $CONFIG['smtp_user']);
     $smtp_pass = str_replace('%p', $RCMAIL->decrypt($_SESSION['password']), $CONFIG['smtp_pass']);
     $smtp_auth_type = empty($CONFIG['smtp_auth_type']) ? NULL : $CONFIG['smtp_auth_type'];
-    
+
+    if (!empty($CONFIG['smtp_auth_cid'])) {
+      $smtp_authz = $smtp_user;
+      $smtp_user  = $CONFIG['smtp_auth_cid'];
+      $smtp_pass  = $CONFIG['smtp_auth_pw'];
+    }
+
     // attempt to authenticate to the SMTP server
     if ($smtp_user && $smtp_pass)
     {
-      $result = $this->conn->auth($smtp_user, $smtp_pass, $smtp_auth_type, $use_tls);
+      // IDNA Support
+      if (strpos($smtp_user, '@')) {
+        $smtp_user = rcube_idn_to_ascii($smtp_user);
+      }
+
+      $result = $this->conn->auth($smtp_user, $smtp_pass, $smtp_auth_type, $use_tls, $smtp_authz);
 
       if (PEAR::isError($result))
       {
@@ -151,17 +162,16 @@ class rcube_smtp
    *               each RFC822 valid. This may contain recipients not
    *               specified in the headers, for Bcc:, resending
    *               messages, etc.
-   *
    * @param mixed  The message headers to send with the mail
    *               Either as an associative array or a finally
    *               formatted string
-   *
    * @param mixed  The full text of the message body, including any Mime parts
    *               or file handle
+   * @param array  Delivery options (e.g. DSN request)
    *
    * @return bool  Returns true on success, or false on error
    */
-  public function send_mail($from, $recipients, &$headers, &$body)
+  public function send_mail($from, $recipients, &$headers, &$body, $opts=null)
   {
     if (!is_object($this->conn))
       return false;
@@ -181,7 +191,7 @@ class rcube_smtp
     else
     {
       $this->reset();
-      $this->response[] .= "Invalid message headers";
+      $this->response[] = "Invalid message headers";
       return false;
     }
 
@@ -189,17 +199,38 @@ class rcube_smtp
     if (!isset($from))
     {
       $this->reset();
-      $this->response[] .= "No From address has been provided";
+      $this->response[] = "No From address has been provided";
       return false;
     }
 
+    // RFC3461: Delivery Status Notification
+    if ($opts['dsn']) {
+      $exts = $this->conn->getServiceExtensions();
+
+      if (!isset($exts['DSN'])) {
+        $this->error = array('label' => 'smtpdsnerror');
+        $this->response[] = "DSN not supported";
+        return false;
+      }
+
+      $from_params      = 'RET=HDRS';
+      $recipient_params = 'NOTIFY=SUCCESS,FAILURE';
+    }
+
+    // RFC2298.3: remove envelope sender address
+    if (preg_match('/Content-Type: multipart\/report/', $text_headers)
+      && preg_match('/report-type=disposition-notification/', $text_headers)
+    ) {
+      $from = '';
+    }
+
     // set From: address
-    if (PEAR::isError($this->conn->mailFrom($from)))
+    if (PEAR::isError($this->conn->mailFrom($from, $from_params)))
     {
       $err = $this->conn->getResponse();
       $this->error = array('label' => 'smtpfromerror', 'vars' => array(
         'from' => $from, 'code' => $this->conn->_code, 'msg' => $err[1]));
-      $this->response[] .= "Failed to set sender '$from'";
+      $this->response[] = "Failed to set sender '$from'";
       $this->reset();
       return false;
     }
@@ -216,11 +247,11 @@ class rcube_smtp
     // set mail recipients
     foreach ($recipients as $recipient)
     {
-      if (PEAR::isError($this->conn->rcptTo($recipient))) {
+      if (PEAR::isError($this->conn->rcptTo($recipient, $recipient_params))) {
         $err = $this->conn->getResponse();
         $this->error = array('label' => 'smtptoerror', 'vars' => array(
           'to' => $recipient, 'code' => $this->conn->_code, 'msg' => $err[1]));
-        $this->response[] .= "Failed to add recipient '$recipient'";
+        $this->response[] = "Failed to add recipient '$recipient'";
         $this->reset();
         return false;
       }
@@ -252,7 +283,7 @@ class rcube_smtp
         $msg = $result->getMessage();
 
       $this->error = array('label' => 'smtperror', 'vars' => array('msg' => $msg));
-      $this->response[] .= "Failed to send data";
+      $this->response[] = "Failed to send data";
       $this->reset();
       return false;
     }

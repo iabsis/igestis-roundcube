@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/eo/labels.inc                                                |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -220,9 +220,6 @@ $labels['subscribed'] = 'Abonata';
 $labels['messagecount'] = 'Mesaĝoj';
 $labels['create'] = 'Kreu';
 $labels['createfolder'] = 'Kreu novan dosierujon';
-$labels['rename'] = 'Renomu';
-$labels['renamefolder'] = 'Renomu dosierujon';
-$labels['deletefolder'] = 'Forigu dosierujon';
 $labels['managefolders'] = 'Administru dosierujon';
 $labels['sortby'] = 'Ordigu per';
 $labels['sortasc'] = 'Ordigu kreskante';

@@ -5,15 +5,15 @@
  +-----------------------------------------------------------------------+
  | language/th_TH/labels.inc                                             |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Wiraphan Treeratphan <webmaster@modoeye.com>                  |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -162,9 +162,6 @@ $labels['foldername'] = 'ชื่อกล่องจดหมาย';
 $labels['subscribed'] = 'ลงชื่อ';
 $labels['create'] = 'สร้าง';
 $labels['createfolder'] = 'สร้างกล่องจดหมาย';
-$labels['rename'] = 'เปลื่ยนชื่อ';
-$labels['renamefolder'] = 'เปลี่ยนชื่อกล่องจดหมาย';
-$labels['deletefolder'] = 'ลบกล่องจดหมาย';
 $labels['managefolders'] = 'จัดการกล่องจดหมาย';
 $labels['sortby'] = 'เรียงตาม';
 $labels['sortasc'] = 'เรียงจากหน้าไปหลัง';

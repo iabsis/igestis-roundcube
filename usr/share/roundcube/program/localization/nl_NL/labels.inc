@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/nl_NL/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -17,7 +17,7 @@
 |         Justin van Beusekom <j.v.beusekom@beus-it.nl>                 |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3818 2010-07-17 22:11:55Z yllar $
+@version $Id: labels.inc 4368 2010-12-27 08:51:22Z yllar $
 
 */
 
@@ -42,11 +42,12 @@ $labels['to'] = 'Ontvanger';
 $labels['cc'] = 'Kopie';
 $labels['bcc'] = 'Bcc';
 $labels['replyto'] = 'Antwoord-aan';
+$labels['followupto'] = 'Followup-Aan';
 $labels['date'] = 'Datum';
 $labels['size'] = 'Grootte';
 $labels['priority'] = 'Prioriteit';
 $labels['organization'] = 'Organisatie';
-$labels['reply-to'] = 'Antwoord-aan';
+$labels['readstatus'] = 'Gelezen?';
 $labels['mailboxlist'] = 'Mappen';
 $labels['messagesfromto'] = 'Bericht $from t/m $to van $count';
 $labels['threadsfromto'] = 'Conversatie $from t/m $to van $count';
@@ -100,7 +101,9 @@ $labels['today'] = 'Vandaag';
 $labels['checkmail'] = 'Controleer op nieuwe berichten';
 $labels['writenewmessage'] = 'Maak een nieuw bericht';
 $labels['replytomessage'] = 'Beantwoord het bericht';
-$labels['replytoallmessage'] = 'Beantwoord alle ontvangers';
+$labels['replytoallmessage'] = 'Beantwoord lijst of afzender en alle ontvangers';
+$labels['replyall'] = 'Beantwoord alle ontvangers';
+$labels['replylist'] = 'Beantwoord lijst';
 $labels['forwardmessage'] = 'Bericht doorsturen';
 $labels['deletemessage'] = 'Verwijder het bericht';
 $labels['movemessagetotrash'] = 'Verplaats het bericht naar de prullenbak';
@@ -173,6 +176,8 @@ $labels['addattachment'] = 'Voeg een bijlage toe';
 $labels['charset'] = 'Karakterset';
 $labels['editortype'] = 'Opmaak';
 $labels['returnreceipt'] = 'Ontvangstbevestiging';
+$labels['dsn'] = 'Afleverings status notificatie (DSN)';
+$labels['editidents'] = 'Bewerk identiteiten';
 $labels['checkspelling'] = 'Controleer spelling';
 $labels['resumeediting'] = 'Doorgaan met opstellen';
 $labels['revertto'] = 'Wijzig terug in';
@@ -196,6 +201,7 @@ $labels['maxuploadsize'] = 'Maximum toegestane bestandsgrootte is $size';
 $labels['addcc'] = 'Cc toevoegen';
 $labels['addbcc'] = 'Bcc toevoegen';
 $labels['addreplyto'] = 'Antwoord-aan toevoegen';
+$labels['addfollowupto'] = 'Mail-Followup-Aan toevoegen';
 $labels['mdnrequest'] = 'De afzender van dit bericht heeft gevraagd een melding te ontvangen wanneer u dit bericht heeft gelezen. Wilt u deze melding verzenden?';
 $labels['receiptread'] = 'Ontvangstbevestiging (gelezen)';
 $labels['yourmessage'] = 'Dit is een ontvangstbevestiging voor uw bericht';
@@ -207,10 +213,12 @@ $labels['email'] = 'E-Mail';
 $labels['addcontact'] = 'Nieuwe contactpersoon toevoegen';
 $labels['editcontact'] = 'Contactpersoon wijzigen';
 $labels['contacts'] = 'Contacten';
+$labels['contactproperties'] = 'Contact eigenschappen';
 $labels['edit'] = 'Wijzig';
 $labels['cancel'] = 'Annuleer';
 $labels['save'] = 'Opslaan';
 $labels['delete'] = 'Verwijder';
+$labels['rename'] = 'Hernoem';
 $labels['newcontact'] = 'Voeg een nieuwe contactpersoon toe';
 $labels['deletecontact'] = 'Verwijder geselecteerde contacten';
 $labels['composeto'] = 'Stuur een bericht naar';
@@ -231,7 +239,7 @@ $labels['import'] = 'Importeer';
 $labels['importcontacts'] = 'Contactpersonen importeren';
 $labels['importfromfile'] = 'Importeer van bestand:';
 $labels['importreplace'] = 'Vervang het complete adresboek';
-$labels['importtext'] = 'U kunt hier contactpersonen importeren vanuit een bestaand adresboek.<br />Op dit moment ondersteunen wij het <a href="http://en.wikipedia.org/wiki/VCard">vCard</a> bestandsformaat.';
+$labels['importtext'] = 'U kunt hier contactpersonen importeren vanuit een bestaand adresboek.<br />Op dit moment ondersteunen wij het <a href="http://nl.wikipedia.org/wiki/VCard">vCard</a> bestandsformaat.';
 $labels['done'] = 'Klaar';
 $labels['settingsfor'] = 'Instellingen voor';
 $labels['preferences'] = 'Instellingen';
@@ -254,6 +262,7 @@ $labels['pagesize'] = 'Aantal berichten per pagina';
 $labels['signature'] = 'Ondertekening';
 $labels['dstactive'] = 'Zomertijd';
 $labels['htmleditor'] = 'Maak HTML berichten aan';
+$labels['htmlonreply'] = 'alleen bij het beantwoorden van HTML berichten';
 $labels['htmlsignature'] = 'HTML onderschrift';
 $labels['previewpane'] = 'Toon voorbeeldvenster';
 $labels['skin'] = 'Opmaakprofiel';
@@ -265,6 +274,8 @@ $labels['mailboxview'] = 'Opmaak Mailbox';
 $labels['mdnrequests'] = 'Ontvangstmeldingen';
 $labels['askuser'] = 'vraag de gebruiker';
 $labels['autosend'] = 'stuur automatisch';
+$labels['autosendknown'] = 'stuur ontvangstbevestiging alleen naar mijn contactpersonen, voor anderen aan mij vragen';
+$labels['autosendknownignore'] = 'stuur ontvangstbevestiging alleen naar mijn contactpersonen,  voor anderen negeren';
 $labels['ignore'] = 'negeer';
 $labels['readwhendeleted'] = 'Bericht na verwijderen als gelezen markeren';
 $labels['flagfordeletion'] = 'Bericht niet verwijderen maar als verwijderd markeren ';
@@ -309,6 +320,9 @@ $labels['abovequote'] = 'boven het citaat';
 $labels['insertsignature'] = 'Ondertekening invoegen';
 $labels['previewpanemarkread'] = 'Markeer voorbeeld bericht als gelezen';
 $labels['afternseconds'] = 'Na $n seconden';
+$labels['reqmdn'] = 'Vraag altijd een ontvangstbevestiging';
+$labels['reqdsn'] = 'Vraag altijd een afleverings status notificatie (DSN)';
+$labels['replysamefolder'] = 'Plaats antwoorden in de folder van het beantwoorde bericht';
 $labels['folder'] = 'Map';
 $labels['folders'] = 'Mappen';
 $labels['foldername'] = 'Mapnaam';
@@ -316,11 +330,15 @@ $labels['subscribed'] = 'Geabonneerd';
 $labels['messagecount'] = 'Berichten';
 $labels['create'] = 'Nieuw';
 $labels['createfolder'] = 'Maak nieuwe map';
-$labels['rename'] = 'Wijzig naam';
-$labels['renamefolder'] = 'Wijzig mapnaam';
-$labels['deletefolder'] = 'Verwijder map';
 $labels['managefolders'] = 'Beheer mappen';
 $labels['specialfolders'] = 'Speciale mappen';
+$labels['properties'] = 'Eigenschappen';
+$labels['folderproperties'] = 'Map eigenschappen';
+$labels['parentfolder'] = 'Hoofd folder';
+$labels['location'] = 'Locatie';
+$labels['info'] = 'Informatie';
+$labels['getfoldersize'] = 'Klik hier voor de map grootte';
+$labels['changesubscription'] = 'Klik voor het wijzigen van de inschrijving';
 $labels['sortby'] = 'Sorteer op';
 $labels['sortasc'] = 'Sorteer oplopend';
 $labels['sortdesc'] = 'Sorteer aflopend';

@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | language/ku/labels.inc                                                |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2006, RoundCube Dev. - Switzerland                      |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2006, Roundcube Dev. - Switzerland                      |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
@@ -177,9 +177,6 @@ $labels['subscribed'] = 'Ni şanenav';
 $labels['messagecount'] = 'Peyam';
 $labels['create'] = 'Biafirîne';
 $labels['createfolder'] = 'Peldankeke nû biafirîne';
-$labels['rename'] = 'Nav biguherîne';
-$labels['renamefolder'] = 'Navê peldankê biguherîne';
-$labels['deletefolder'] = 'Peldankê jê bibe';
 $labels['managefolders'] = 'Rêveberiya peldankan';
 $labels['sortby'] = 'Şêweyê rêzkirinê';
 $labels['sortasc'] = 'Wekî zêde dibe';

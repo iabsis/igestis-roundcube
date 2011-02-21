@@ -7,7 +7,7 @@
  * The code is derrived from the Squirrelmail "Change SASL Password" Plugin
  * by Galen Johnson.
  *
- * It only works with saslpasswd2 on the same host where RoundCube runs
+ * It only works with saslpasswd2 on the same host where Roundcube runs
  * and requires shell access and gcc in order to compile the binary.
  *
  * For installation instructions please read the README file.
@@ -33,7 +33,7 @@ function password_save($currpass, $newpass)
         raise_error(array(
             'code' => 600,
             'type' => 'php',
-            'file' => __FILE__,
+            'file' => __FILE__, 'line' => __LINE__,
             'message' => "Password plugin: Unable to execute $curdir/chgsaslpasswd"
             ), true, false);
     }

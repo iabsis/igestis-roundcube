@@ -4,14 +4,14 @@
  +-----------------------------------------------------------------------+
  | localization/ne/labels.inc                                            |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2007, RoundCube Dev. - Switzerland                      |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2007, Roundcube Dev. - Switzerland                      |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Nepali Translation by:                                                |
  | Prasanna Singh <prasanna@bhunet.com>, <prasanna@bhunet.com>           |
- | RoundCubeAuthor: Thomas Bruederli <roundcube@gmail.com>               |
+ | RoundcubeAuthor: Thomas Bruederli <roundcube@gmail.com>               |
  +-----------------------------------------------------------------------+
 */
 
@@ -166,9 +166,6 @@ $labels['foldername'] = 'फोल्डरको नाम';
 $labels['subscribed'] = 'सबस्क्राईब गरियो';
 $labels['create'] = 'बनाउनुहोस';
 $labels['createfolder'] = 'नया फोलडर बनाउनुहोस';
-$labels['rename'] = 'नाम बदल्नुहोस';
-$labels['renamefolder'] = 'फोलडरको नाम बदल्नुहोस';
-$labels['deletefolder'] = 'फोलडर मेट्नुहोस';
 $labels['managefolders'] = 'फोलडर व्यवस्थित गर्नुहोस';
 $labels['sortby'] = 'यसरी तय गर्नुहोस';
 $labels['sortasc'] = 'पहिलो देखि अन्तिम सम्म तय गर्नुहोस';

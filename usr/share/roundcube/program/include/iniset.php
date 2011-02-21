@@ -4,8 +4,8 @@
  +-----------------------------------------------------------------------+
  | program/include/iniset.php                                            |
  |                                                                       |
- | This file is part of the RoundCube Webmail client                     |
- | Copyright (C) 2008-2009, RoundCube Dev, - Switzerland                 |
+ | This file is part of the Roundcube Webmail client                     |
+ | Copyright (C) 2008-2009, Roundcube Dev, - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
@@ -16,7 +16,7 @@
  |         Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: iniset.php 3878 2010-08-07 09:44:38Z thomasb $
+ $Id: iniset.php 4469 2011-01-29 14:55:12Z thomasb $
 
 */
 
@@ -36,7 +36,7 @@ foreach ($crit_opts as $optname => $optval) {
 }
 
 // application constants
-define('RCMAIL_VERSION', '0.4');
+define('RCMAIL_VERSION', '0.5.1');
 define('RCMAIL_CHARSET', 'UTF-8');
 define('JS_OBJECT_NAME', 'rcmail');
 define('RCMAIL_START', microtime(true));
@@ -45,7 +45,9 @@ if (!defined('INSTALL_PATH')) {
     define('INSTALL_PATH', dirname($_SERVER['SCRIPT_FILENAME']).'/');
 }
 
-define('RCMAIL_CONFIG_DIR', INSTALL_PATH . 'config');
+if (!defined('RCMAIL_CONFIG_DIR')) {
+    define('RCMAIL_CONFIG_DIR', INSTALL_PATH . 'config');
+}
 
 // make sure path_separator is defined
 if (!defined('PATH_SEPARATOR')) {
@@ -89,6 +91,7 @@ function rcube_autoload($classname)
             '/MDB2_(.+)/',
             '/Mail_(.+)/',
             '/Net_(.+)/',
+            '/Auth_(.+)/',
             '/^html_.+/',
             '/^utf8$/',
         ),
@@ -96,12 +99,20 @@ function rcube_autoload($classname)
             'MDB2/\\1',
             'Mail/\\1',
             'Net/\\1',
+            'Auth/\\1',
             'html',
             'utf8.class',
         ),
         $classname
     );
-    include $filename. '.php';
+
+    if ($fp = @fopen("$filename.php", 'r', true)) {
+        fclose($fp);
+        include_once("$filename.php");
+        return true;
+    }
+
+    return false;
 }
 
 spl_autoload_register('rcube_autoload');

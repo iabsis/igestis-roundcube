@@ -4,15 +4,15 @@
 +-----------------------------------------------------------------------+
 | language/mk_MK/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
 | Author:  Ivan Mishev - mishevivan@gmail.com                           |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -274,9 +274,6 @@ $labels['subscribed'] = 'Претплатен';
 $labels['messagecount'] = 'Пораки';
 $labels['create'] = 'Создај';
 $labels['createfolder'] = 'Создај нова папка';
-$labels['rename'] = 'Преименувај';
-$labels['renamefolder'] = 'Преименувај папка';
-$labels['deletefolder'] = 'Избриши папка';
 $labels['managefolders'] = 'Организирање на папки';
 $labels['specialfolders'] = 'Специјални папки';
 $labels['sortby'] = 'Сортирај по';

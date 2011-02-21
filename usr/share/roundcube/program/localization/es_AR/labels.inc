@@ -4,8 +4,8 @@
 +-----------------------------------------------------------------------+
 | language/es_AR/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -17,7 +17,7 @@
 |         http://www.netsud.com                                         |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -301,9 +301,6 @@ $labels['subscribed'] = 'Suscripta';
 $labels['messagecount'] = 'Mensajes';
 $labels['create'] = 'Crear';
 $labels['createfolder'] = 'Crear nueva carpeta';
-$labels['rename'] = 'Renombrar';
-$labels['renamefolder'] = 'Renombrar carpeta';
-$labels['deletefolder'] = 'Eliminar carpeta';
 $labels['managefolders'] = 'Administrar carpetas';
 $labels['specialfolders'] = 'Carpetas Especiales';
 $labels['sortby'] = 'Ordenar por';

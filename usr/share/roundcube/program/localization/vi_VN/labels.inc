@@ -5,15 +5,15 @@
  +-----------------------------------------------------------------------+
  | language/vn/labels.inc                                                |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Vinh Bui <bqvinh@buivinh.info>                                |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -205,9 +205,6 @@ $labels['foldername']  = 'Tên thư mục';
 $labels['subscribed']  = 'Cho sử dụng';
 $labels['create']  = 'Tạo';
 $labels['createfolder']  = 'Tạo thư mục mới';
-$labels['rename'] = 'Đổi tên';
-$labels['renamefolder'] = 'Đổi tên thư mục';
-$labels['deletefolder']  = 'Xóa thư mục';
 $labels['managefolders']  = 'Quản trị thư mục';
 
 $labels['sortby'] = 'Sắp xếp';

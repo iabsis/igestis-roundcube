@@ -5,8 +5,8 @@
 +-----------------------------------------------------------------------+
 | language/nn_NO/labels.inc                                             |
 |                                                                       |
-| Language file of the RoundCube Webmail client                         |
-| Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+| Language file of the Roundcube Webmail client                         |
+| Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
 | Licensed under the GNU GPL                                            |
 |                                                                       |
 +-----------------------------------------------------------------------+
@@ -14,7 +14,7 @@
 | Update: Odin Omdal Hørthe <odin.omdal@gmail.com>                      |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+@version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -310,9 +310,6 @@ $labels['subscribed'] = 'Abonnert';
 $labels['messagecount'] = 'Meldingar';
 $labels['create'] = 'Opprette';
 $labels['createfolder'] = 'Opprett ny mappe';
-$labels['rename'] = 'Gje nytt namn';
-$labels['renamefolder'] = 'Gje nytt namn til mappe';
-$labels['deletefolder'] = 'Slett mappe';
 $labels['managefolders'] = 'Mappehandsaming';
 $labels['specialfolders'] = 'Spesialmapper';
 $labels['sortby'] = 'Sorter etter';

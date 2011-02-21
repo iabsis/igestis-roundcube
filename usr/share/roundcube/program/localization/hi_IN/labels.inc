@@ -4,15 +4,15 @@
  +-----------------------------------------------------------------------+
  | localization/hi/labels.inc                                            |
  |                                                                       |
- | Language file of the RoundCube Webmail client                         |
- | Copyright (C) 2005-2010, RoundCube Dev. - Switzerland                 |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2005-2010, Roundcube Dev. - Switzerland                 |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Aniruddha "Karim" Shankar <karim@sarai.net>                   |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 3565 2010-04-26 19:23:21Z yllar $
+ @version $Id: labels.inc 4345 2010-12-17 14:28:38Z thomasb $
 
 */
 
@@ -226,9 +226,6 @@ $labels['foldername']		= 'फ़ोल्डर नाम';
 $labels['subscribed']		= 'सबस्क्राईब किया गया';
 $labels['create']		= 'बनाऐं';
 $labels['createfolder']		= 'फ़ोलडर बनाऐं';
-$labels['rename']		= 'नाम बदलें';
-$labels['renamefolder']		= 'फ़ोलडर का नाम बदलें';
-$labels['deletefolder']		= 'फ़ोलडर मिटाऐं';
 $labels['managefolders']	= 'फ़ोलडर को व्यवस्थित करें';
 
 $labels['sortby']		= 'ऐसे तय करें';
