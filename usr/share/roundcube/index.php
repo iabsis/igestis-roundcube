@@ -1,10 +1,10 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | RoundCube Webmail IMAP Client                                           |
- | Version 0.4                                                             |
+ | Roundcube Webmail IMAP Client                                           |
+ | Version 0.5.1                                                           |
  |                                                                         |
- | Copyright (C) 2005-2009, RoundCube Dev. - Switzerland                   |
+ | Copyright (C) 2005-2011, Roundcube Dev. - Switzerland                   |
  |                                                                         |
  | This program is free software; you can redistribute it and/or modify    |
  | it under the terms of the GNU General Public License version 2          |
@@ -23,7 +23,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                          |
  +-------------------------------------------------------------------------+
 
- $Id: index.php 3878 2010-08-07 09:44:38Z thomasb $
+ $Id: index.php 4509 2011-02-09 10:51:50Z thomasb $
 
 */
 
@@ -99,24 +99,25 @@ $RCMAIL->action = $startup['action'];
 
 // try to log in
 if ($RCMAIL->task == 'login' && $RCMAIL->action == 'login') {
+  $request_valid = $_SESSION['temp'] && $RCMAIL->check_request(RCUBE_INPUT_POST, 'login');
+
   // purge the session in case of new login when a session already exists 
   $RCMAIL->kill_session();
-  
+
   $auth = $RCMAIL->plugins->exec_hook('authenticate', array(
     'host' => $RCMAIL->autoselect_host(),
     'user' => trim(get_input_value('_user', RCUBE_INPUT_POST)),
+    'pass' => get_input_value('_pass', RCUBE_INPUT_POST, true,
+       $RCMAIL->config->get('password_charset', 'ISO-8859-1')),
     'cookiecheck' => true,
+    'valid' => $request_valid,
   ));
-  
-  if (!isset($auth['pass']))
-    $auth['pass'] = get_input_value('_pass', RCUBE_INPUT_POST, true,
-        $RCMAIL->config->get('password_charset', 'ISO-8859-1'));
 
   // check if client supports cookies
   if ($auth['cookiecheck'] && empty($_COOKIE)) {
     $OUTPUT->show_message("cookiesdisabled", 'warning');
   }
-  else if ($_SESSION['temp'] && !$auth['abort'] &&
+  else if ($auth['valid'] && !$auth['abort'] &&
         !empty($auth['host']) && !empty($auth['user']) &&
         $RCMAIL->login($auth['user'], $auth['pass'], $auth['host'])) {
     // create new session ID
@@ -131,25 +132,33 @@ if ($RCMAIL->task == 'login' && $RCMAIL->action == 'login') {
 
     // restore original request parameters
     $query = array();
-    if ($url = get_input_value('_url', RCUBE_INPUT_POST))
+    if ($url = get_input_value('_url', RCUBE_INPUT_POST)) {
       parse_str($url, $query);
+      
+      // prevent endless looping on login page
+      if ($query['_task'] == 'login')
+        unset($query['_task']);
+    }
 
     // allow plugins to control the redirect url after login success
-    $redir = $RCMAIL->plugins->exec_hook('login_after', $query);
+    $redir = $RCMAIL->plugins->exec_hook('login_after', $query + array('_task' => 'mail'));
     unset($redir['abort']);
 
     // send redirect
     $OUTPUT->redirect($redir);
   }
   else {
-    $OUTPUT->show_message($IMAP->error_code < -1 ? 'imaperror' : 'loginfailed', 'warning');
-    $RCMAIL->plugins->exec_hook('login_failed', array('code' => $IMAP->error_code, 'host' => $auth['host'], 'user' => $auth['user']));
+    $error_code = is_object($IMAP) ? $IMAP->get_error_code() : -1;
+
+    $OUTPUT->show_message($error_code < -1 ? 'imaperror' : (!$auth['valid'] ? 'invalidrequest' : 'loginfailed'), 'warning');
+    $RCMAIL->plugins->exec_hook('login_failed', array(
+      'code' => $error_code, 'host' => $auth['host'], 'user' => $auth['user']));
     $RCMAIL->kill_session();
   }
 }
 
-// end session
-else if ($RCMAIL->task == 'logout' && isset($_SESSION['user_id'])) {
+// end session (after optional referer check)
+else if ($RCMAIL->task == 'logout' && isset($_SESSION['user_id']) && (!$RCMAIL->config->get('referer_check') || rcube_check_referer())) {
   $userdata = array('user' => $_SESSION['username'], 'host' => $_SESSION['imap_host'], 'lang' => $RCMAIL->user->language);
   $OUTPUT->show_message('loggedout');
   $RCMAIL->logout_actions();
@@ -165,22 +174,6 @@ else if ($RCMAIL->task != 'login' && $_SESSION['user_id'] && $RCMAIL->action != 
   }
 }
 
-// don't check for valid request tokens in these actions
-$request_check_whitelist = array('login'=>1, 'spell'=>1);
-
-// check client X-header to verify request origin
-if ($OUTPUT->ajax_call) {
-  if (!$RCMAIL->config->get('devel_mode') && rc_request_header('X-RoundCube-Request') != $RCMAIL->get_request_token() && !empty($RCMAIL->user->ID)) {
-    header('HTTP/1.1 404 Not Found');
-    die("Invalid Request");
-  }
-}
-// check request token in POST form submissions
-else if (!empty($_POST) && !$request_check_whitelist[$RCMAIL->action] && !$RCMAIL->check_request()) {
-  $OUTPUT->show_message('invalidrequest', 'error');
-  $OUTPUT->send($RCMAIL->task);
-}
-
 // not logged in -> show login page
 if (empty($RCMAIL->user->ID)) {
   if ($OUTPUT->ajax_call)
@@ -193,29 +186,51 @@ if (empty($RCMAIL->user->ID)) {
   if ($RCMAIL->config->get('enable_installer') && is_readable('./installer/index.php')) {
     $OUTPUT->add_footer(html::div(array('style' => "background:#ef9398; border:2px solid #dc5757; padding:0.5em; margin:2em auto; width:50em"),
       html::tag('h2', array('style' => "margin-top:0.2em"), "Installer script is still accessible") .
-      html::p(null, "The install script of your RoundCube installation is still stored in its default location!") .
-      html::p(null, "Please <b>remove</b> the whole <tt>installer</tt> folder from the RoundCube directory because .
+      html::p(null, "The install script of your Roundcube installation is still stored in its default location!") .
+      html::p(null, "Please <b>remove</b> the whole <tt>installer</tt> folder from the Roundcube directory because .
         these files may expose sensitive configuration data like server passwords and encryption keys
         to the public. Make sure you cannot access the <a href=\"./installer/\">installer script</a> from your browser.")
       )
     );
   }
-  
-  $OUTPUT->set_env('task', 'login');
+
+  $RCMAIL->set_task('login');
   $OUTPUT->send('login');
 }
+// CSRF prevention
+else {
+  // don't check for valid request tokens in these actions
+  $request_check_whitelist = array('login'=>1, 'spell'=>1);
 
+  // check client X-header to verify request origin
+  if ($OUTPUT->ajax_call) {
+    if (rc_request_header('X-Roundcube-Request') != $RCMAIL->get_request_token()) {
+      header('HTTP/1.1 404 Not Found');
+      die("Invalid Request");
+    }
+  }
+  // check request token in POST form submissions
+  else if (!empty($_POST) && !$request_check_whitelist[$RCMAIL->action] && !$RCMAIL->check_request()) {
+    $OUTPUT->show_message('invalidrequest', 'error');
+    $OUTPUT->send($RCMAIL->task);
+  }
 
-// handle keep-alive signal
+  // check referer if configured
+  if (!$request_check_whitelist[$RCMAIL->action] && $RCMAIL->config->get('referer_check') && !rcube_check_referer()) {
+    raise_error(array(
+      'code' => 403,
+      'type' => 'php',
+      'message' => "Referer check failed"), true, true);
+  }
+}
+
+// handle special actions
 if ($RCMAIL->action == 'keep-alive') {
   $OUTPUT->reset();
   $OUTPUT->send();
 }
-// save preference value
 else if ($RCMAIL->action == 'save-pref') {
-  $RCMAIL->user->save_prefs(array(get_input_value('_name', RCUBE_INPUT_POST) => get_input_value('_value', RCUBE_INPUT_POST)));
-  $OUTPUT->reset();
-  $OUTPUT->send();
+  include 'steps/utils/save_pref.inc';
 }
 
 
@@ -243,16 +258,15 @@ $action_map = array(
     'group-addmembers' => 'groups.inc',
     'group-delmembers' => 'groups.inc',
   ),
-  
+
   'settings' => array(
-    'folders'       => 'manage_folders.inc',
-    'create-folder' => 'manage_folders.inc',
-    'rename-folder' => 'manage_folders.inc',
-    'delete-folder' => 'manage_folders.inc',
-    'subscribe'     => 'manage_folders.inc',
-    'unsubscribe'   => 'manage_folders.inc',
-    'enable-threading'  => 'manage_folders.inc',
-    'disable-threading' => 'manage_folders.inc',
+    'folders'       => 'folders.inc',
+    'rename-folder' => 'folders.inc',
+    'delete-folder' => 'folders.inc',
+    'subscribe'     => 'folders.inc',
+    'unsubscribe'   => 'folders.inc',
+    'purge'         => 'folders.inc',
+    'folder-size'   => 'folders.inc',
     'add-identity'  => 'edit_identity.inc',
   )
 );
