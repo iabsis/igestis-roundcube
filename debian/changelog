@@ -1,3 +1,9 @@
+igestis-roundcube (1.1.1) karmic; urgency=low
+
+  * Evolution #60 : Mise à jour vers Roundcube 0.5.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 22 Feb 2011 15:30:19 +0100
+
 igestis-roundcube (1.1.0) karmic; urgency=low
 
   * Evolution #60 : Mise à jour vers Roundcube 0.4.
