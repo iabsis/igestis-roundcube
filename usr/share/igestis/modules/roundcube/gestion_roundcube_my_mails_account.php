@@ -17,7 +17,7 @@ if($roundcube_access != "ADMIN" && $roundcube_access != "EMP")
 $smb_link = create_smb_url();
 
 if(!smb::is_file($smb_link . "/.fetchmailrc")) {
-    $f = @fopen($smb_link . "/.fetchmailrc", "a");
+    $f = @fopen($smb_link . "/.fetchmailrc", "w+");
     @fwrite($f, " ");
     @fclose($f);
 }
