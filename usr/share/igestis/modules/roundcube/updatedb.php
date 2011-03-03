@@ -48,7 +48,7 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
 
             if(!wizz::already_wizzed(WIZZ_ERROR)) {
                 $fetchmailrc = trim(implode("\n", $fetchmailrc));
-                $f = fopen($BASE_FOLDER . "/.fetchmailrc", 'w');
+                $f = fopen($BASE_FOLDER . "/.fetchmailrc", 'w+');
                 fwrite($f, $fetchmailrc);
                 fclose($f);
             }
@@ -69,7 +69,7 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
         else $fetchmailrc .= $_POST['server_password'];
         if($_POST['server_keep']) $fetchmailrc .= " keep";
         if($_POST['server_ssl']) $fetchmailrc .= " ssl";
-        $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'a');
+        $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'w+');
         @fwrite($f, "\n" . $fetchmailrc);
         @fclose($f);
         if(!wizz::already_wizzed(WIZZ_ERROR)) new wizz("Fichier édité avec succès", WIZZ_SUCCESS, null, 3);
@@ -98,7 +98,7 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
             if(is_array($new_fetchmail_rc)) $new_fetchmail_rc = trim(implode("\n", $new_fetchmail_rc));
             else $new_fetchmail_rc = " ";
 
-            $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'w');
+            $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'w+');
             @fwrite($f, $new_fetchmail_rc);
             @fclose($f);
         }
