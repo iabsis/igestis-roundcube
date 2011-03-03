@@ -2,10 +2,10 @@
 
 -- Updates from version 0.4.2
 
-ALTER TABLE `users` DROP INDEX `username_index`;
-ALTER TABLE `users` ADD UNIQUE `username` (`username`, `mail_host`);
+ALTER TABLE `ROUNDCUBE_users` DROP INDEX `username_index`;
+ALTER TABLE `ROUNDCUBE_users` ADD UNIQUE `username` (`username`, `mail_host`);
 
-ALTER TABLE `contacts` MODIFY `email` varchar(255) NOT NULL;
+ALTER TABLE `ROUDCUBE_contacts` MODIFY `email` varchar(255) NOT NULL;
 
-TRUNCATE TABLE `messages`;
+TRUNCATE TABLE `ROUNDCUBE_messages`;
 
