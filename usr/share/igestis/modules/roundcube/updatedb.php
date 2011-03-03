@@ -60,7 +60,7 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
     }
 
     if($_POST['action'] == "new") {
-        $BASE_FOLDER = mount_user_folder("main");
+        $BASE_FOLDER = create_smb_url();
 
         $fetchmailrc = "poll " . $_POST['server_name'] . " with protocol " . $_POST['server_protocol'] . " user " . $_POST['server_username'] . " password ";
         if(ereg("'", $_POST['server_password'])) $fetchmailrc .= '"' . $_POST['server_password'] . '"';
@@ -69,16 +69,16 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
         else $fetchmailrc .= $_POST['server_password'];
         if($_POST['server_keep']) $fetchmailrc .= " keep";
         if($_POST['server_ssl']) $fetchmailrc .= " ssl";
-        $f = fopen($BASE_FOLDER . "/.fetchmailrc", 'a');
-        fwrite($f, "\n" . $fetchmailrc);
-        fclose($f);
-        exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
+        $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'a');
+        @fwrite($f, "\n" . $fetchmailrc);
+        @fclose($f);
+        if(!wizz::already_wizzed(WIZZ_ERROR)) new wizz("Fichier édité avec succès", WIZZ_SUCCESS, null, 3);
         die ("<script language='javascript'>window.opener.location.reload(true); window.close();</script>") ;
     }
 
 
     if($_GET['action'] == "del") {
-        $BASE_FOLDER = mount_user_folder("main");
+        $BASE_FOLDER = create_smb_url();
 
         if(is_file($BASE_FOLDER . "/.fetchmailrc")) {
             $fetchmailrc = file($BASE_FOLDER . "/.fetchmailrc");
@@ -96,15 +96,14 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
             }
 
             if(is_array($new_fetchmail_rc)) $new_fetchmail_rc = trim(implode("\n", $new_fetchmail_rc));
-            else $new_fetchmail_rc = "";
+            else $new_fetchmail_rc = " ";
 
-            $f = fopen($BASE_FOLDER . "/.fetchmailrc", 'w');
-            fwrite($f, $new_fetchmail_rc);
-            fclose($f);
+            $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'w');
+            @fwrite($f, $new_fetchmail_rc);
+            @fclose($f);
         }
 
-
-        exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
+        if(!wizz::already_wizzed(WIZZ_ERROR)) new wizz("Fichier édité avec succès", WIZZ_SUCCESS, null, 3);
         header("location:" . $_GET['page_url']);
         exit;
     }
