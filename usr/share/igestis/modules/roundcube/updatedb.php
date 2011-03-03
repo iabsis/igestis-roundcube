@@ -23,38 +23,39 @@ if(!$application->is_loged) {// Loged or not loged, that's the question.
 
 if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcube_mail_account") {
     if($_POST['action'] == "edit") {
-        $BASE_FOLDER = mount_user_folder("main");
-        if(is_file($BASE_FOLDER . "/.fetchmailrc")) {
-            $fetchmailrc = file($BASE_FOLDER . "/.fetchmailrc");
-            if(is_array($fetchmailrc)) {
-                for($i = 0; $i < count($fetchmailrc); $i++) {
-                    $parsed_line = parse_fetchmail_line($fetchmailrc[$i]);
-                    if($parsed_line['address'] == $_POST['current_server_name'] && $parsed_line['user'] == $_POST['current_server_username']) {
-                        // poll lascaux.local with protocol IMAP user "test1234" password test is gillesh keep
-                        $fetchmailrc[$i] = "poll " . $_POST['server_name'] . " with protocol " . $_POST['server_protocol'] . " user " . $_POST['server_username'] . " password ";
-                        if(ereg("'", $_POST['server_password'])) $fetchmailrc[$i] .= '"' . $_POST['server_password'] . '"';
-                        elseif(ereg('"', $_POST['server_password'])) $fetchmailrc[$i] .= '"' . $_POST['server_password'] . '"';
-                        elseif(ereg(' ', $_POST['server_password'])) $fetchmailrc[$i] .= '"' . $_POST['server_password'] . '"';
-                        else $fetchmailrc[$i] .= $_POST['server_password'];
+        $BASE_FOLDER =  create_smb_url();
+        $fetchmailrc = file($BASE_FOLDER . "/.fetchmailrc");
+        if(is_array($fetchmailrc)) {
+            for($i = 0; $i < count($fetchmailrc); $i++) {
+                $parsed_line = parse_fetchmail_line($fetchmailrc[$i]);
+                if($parsed_line['address'] == $_POST['current_server_name'] && $parsed_line['user'] == $_POST['current_server_username']) {
+                    // poll lascaux.local with protocol IMAP user "test1234" password test is gillesh keep
+                    $fetchmailrc[$i] = "poll " . $_POST['server_name'] . " with protocol " . $_POST['server_protocol'] . " user " . $_POST['server_username'] . " password ";
+                    if(ereg("'", $_POST['server_password'])) $fetchmailrc[$i] .= '"' . $_POST['server_password'] . '"';
+                    elseif(ereg('"', $_POST['server_password'])) $fetchmailrc[$i] .= '"' . $_POST['server_password'] . '"';
+                    elseif(ereg(' ', $_POST['server_password'])) $fetchmailrc[$i] .= '"' . $_POST['server_password'] . '"';
+                    else $fetchmailrc[$i] .= $_POST['server_password'];
 
-                        if(!$_POST['server_keep'] && eregi("keep", $parsed_line['options'])) $parsed_line['options'] = trim(str_replace("keep", "", $parsed_line['options']));
-                        if($_POST['server_keep']  && !eregi("keep", $parsed_line['options'])) $parsed_line['options'] = trim($parsed_line['options'] . " keep");
+                    if(!$_POST['server_keep'] && eregi("keep", $parsed_line['options'])) $parsed_line['options'] = trim(str_replace("keep", "", $parsed_line['options']));
+                    if($_POST['server_keep']  && !eregi("keep", $parsed_line['options'])) $parsed_line['options'] = trim($parsed_line['options'] . " keep");
 
-                        if(!$_POST['server_ssl'] && eregi("ssl", $parsed_line['options'])) $parsed_line['options'] = trim(str_replace("ssl", "", $parsed_line['options']));
-                        if($_POST['server_ssl']  && !eregi("ssl", $parsed_line['options'])) $parsed_line['options'] = trim($parsed_line['options'] . " ssl");
+                    if(!$_POST['server_ssl'] && eregi("ssl", $parsed_line['options'])) $parsed_line['options'] = trim(str_replace("ssl", "", $parsed_line['options']));
+                    if($_POST['server_ssl']  && !eregi("ssl", $parsed_line['options'])) $parsed_line['options'] = trim($parsed_line['options'] . " ssl");
 
-                        $fetchmailrc[$i] .= " " . $parsed_line['options'];
-                    }
+                    $fetchmailrc[$i] .= " " . $parsed_line['options'];
                 }
+            }
 
+            if(!wizz::already_wizzed(WIZZ_ERROR)) {
                 $fetchmailrc = trim(implode("\n", $fetchmailrc));
                 $f = fopen($BASE_FOLDER . "/.fetchmailrc", 'w');
                 fwrite($f, $fetchmailrc);
                 fclose($f);
             }
+            
         }
 
-        exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
+        if(!wizz::already_wizzed(WIZZ_ERROR)) new wizz("Compte enregistré", WIZZ_SUCCESS);
         die ("<script language='javascript'>window.opener.location.reload(true); window.close();</script>") ;
     }
 
@@ -112,7 +113,7 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
 if($_POST['section'] == "vacation_message") {
     if($_POST['email'] && !is_email($_POST['email'])) $application->message_die("Format d'email incorrect");
 
-    $BASE_FOLDER = mount_user_folder("main");
+    $BASE_FOLDER =  create_smb_url();
 
     $f = fopen($BASE_FOLDER . "/.Maildir/.message.txt", "w");
     fwrite($f, str_replace('\r', "\r", str_replace('\n', "\n", $_POST['vacation_message'])));
@@ -137,19 +138,19 @@ if($_POST['section'] == "vacation_message") {
                 'cat $MAILDIR/.message.txt ) | $SENDMAIL -t');
     }
     else {
-        if(is_file($BASE_FOLDER . "/.vacation.cache")) @unlink($BASE_FOLDER . "/.vacation.cache");
+        fwrite($f, " ");
+        //unlink($BASE_FOLDER . "/.vacation.cache");
     }
     fclose($f);
 
-    //exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
-    header("location:../../.." . urldecode($_POST['page_url']));
+    header("location:" . urldecode($_POST['page_url']));
     exit;
 } ############################################################################################################
 
 if($_POST['section'] == "mail_rules" || $_GET['section'] == "mail_rules") {
 
     if($_POST['action'] == "edit") {
-        $BASE_FOLDER = mount_user_folder("main");
+        $BASE_FOLDER = create_smb_url();
 
         if(is_array($_POST['what'])) {
 
@@ -171,13 +172,12 @@ if($_POST['section'] == "mail_rules" || $_GET['section'] == "mail_rules") {
             $parser->write_file($BASE_FOLDER . "/.procmail-roundcube");
         }
 
-        exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
-        header("location:../../.." . urldecode($_POST['page_url']));
+        header("location:" . urldecode($_POST['page_url']));
         exit;
     }
 
     if($_GET['action'] == "del") {
-        $BASE_FOLDER = mount_user_folder("main");
+        $BASE_FOLDER = create_smb_url();
 
         $parser = new MailRules($BASE_FOLDER . "/.procmail-roundcube");
 
@@ -194,8 +194,7 @@ if($_POST['section'] == "mail_rules" || $_GET['section'] == "mail_rules") {
         $parser->write_file($BASE_FOLDER . "/.procmail-roundcube");
 
 
-        exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
-        header("location:../../.." . urldecode($_GET['page_url']));
+        header("location:" . urldecode($_GET['page_url']));
         exit;
     }
 

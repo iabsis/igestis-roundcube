@@ -25,18 +25,7 @@ function del_mail_account(server_name, server_username)
 					
 <div class="main-content-top-actions">
 	<span class="inner">
-		<!-- Bloc de liens ajouter and co -->
-		<ul class="search-form">
-			<form action="index.php" method="get">
-			<input type="hidden" name="Page" value="module" />
-			<input type="hidden" name="module_name" value="ROUNDCUBE" />
-			<input type="hidden" name="page_url" value="{PAGE_URL}" />
-	
-			<li><input class="search-field" onFocus="javascript:empty_on_focus(this, '{LANG_SEARCH_FOR}')" type="text" name="search_for" value="<!-- IF search_for -->{search_for}<!-- ELSE -->{LANG_SEARCH_FOR}<!-- ENDIF -->" /></li>				
-
-			</form>
-		</ul>
-		
+		<!-- Bloc de liens ajouter and co -->		
 		<ul class="action_menu">
 			<li class="last-row"><a href="javascript:popup(640, 480, '{MODULE_FOLDER_URL}roundcube_mail_account.php?action=new','no','yes','no')">{LANG_ROUNDCUBE_New_mail_account}</a></li>
 		</ul>

@@ -3,16 +3,14 @@ if(!defined('GENERAL_INDEX_REQUEST_LAUNCHED')) die("Hacking attempt");
 
 function unable_vacation_message() {
 	global $application;
-	
+        wizz::set_ajax_mode();
+	$smb_link = create_smb_url();
 	$objResponse = new xajaxResponse();
-	$BASE_FOLDER = mount_user_folder("ajax");
 	
-	$f = fopen($BASE_FOLDER . "/.procmail-vacation", "w");
+	$f = fopen($smb_link . "/.procmail-vacation", "w");
+        fwrite($f, " ");
 	fclose($f);
-	
-	//if(is_file($BASE_FOLDER . "/.vacation.cache")) @unlink($BASE_FOLDER . "/.vacation.cache");
-	exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
-	
+
 	return $objResponse;
 }
 
@@ -20,9 +18,9 @@ function unable_vacation_message() {
 
 function roundcube_test_mail_account($protocol, $server, $user, $password, $ssl) {
 	global $application;
-	
+	wizz::set_ajax_mode();
 	$objResponse = new xajaxResponse();
-	$BASE_FOLDER = mount_user_folder("ajax");
+	$BASE_FOLDER = create_smb_url();
 	
 	if($return != 0) {
 		$script ="messageObj.setHtmlContent('" . str_replace("'", "\\'", implode("<br />",$string)) . "'); messageObj.display();";

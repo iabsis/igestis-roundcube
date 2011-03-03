@@ -1,6 +1,7 @@
 <?
  
 // If a little malicious guy attempt to launche this file directly, application stop with the message below ...
+
 if(!defined("INDEX_LAUNCHED")) die("Hacking attempt");
 
 include SERVER_FOLDER . "/" . APPLI_FOLDER . "/modules/roundcube/config.php";
@@ -13,23 +14,24 @@ if($roundcube_access != "ADMIN" && $roundcube_access != "EMP")
 }
 
 // Montage du dossier personnel
-$BASE_FOLDER = mount_user_folder("main");
+//$BASE_FOLDER = mount_user_folder("main");
+$smb_link = create_smb_url();
 
+$f = fopen($smb_link . "/.fetchmailrc", 'r');
 
-if(is_file($BASE_FOLDER . "/.fetchmailrc")) {
-	$f = fopen($BASE_FOLDER . "/.fetchmailrc", 'r');
-	if(!$f) die("Unable to open the fetchmailrc file !");
-	while(!feof($f)) {
-		$line = fgets($f, 512);
-		if($parsed_line = parse_fetchmail_line($line)) {
-			$application->add_block("ROUNDCUBE_mail_server_LIST", array(
-				"CLASS" => ($cpt++%2 ? "ligne1" : "ligne2"),
-				"server_name" => $parsed_line['address'],
-				"server_username" => $parsed_line['user'],
-			));
-		}		
-	}	
-	fclose($f);
+if(!$f) new wizz("Unable to open the fetchmailrc file !");
+else {
+    while(!feof($f)) {
+        $line = fgets($f, 512);
+        if($parsed_line = parse_fetchmail_line($line)) {
+            $application->add_block("ROUNDCUBE_mail_server_LIST", array(
+                "CLASS" => ($cpt++%2 ? "ligne1" : "ligne2"),
+                "server_name" => $parsed_line['address'],
+                "server_username" => $parsed_line['user'],
+            ));
+        }
+    }
+    fclose($f);
 }
 
 

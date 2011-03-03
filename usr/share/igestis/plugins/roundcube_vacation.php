@@ -2,7 +2,6 @@
 
 // If a little malicious guy attempt to launche this file directly, application stop with the message below ...
 if(!defined("INDEX_LAUNCHED")&& !defined("GENERAL_INDEX_REQUEST_LAUNCHED")) die("Hacking attempt");
-define(IABSIS_NEWS_URL, "http://www.iabsis.com/index.php?mact=CGFeedMaker,cntnt01,default,0&cntnt01feed=News2&cntnt01showtemplate=false&cntnt01returnid=15");
 
 if($application->userprefs['user_type'] == "employee") {
     // Création du contenu de l'applet uniquement pour les employés
@@ -14,14 +13,12 @@ if($application->userprefs['user_type'] == "employee") {
     $file = $application->get_html_content("plugins/roundcube_vacation.htm");
     $data = $file;
 
-    $BASE_FOLDER = mount_user_folder("main") . "/";
+    $BASE_FOLDER = create_smb_url();
 
     $content = "";
-    if(is_file($BASE_FOLDER . "/.procmail-vacation")) {
-            $content = file_get_contents($BASE_FOLDER . "/.procmail-vacation");
-    }
+    $content = file_get_contents($BASE_FOLDER . "/.procmail-vacation");
+
     if(trim($content)) $application->add_var("vacation_message_activated", true);
-    umount_user_folder($application->userprefs['login']);
 
     $data = $application->show_content($data, true);
     // Ajout du contenu de l'applet

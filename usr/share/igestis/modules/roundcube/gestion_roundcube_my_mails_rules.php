@@ -12,7 +12,7 @@ if($roundcube_access != "ADMIN" && $roundcube_access != "EMP")
 	$application->message_die("You have not access to this page");
 }
 
-$BASE_FOLDER = mount_user_folder("main");
+$BASE_FOLDER = create_smb_url();
 $parser = new MailRules($BASE_FOLDER . "/.procmail-roundcube");
 
 
@@ -33,8 +33,6 @@ $CONTENT = $application->get_html_content("roundcube_gestion_my_mails_rules.htm"
 if(!$CONTENT) $application->message_die("Unable to find the html page");
 $application->set_page_title("{LANG_ROUNDCUBE_MESSAGE_Mail_Rules}");
 
-
-exec("smbumount /var/home/" . $application->userprefs['login']  . "/");
 ################## Create the content of the page #################################
 		
 $replace = array("MENU" => $application->generate_menu());
