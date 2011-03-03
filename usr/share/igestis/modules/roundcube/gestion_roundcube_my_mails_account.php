@@ -14,10 +14,16 @@ if($roundcube_access != "ADMIN" && $roundcube_access != "EMP")
 }
 
 // Montage du dossier personnel
-//$BASE_FOLDER = mount_user_folder("main");
 $smb_link = create_smb_url();
 
-$f = fopen($smb_link . "/.fetchmailrc", 'r');
+if(!smb::is_file($smb_link . "/.fetchmailrc")) {
+    $f = @fopen($smb_link . "/.fetchmailrc", "a");
+    @fwrite($f, " ");
+    @fclose($f);
+}
+
+
+$f = @fopen($smb_link . "/.fetchmailrc", 'r');
 
 if(!$f) new wizz("Unable to open the fetchmailrc file !");
 else {
@@ -31,7 +37,7 @@ else {
             ));
         }
     }
-    fclose($f);
+    @fclose($f);
 }
 
 
