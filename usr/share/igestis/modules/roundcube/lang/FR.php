@@ -84,6 +84,8 @@ $LANG['LANG_ROUNDCUBE_DESCRIPTION_My_mails'] = "Vous pouvez voir vos mails direc
 $LANG['LANG_ROUNDCUBE_Help_none'] = "Ne permet pas l'accès au menu email";
 $LANG['LANG_ROUNDCUBE_Help_emp'] = "Permet de voir ses mails, ajouter des comptes mails, créer des règles de message et gérer un message d'abscence";
 
+$LANG['LANG_ROUNDCUBE_Unable_to_delete_fetchmail_file'] = "Impossible de supprimer le fichier fetchmail";
+
 
 
 

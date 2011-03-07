@@ -95,12 +95,18 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
                 }
             }
 
-            if(is_array($new_fetchmail_rc)) $new_fetchmail_rc = trim(implode("\n", $new_fetchmail_rc));
-            else $new_fetchmail_rc = " ";
+            if(is_array($new_fetchmail_rc)) {
+                $new_fetchmail_rc = trim(implode("\n", $new_fetchmail_rc));
+                $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'w+');
+                @fwrite($f, $new_fetchmail_rc);
+                @fclose($f);
+            }
+            else {
+                @unlink($BASE_FOLDER . "/.fetchmailrc");
+                if(smb::is_file($BASE_FOLDER . "/.fetchmailrc")) new wizz("{LANG_ROUNDCUBE_Unable_to_delete_fetchmail_file}");
+            }
 
-            $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'w+');
-            @fwrite($f, $new_fetchmail_rc);
-            @fclose($f);
+            
         }
 
         if(!wizz::already_wizzed(WIZZ_ERROR)) new wizz("Fichier édité avec succès", WIZZ_SUCCESS, null, 3);
