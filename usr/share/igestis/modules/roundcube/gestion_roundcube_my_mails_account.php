@@ -16,7 +16,7 @@ if($roundcube_access != "ADMIN" && $roundcube_access != "EMP")
 // Montage du dossier personnel
 $smb_link = create_smb_url();
 
-if(!smb::is_file($smb_link . "/.fetchmailrc")) {
+if(smb::is_file($smb_link . "/.fetchmailrc")) {
     $f = @fopen($smb_link . "/.fetchmailrc", 'r');
 
     if(!$f) new wizz("Unable to open the fetchmailrc file !");
