@@ -1,3 +1,10 @@
+igestis-roundcube (1.1.2) karmic; urgency=low
+
+  * Correction du fichier sql 1.1.1.sql qui contenant de vieilles entrées.
+  * Adaptation au nouveau système d'accès à smbfs.
+
+ -- root <root@ishare.homelinux.com>  Tue, 08 Mar 2011 09:44:34 +0100
+
 igestis-roundcube (1.1.1) karmic; urgency=low
 
   * Evolution #60 : Mise à jour vers Roundcube 0.5.
