@@ -68,6 +68,7 @@ class MailRules {
     }
 
     private function open_file($file) {
+        if(!smb::is_file($file)) return false;
         $lines = @file($file);
         $buffer = NULL;
 
@@ -128,8 +129,7 @@ class MailRules {
             }
         }
         // Array completed
-
-        @reset($this->block_list);
+        if(isset($this->block_list) && is_array($this->block_list)) @reset($this->block_list);
     } ///////////////////////////
 
     public function next_block() {
@@ -207,9 +207,15 @@ class MailRules {
             }
         }
 
-        $f = fopen($file, "w");
-        if($f) fwrite($f, $file_content);
-        @fclose($f);
+        if($file_content) {
+            $f = fopen($file, "w+");
+            if($f) fwrite($f, $file_content);
+            @fclose($f);
+        }
+        else {
+            if(smb::is_file($file)) @unlink($file);
+        }
+        
     }
 
     public function delete_rule($what, $rule_type, $rule_text, $action_type, $action_argument) {
