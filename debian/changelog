@@ -1,3 +1,9 @@
+igestis-roundcube (1.1.5) karmic; urgency=low
+
+  * Anomalie #140 : Impossible d'ajouter deux comptes mails.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 24 May 2011 10:35:01 +0200
+
 igestis-roundcube (1.1.4) karmic; urgency=low
 
   * COrrection du bug dans la config de ishare
