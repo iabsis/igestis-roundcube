@@ -69,7 +69,11 @@ if($_GET['section'] == "roundcube_mail_account" || $_POST['section'] == "roundcu
         else $fetchmailrc .= $_POST['server_password'];
         if($_POST['server_keep']) $fetchmailrc .= " keep";
         if($_POST['server_ssl']) $fetchmailrc .= " ssl";
-        $f = @fopen($BASE_FOLDER . "/.fetchmailrc", 'w+');
+        if(!is_file($BASE_FOLDER . "/.fetchmailrc")) {
+            $mode = "w+";
+        }
+        else $mode = "a";
+        $f = @fopen($BASE_FOLDER . "/.fetchmailrc", $mode);
         @fwrite($f, "\n" . $fetchmailrc);
         @fclose($f);
         if(!wizz::already_wizzed(WIZZ_ERROR)) new wizz("Fichier édité avec succès", WIZZ_SUCCESS, null, 3);
