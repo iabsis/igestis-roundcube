@@ -1,3 +1,9 @@
+igestis-roundcube (1.1.6) karmic; urgency=low
+
+  * Problème de SQL.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Fri, 30 Sep 2011 11:20:34 +0200
+
 igestis-roundcube (1.1.5) karmic; urgency=low
 
   * Anomalie #140 : Impossible d'ajouter deux comptes mails.
