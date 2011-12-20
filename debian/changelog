@@ -1,3 +1,9 @@
+igestis-roundcube (1.1.7) karmic; urgency=low
+
+  * Augmentation de la taille des pièces jointes permises par défaut dans postfix.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 20 Dec 2011 18:01:10 +0100
+
 igestis-roundcube (1.1.6) karmic; urgency=low
 
   * Problème de SQL.

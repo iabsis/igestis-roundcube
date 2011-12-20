@@ -60,6 +60,9 @@ case "$1" in
 
         chown www-data -R /usr/share/roundcube/logs
 
+	postconf -e 'message_size_limit = 30000000'
+	/etc/init.d/postfix reload
+
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
