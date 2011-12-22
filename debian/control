@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: igestis-roundcube
 Architecture: any
-Depends: libapache2-mod-php5 | libapache-mod-php5, mysql-server-5.0, php5-gd, php5-mysql, netpbm, libjpeg-progs, php5-mcrypt, dbconfig-common, igestis-ldap (>=1.1.0), txt2html, php5-pspell
+Depends: libapache2-mod-php5 | libapache-mod-php5, mysql-server-5.0, php5-gd, php5-mysql, netpbm, libjpeg-progs, php5-mcrypt, dbconfig-common, igestis-ldap (>=1.1.0), txt2html, php5-pspell, fetchmail, dovecot-imapd
 Suggests: sane-utils, hylafax-client
 Conflicts: roundcube, roundcube-core
 Description:  iGestis module : Email client for iShare server.
