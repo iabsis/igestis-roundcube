@@ -1,3 +1,9 @@
+igestis-roundcube (1.1.8) karmic; urgency=low
+
+  * Ajout d'une dépendance manquante.
+
+ -- Olivier Bitsch <olivierb@PC-olivier>  Thu, 22 Dec 2011 10:18:21 +0100
+
 igestis-roundcube (1.1.7) karmic; urgency=low
 
   * Augmentation de la taille des pièces jointes permises par défaut dans postfix.
