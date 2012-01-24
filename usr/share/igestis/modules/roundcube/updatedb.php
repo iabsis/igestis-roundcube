@@ -123,6 +123,9 @@ if($_POST['section'] == "vacation_message") {
     if($_POST['email'] && !is_email($_POST['email'])) $application->message_die("Format d'email incorrect");
 
     $BASE_FOLDER =  create_smb_url();
+    if(smb::is_file($BASE_FOLDER . "/.vacation.cache"))  @unlink($BASE_FOLDER . "/.vacation.cache");
+    if(smb::is_file($BASE_FOLDER . "/.vacation.cache")) new wizz("{LANG_ROUNDCUBE_Unable_to_delete_vacation_cache_file}");
+    
 
     $f = fopen($BASE_FOLDER . "/.Maildir/.message.txt", "w");
     fwrite($f, str_replace('\r', "\r", str_replace('\n', "\n", $_POST['vacation_message'])));
@@ -148,7 +151,6 @@ if($_POST['section'] == "vacation_message") {
     }
     else {
         fwrite($f, " ");
-        //unlink($BASE_FOLDER . "/.vacation.cache");
     }
     fclose($f);
 

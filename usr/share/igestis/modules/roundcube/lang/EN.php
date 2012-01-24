@@ -82,8 +82,5 @@ $LANG['LANG_ROUNDCUBE_MESSAGE_My_mails'] = "My mails";
 $LANG['LANG_ROUNDCUBE_DESCRIPTION_My_mails'] = "You can see your mails in the webclient bealow.<br /> Click on \"Open in a popup\" to open the webclient in an other window.";
 
 
-
-
-
-
-?>
+$LANG['LANG_ROUNDCUBE_Unable_to_delete_fetchmail_file'] = "Unable to delete the fetchmail file";
+$LANG['LANG_ROUNDCUBE_Unable_to_delete_vacation_cache_file'] = "Unable to delete the cache file (.vacation.cache)";
