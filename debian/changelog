@@ -1,3 +1,9 @@
+igestis-roundcube (1.1.10) wheezy; urgency=low
+
+  * Correction d'un problème de dépendance pour wheezy.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 05 Jun 2012 15:36:22 +0200
+
 igestis-roundcube (1.1.9) karmic; urgency=low
 
   * Amélioration des icones.
