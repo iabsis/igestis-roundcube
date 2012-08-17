@@ -22,7 +22,7 @@ class ConfigControllers extends \IgestisConfigController {
                 ),
                 "Controller" => "\Igestis\Modules\Roundcube\RoundcubeController",
                 "Action" => "indexAction",
-                "Access" => array("ROUNDCUBEV2:EMP")
+                "Access" => array("ROUNDCUBE:EMP")
             ),
             
             

@@ -20,7 +20,7 @@ class ConfigModuleVars {
      *
      * @var String Name of the module (used only on the source code) 
      */
-    public static $moduleName = "RoundcubeV2";
+    public static $moduleName = "Roundcube";
     
     public static $moduleShowedName = "My emails (v2)";
 }
