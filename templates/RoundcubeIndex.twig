@@ -5,7 +5,27 @@
 {% endset %}
 
 {% block content %}
+    
+{#
+    <iframe name='roundcube' width="100%" height="70%" frameborder=0 src="{{ SERVER_ADDRESS }}/modules/Roundcube/roundcubemail/"></iframe>
+<script>
+        $(function() {
+            var iframe = top.frames[roundcube].document;
+            var css = '' +
+                '<style type="text/css">' +
+                '.header{display:none;}' +
+                '</style>';
+            iframe.open();
+            iframe.write(css);
+            iframe.close();
+        }
+    </script>
 
-    <iframe width="100%" height="100%" frameborder=0 src="{{ SERVER_ADDRESS }}/modules/Roundcube/roundcubemail/"></iframe>
+#}
+<div id='roundcube'></div>
+<script type='text/javascript'>
+  $('#roundcube').load('{{ SERVER_ADDRESS }}/modules/Roundcube/roundcubemail/');
+</script>
+
 
 {% endblock %}
