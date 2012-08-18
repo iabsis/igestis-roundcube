@@ -39,6 +39,6 @@ class ConfigInitModule implements \Igestis\Interfaces\ConfigMenuInterface, \Iges
 
     public static function menuSet(\application $context, \IgestisMenu &$menu) {
         $moduleAccess = $context->security->module_access(ConfigModuleVars::$moduleName);     
-        if($moduleAccess == "EMP") $menu->addItem(dgettext(ConfigModuleVars::$moduleName, "Communication"), dgettext(ConfigModuleVars::$moduleName, "My emails"), ConfigControllers::createUrl("roundcube_index"));        
+        if($moduleAccess == "EMP") $menu->addItem(dgettext(ConfigModuleVars::$textDomain, "Communication"), dgettext(ConfigModuleVars::$textDomain, "My emails"), ConfigControllers::createUrl("roundcube_index"));        
     }
 }
