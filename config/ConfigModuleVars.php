@@ -19,22 +19,22 @@ class ConfigModuleVars {
     /**
      * @var String Numéro de version du module
      */
-    public static $version = ROUNDCUBE_VERSION;
+    const version = ROUNDCUBE_VERSION;
     /**
      *
      * @var String Name of the module (used only on the source code) 
      */
-    public static $moduleName = ROUNDCUBE_MODULE_NAME;
+    const moduleName = ROUNDCUBE_MODULE_NAME;
     
     /**
      *
      * @var String Name of the menu showed to the user
      */
-    public static $moduleShowedName = "My emails (v2)";
+    const moduleShowedName = "My emails (v2)";
     
     /**
      *
      * @var String textdomain used for this module
      */
-    public static $textDomain = ROUNDCUBE_TEXTDOMAIN;
+    const textDomain = ROUNDCUBE_TEXTDOMAIN;
 }
