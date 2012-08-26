@@ -30,7 +30,7 @@ class ConfigModuleVars {
      *
      * @var String Name of the menu showed to the user
      */
-    const moduleShowedName = "My emails (v2)";
+    const moduleShowedName = "Emails";
     
     /**
      *

@@ -1,31 +1,21 @@
 {% extends 'commonIframe.twig' %}
 
-{% set page_title %}
-    {% trans %}Error on form submit{% endtrans %}
-{% endset %}
+{% set title = {'logo': "emblem-companies",
+                'title': "My emails",
+                'help': "View and manage your emails"} %}
 
 {% block content %}
-    
-{#
-    <iframe name='roundcube' width="100%" height="70%" frameborder=0 src="{{ SERVER_ADDRESS }}/modules/Roundcube/roundcubemail/"></iframe>
+<div id="main">
+    <iframe frameborder=0 src="{{ SERVER_ADDRESS }}/modules/Roundcube/roundcubemail/"></iframe>
+</div>
 <script>
-        $(function() {
-            var iframe = top.frames[roundcube].document;
-            var css = '' +
-                '<style type="text/css">' +
-                '.header{display:none;}' +
-                '</style>';
-            iframe.open();
-            iframe.write(css);
-            iframe.close();
-        }
-    </script>
+$('document').ready(function(){
 
-#}
-<div id='roundcube'></div>
-<script type='text/javascript'>
-  $('#roundcube').load('{{ SERVER_ADDRESS }}/modules/Roundcube/roundcubemail/');
+        var height = $('body').height() - $('#main').get(0).offsetTop;
+        $('#main').css('height', height+'px');
+        $('#main').height(height);
+        
+});
 </script>
-
 
 {% endblock %}
