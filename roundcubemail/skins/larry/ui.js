@@ -75,7 +75,6 @@ function rcube_mail_ui()
       }
 
       if (rcmail.env.action == 'show' || rcmail.env.action == 'preview') {
-        layout_messageview();
         rcmail.addEventListener('aftershow-headers', function() { layout_messageview(); });
         rcmail.addEventListener('afterhide-headers', function() { layout_messageview(); });
         $('#previewheaderstoggle').click(function(e){ toggle_preview_headers(this); return false });
@@ -145,6 +144,10 @@ function rcube_mail_ui()
       }
       else if (rcmail.env.action == 'identities') {
         new rcube_splitter({ id:'identviewsplitter', p1:'#identitieslist', p2:'#identity-details',
+          orientation:'v', relative:true, start:266, min:180, size:12 }).init();
+      }
+      else if (rcmail.env.action == 'preferences' || !rcmail.env.action) {
+        new rcube_splitter({ id:'prefviewsplitter', p1:'#sectionslist', p2:'#preferences-box',
           orientation:'v', relative:true, start:266, min:180, size:12 }).init();
       }
     }
@@ -313,7 +316,7 @@ function rcube_mail_ui()
    */
   function layout_messageview()
   {
-    $('#messagecontent').css('top', ($('#messageheader').outerHeight() + 10) + 'px');
+    $('#messagecontent').css('top', ($('#messageheader').outerHeight() + 1) + 'px');
     $('#message-objects div a').addClass('button');
 
     if (!$('#attachment-list li').length) {
@@ -618,18 +621,10 @@ function rcube_mail_ui()
     $('input[name="view"][value="thread"]').prop('checked', rcmail.env.threading ? true : false);
     $('input[name="view"][value="list"]').prop('checked', rcmail.env.threading ? false : true);
 
-    // list columns
-    var found, cols = $('input[name="list_col[]"]');
-    for (var i=0; i < cols.length; i++) {
-      if (cols[i].value != 'from') {
-        found = $.inArray(cols[i].value, rcmail.env.coltypes) != -1;
-      }
-      else {
-        found = ($.inArray('from', rcmail.env.coltypes) != -1
-          || $.inArray('to', rcmail.env.coltypes) != -1);
-      }
-      $(cols[i]).prop('checked', found);
-    }
+    // set checkboxes
+    $('input[name="list_col[]"]').each(function() {
+      $(this).prop('checked', $.inArray(this.value, rcmail.env.coltypes) != -1);
+    });
 
     $dialog.dialog({
       modal: true,

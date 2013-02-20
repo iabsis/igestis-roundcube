@@ -102,7 +102,7 @@ class washtml
     'cellpadding', 'valign', 'bgcolor', 'color', 'border', 'bordercolorlight',
     'bordercolordark', 'face', 'marginwidth', 'marginheight', 'axis', 'border',
     'abbr', 'char', 'charoff', 'clear', 'compact', 'coords', 'vspace', 'hspace',
-    'cellborder', 'size', 'lang', 'dir', 'usemap',
+    'cellborder', 'size', 'lang', 'dir', 'usemap', 'shape', 'media',
     // attributes of form elements
     'type', 'rows', 'cols', 'disabled', 'readonly', 'checked', 'multiple', 'value'
   );
@@ -214,8 +214,11 @@ class washtml
       $key = strtolower($key);
       $value = $node->getAttribute($key);
       if (isset($this->_html_attribs[$key]) ||
-         ($key == 'href' && preg_match('!^([a-z][a-z0-9.+-]+:|//|#).+!i', $value)))
+         ($key == 'href' && !preg_match('!^(javascript|vbscript|data:text)!i', $value)
+           && preg_match('!^([a-z][a-z0-9.+-]+:|//|#).+!i', $value))
+      ) {
         $t .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES) . '"';
+      }
       else if ($key == 'style' && ($style = $this->wash_style($value))) {
         $quot = strpos($style, '"') !== false ? "'" : '"';
         $t .= ' style=' . $quot . $style . $quot;
@@ -237,7 +240,8 @@ class washtml
         else if (preg_match('/^data:.+/i', $value)) { // RFC2397
           $t .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES) . '"';
         }
-      } else
+      }
+      else
         $washed .= ($washed?' ':'') . $key;
     }
     return $t . ($washed && $this->config['show_washed']?' x-washed="'.$washed.'"':'');

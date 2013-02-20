@@ -301,7 +301,7 @@ class html
                 $attrib_arr[] = $key . '="' . Q($value, 'strict', false) . '"';
             }
             else {
-                $attrib_arr[] = $key . '="' . Q($value) . '"';
+                $attrib_arr[] = $key . '="' . htmlspecialchars($value, ENT_COMPAT, RCMAIL_CHARSET) . '"';
             }
         }
         return count($attrib_arr) ? ' '.implode(' ', $attrib_arr) : '';
@@ -317,7 +317,8 @@ class html_inputfield extends html
 {
     protected $tagname = 'input';
     protected $type = 'text';
-    protected $allowed = array('type','name','value','size','tabindex',
+    protected $allowed = array(
+        'type','name','value','size','tabindex','autocapitalize',
         'autocomplete','checked','onchange','onclick','disabled','readonly',
         'spellcheck','results','maxlength','src','multiple','placeholder');
 
@@ -642,9 +643,9 @@ class html_table extends html
         $cell->content = $cont;
 
         $this->rows[$this->rowindex]->cells[$this->colindex] = $cell;
-        $this->colindex++;
+        $this->colindex += max(1, intval($attr['colspan']));
 
-        if ($this->attrib['cols'] && $this->colindex == $this->attrib['cols']) {
+        if ($this->attrib['cols'] && $this->colindex >= $this->attrib['cols']) {
             $this->add_row();
         }
     }

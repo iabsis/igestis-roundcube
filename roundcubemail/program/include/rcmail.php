@@ -252,14 +252,16 @@ class rcmail
       $this->config->set_user_prefs((array)$this->user->get_prefs());
     }
 
-    $_SESSION['language'] = $this->user->language = $this->language_prop($this->config->get('language', $_SESSION['language']));
+    $lang = $this->language_prop($this->config->get('language', $_SESSION['language']));
+    $_SESSION['language'] = $this->user->language = $lang;
 
     // set localization
-    setlocale(LC_ALL, $_SESSION['language'] . '.utf8', 'en_US.utf8');
+    setlocale(LC_ALL, $lang . '.utf8', $lang . '.UTF-8', 'en_US.utf8', 'en_US.UTF-8');
 
     // workaround for http://bugs.php.net/bug.php?id=18556
-    if (in_array($_SESSION['language'], array('tr_TR', 'ku', 'az_AZ')))
-      setlocale(LC_CTYPE, 'en_US' . '.utf8');
+    if (in_array($lang, array('tr_TR', 'ku', 'az_AZ'))) {
+      setlocale(LC_CTYPE, 'en_US.utf8', 'en_US.UTF-8');
+    }
   }
 
 
@@ -899,7 +901,14 @@ class rcmail
     // Convert username to lowercase. If storage backend
     // is case-insensitive we need to store always the same username (#1487113)
     if ($config['login_lc']) {
-      $username = mb_strtolower($username);
+      if ($config['login_lc'] == 2 || $config['login_lc'] === true) {
+        $username = mb_strtolower($username);
+      }
+      else if (strpos($username, '@')) {
+        // lowercase domain name
+        list($local, $domain) = explode('@', $username);
+        $username = $local . '@' . mb_strtolower($domain);
+      }
     }
 
     // try to resolve email address from virtuser table
@@ -909,17 +918,13 @@ class rcmail
 
     // Here we need IDNA ASCII
     // Only rcube_contacts class is using domain names in Unicode
-    $host = rcube_idn_to_ascii($host);
-    if (strpos($username, '@')) {
-      // lowercase domain name
-      list($local, $domain) = explode('@', $username);
-      $username = $local . '@' . mb_strtolower($domain);
-      $username = rcube_idn_to_ascii($username);
-    }
+    $host     = rcube_idn_to_ascii($host);
+    $username = rcube_idn_to_ascii($username);
 
     // user already registered -> overwrite username
-    if ($user = rcube_user::query($username, $host))
+    if ($user = rcube_user::query($username, $host)) {
       $username = $user->data['username'];
+    }
 
     if (!$this->storage)
       $this->storage_init();

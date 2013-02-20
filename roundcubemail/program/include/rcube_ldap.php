@@ -142,6 +142,11 @@ class rcube_ldap extends rcube_addressbook
                     unset($this->coltypes[$childcol]);  // remove address child col from global coltypes list
                 }
             }
+
+            // at least one address type must be specified
+            if (empty($this->coltypes['address']['subtypes'])) {
+                $this->coltypes['address']['subtypes'] = array('home');
+            }
         }
         else if ($this->coltypes['address']) {
             $this->coltypes['address'] += array('type' => 'textarea', 'childs' => null, 'size' => 40);
@@ -798,24 +803,26 @@ class rcube_ldap extends rcube_addressbook
 
             for ($i = 0; $i < $entries['count']; $i++) {
                 $rec = $this->_ldap2result($entries[$i]);
-                foreach (array('email', 'name') as $f) {
-                    $val = mb_strtolower($rec[$f]);
-                    switch ($mode) {
-                    case 1:
-                        $got = ($val == $search);
-                        break;
-                    case 2:
-                        $got = ($search == substr($val, 0, strlen($search)));
-                        break;
-                    default:
-                        $got = (strpos($val, $search) !== false);
-                        break;
-                    }
+                foreach ($fields as $f) {
+                    foreach ((array)$rec[$f] as $val) {
+                        $val = mb_strtolower($val);
+                        switch ($mode) {
+                        case 1:
+                            $got = ($val == $search);
+                            break;
+                        case 2:
+                            $got = ($search == substr($val, 0, strlen($search)));
+                            break;
+                        default:
+                            $got = (strpos($val, $search) !== false);
+                            break;
+                        }
 
-                    if ($got) {
-                        $this->result->add($rec);
-                        $this->result->count++;
-                        break;
+                        if ($got) {
+                            $this->result->add($rec);
+                            $this->result->count++;
+                            break 2;
+                        }
                     }
                 }
             }

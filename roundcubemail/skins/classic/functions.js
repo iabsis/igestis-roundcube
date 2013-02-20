@@ -28,11 +28,6 @@ function rcube_init_settings_tabs()
   $('a', tab).removeAttr('onclick').click(function() { return false; });
 }
 
-function rcube_show_advanced(visible)
-{
-  $('tr.advanced').css('display', (visible ? (bw.ie ? 'block' : 'table-row') : 'none'));
-}
-
 // Fieldsets-to-tabs converter
 // Warning: don't place "caller" <script> inside page element (id)
 function rcube_init_tabs(id, current)
@@ -298,22 +293,18 @@ listmenu: function(show)
       pos.left = pos.left - menuwidth;
 
     obj.css({ left:pos.left, top:(pos.top + ref.offsetHeight + 2)});
+
     // set form values
     $('input[name="sort_col"][value="'+rcmail.env.sort_col+'"]').prop('checked', true);
     $('input[name="sort_ord"][value="DESC"]').prop('checked', rcmail.env.sort_order == 'DESC');
     $('input[name="sort_ord"][value="ASC"]').prop('checked', rcmail.env.sort_order != 'DESC');
     $('input[name="view"][value="thread"]').prop('checked', rcmail.env.threading ? true : false);
     $('input[name="view"][value="list"]').prop('checked', rcmail.env.threading ? false : true);
-    // list columns
-    var found, cols = $('input[name="list_col[]"]');
-    for (var i=0; i<cols.length; i++) {
-      if (cols[i].value != 'from')
-        found = jQuery.inArray(cols[i].value, rcmail.env.coltypes) != -1;
-      else
-        found = (jQuery.inArray('from', rcmail.env.coltypes) != -1
-	        || jQuery.inArray('to', rcmail.env.coltypes) != -1);
-      $(cols[i]).prop('checked', found);
-    }
+
+    // set checkboxes
+    $('input[name="list_col[]"]').each(function() {
+      $(this).prop('checked', jQuery.inArray(this.value, rcmail.env.coltypes) != -1);
+    });
   }
 
   obj[show?'show':'hide']();
@@ -534,7 +525,7 @@ show_header_form: function(id)
   if ((row = document.getElementById('compose-' + id))) {
     var div = document.getElementById('compose-div'),
       headers_div = document.getElementById('compose-headers-div');
-    row.style.display = (document.all && !window.opera) ? 'block' : 'table-row';
+    $(row).show();
     div.style.top = (parseInt(headers_div.offsetHeight, 10) + 3) + 'px';
     this.resize_compose_body();
   }
@@ -554,11 +545,11 @@ hide_header_form: function(id)
   for (var i=0; i<links.length; i++)
     if (links[i].style.display != 'none')
       for (var j=i+1; j<links.length; j++)
-	    if (links[j].style.display != 'none')
+        if (links[j].style.display != 'none')
           if ((ns = this.next_sibling(links[i]))) {
-	        ns.style.display = '';
-	        break;
-	      }
+            ns.style.display = '';
+            break;
+          }
 
   document.getElementById('_' + id).value = '';
 

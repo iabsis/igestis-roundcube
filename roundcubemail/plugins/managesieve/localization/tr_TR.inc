@@ -9,9 +9,8 @@
  | Licensed under the GNU General Public License                         |
  |                                                                       |
  +-----------------------------------------------------------------------+
- | Author: ismail yenigul <Unknown>                                      |
+ | Author: ismail yenigul                                                |
  +-----------------------------------------------------------------------+
- @version $Id$
 */
 
 $labels = array();
@@ -53,7 +52,7 @@ $labels['add'] = 'Ekle';
 $labels['del'] = 'Sil';
 $labels['sender'] = 'Gönderici';
 $labels['recipient'] = 'Alıcı';
-$labels['vacationaddresses'] = 'İlave e-posta alıcıları listesi(virgüllü ayrılmış)';
+$labels['vacationaddresses'] = 'İlave e-posta adreslerim(virgül ile ayrılmış)';
 $labels['vacationdays'] = 'Ne sıklıkla mesajlar gönderilir(gün)';
 $labels['vacationreason'] = 'Mesaj gövdesi(tatil sebebi):';
 $labels['vacationsubject'] = 'Mesaj konusu:';
@@ -139,8 +138,8 @@ $labels['setcreateerror'] = 'Filtre setleri oluşturulamadı. Sunucuda hata olu�
 $labels['setcreated'] = 'Filtre setleri başarıyla oluşturuldu.';
 $labels['activateerror'] = 'Seçilen filtre(ler) etkinleştirilemedi. Sunucuda hata oluştu.';
 $labels['deactivateerror'] = 'Seçilen filtre(ler) pasifleştirilemedi. Sunucuda hata oluştu.';
-$labels['activated'] = 'Filtre(ler) başarıyla iptal edildi.';
-$labels['deactivated'] = 'Filtre(ler) başarıyla etkinleştirildi.';
+$labels['deactivated'] = 'Filtre(ler) başarıyla iptal edildi.';
+$labels['activated'] = 'Filtre(ler) başarıyla etkinleştirildi.';
 $labels['moved'] = 'Filtre başarıyla taşındı.';
 $labels['moveerror'] = 'Seçilen filtre(ler) taşınamadı. Sunucuda hata oluştu.';
 $labels['nametoolong'] = 'İsim çok uzun.';

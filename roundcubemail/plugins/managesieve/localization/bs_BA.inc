@@ -11,7 +11,6 @@
  +-----------------------------------------------------------------------+
  | Author: Kenan Dervišević <kenan3008@gmail.com>                      |
  +-----------------------------------------------------------------------+
- @version $Id$
 */
 
 $labels = array();
@@ -53,7 +52,7 @@ $labels['add'] = 'Dodaj';
 $labels['del'] = 'Obriši';
 $labels['sender'] = 'Pošiljaoc';
 $labels['recipient'] = 'Primaoc';
-$labels['vacationaddresses'] = 'Dodatna lista emailova primaoca (odvojenih zarezima):';
+$labels['vacationaddresses'] = 'Moje dodatne email adrese (odvojite zarezima):';
 $labels['vacationdays'] = 'Frekvencija slanja poruka (u danima):';
 $labels['vacationreason'] = 'Tijelo poruke (razlog za odmor):';
 $labels['vacationsubject'] = 'Naslov poruke:';
@@ -139,8 +138,8 @@ $labels['setcreateerror'] = 'Nije moguće kreirati se filtera. Desila se servers
 $labels['setcreated'] = 'Set filtera je uspješno kreiran.';
 $labels['activateerror'] = 'Nije moguće omogućiti označene filtere. Desila se serverska greška.';
 $labels['deactivateerror'] = 'Nije moguće onemogućiti označene filtere. Desila se serverska greška.';
-$labels['activated'] = 'Filteri su uspješno onemogućeni.';
-$labels['deactivated'] = 'Filteri su uspješno omogućeni.';
+$labels['deactivated'] = 'Filteri su uspješno onemogućeni.';
+$labels['activated'] = 'Filteri su uspješno omogućeni.';
 $labels['moved'] = 'Filteri su uspješno premješteni.';
 $labels['moveerror'] = 'Nije moguće premjestiti označeni filter. Desila se serverska greška.';
 $labels['nametoolong'] = 'Ime je predugo.';

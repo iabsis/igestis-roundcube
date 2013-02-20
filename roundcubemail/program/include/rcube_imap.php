@@ -1015,8 +1015,8 @@ class rcube_imap extends rcube_storage
                 $a_msg_headers, $this->sort_field, $this->sort_order);
 
             // only return the requested part of the set
-            $a_msg_headers = array_slice(array_values($a_msg_headers),
-                $from, min($cnt-$to, $this->page_size));
+            $slice_length  = min($this->page_size, $cnt - ($to > $cnt ? $from : $to));
+            $a_msg_headers = array_slice(array_values($a_msg_headers), $from, $slice_length);
 
             if ($slice) {
                 $a_msg_headers = array_slice($a_msg_headers, -$slice, $slice);
@@ -2128,14 +2128,17 @@ class rcube_imap extends rcube_storage
 
     /**
      * Sends the whole message source to stdout
+     *
+     * @param int  $uid       Message UID
+     * @param bool $formatted Enables line-ending formatting
      */
-    public function print_raw_body($uid)
+    public function print_raw_body($uid, $formatted = true)
     {
         if (!$this->check_connection()) {
             return;
         }
 
-        $this->conn->handlePartBody($this->folder, $uid, true, NULL, NULL, true);
+        $this->conn->handlePartBody($this->folder, $uid, true, null, null, true, null, $formatted);
     }
 
 
@@ -2169,10 +2172,10 @@ class rcube_imap extends rcube_storage
             $result = $this->conn->flag($folder, $uids, $flag);
         }
 
-        if ($result) {
+        if ($result && !$skip_cache) {
             // reload message headers if cached
-            // @TODO: update flags instead removing from cache
-            if (!$skip_cache && ($mcache = $this->get_mcache_engine())) {
+            // update flags instead removing from cache
+            if ($mcache = $this->get_mcache_engine()) {
                 $status = strpos($flag, 'UN') !== 0;
                 $mflag  = preg_replace('/^UN/', '', $flag);
                 $mcache->change_flag($folder, $all_mode ? null : explode(',', $uids),
@@ -2184,8 +2187,12 @@ class rcube_imap extends rcube_storage
                 $this->clear_messagecount($folder, 'SEEN');
                 $this->clear_messagecount($folder, 'UNSEEN');
             }
-            else if ($flag == 'DELETED') {
+            else if ($flag == 'DELETED' || $flag == 'UNDELETED') {
                 $this->clear_messagecount($folder, 'DELETED');
+                // remove cached messages
+                if ($this->options['skip_deleted']) {
+                    $this->clear_message_cache($folder, $all_mode ? null : explode(',', $uids));
+                }
             }
         }
 
@@ -2207,6 +2214,10 @@ class rcube_imap extends rcube_storage
     {
         if (!strlen($folder)) {
             $folder = $this->folder;
+        }
+
+        if (!$this->check_connection()) {
+            return false;
         }
 
         // make sure folder exists
@@ -4027,6 +4038,11 @@ class rcube_imap extends rcube_storage
     function delete_mailbox($folder)
     {
         return $this->delete_folder($folder);
+    }
+
+    function clear_mailbox($folder = null)
+    {
+        return $this->clear_folder($folder);
     }
 
     public function mailbox_exists($folder, $subscription=false)

@@ -5,16 +5,22 @@
                 'help': "View and manage your emails"} %}
 
 {% block content %}
-<div id="main">
+<div id="iframeMain">
     <iframe frameborder=0 src="{{ SERVER_ADDRESS }}/modules/Roundcube/roundcubemail/"></iframe>
 </div>
 <script>
-$('document').ready(function(){
+$(function(){
+    resizeIframe();
+});
 
-        var height = $('body').height() - $('#main').get(0).offsetTop;
-        $('#main').css('height', height+'px');
-        $('#main').height(height);
-        
+function resizeIframe() {
+    var height = $('body').height() - $('#iframeMain').get(0).offsetTop;
+    $('#iframeMain').css('height', height+'px');
+    $('#iframeMain').height(height);    
+}
+
+$(window).resize(function() {
+  resizeIframe();
 });
 </script>
 

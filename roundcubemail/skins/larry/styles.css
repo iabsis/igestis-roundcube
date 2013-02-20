@@ -513,6 +513,7 @@ a.iconlink.upload {
 }
 
 #topnav {
+	position: relative;
 	height: 46px;
 	margin-bottom: 10px;
 	padding: 0 0 0 10px;
@@ -647,6 +648,7 @@ a.iconlink.upload {
 .uibox {
 	border: 1px solid #a3a3a3;
 	border-radius: 4px;
+	overflow: hidden;
 	box-shadow: 0 0 2px #999;
 	-o-box-shadow: 0 0 2px #999;
 	-webkit-box-shadow: 0 0 2px #999;
@@ -698,7 +700,8 @@ a.iconlink.upload {
 	left: 0;
 	width: 100%;
 	bottom: 0;
-	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .listbox .scroller.withfooter {
@@ -824,6 +827,10 @@ table.layout td {
 	overflow: hidden;
 }
 
+.uibox .boxfooter {
+	border-radius: 0 0 4px 4px;
+}
+
 .boxfooter .listbutton {
 	display: inline-block;
 	text-decoration: none;
@@ -832,6 +839,10 @@ table.layout td {
 	background: #c7e3ef;
 	padding: 3px 0;
 	margin-top: 1px;
+}
+
+.uibox .boxfooter .listbutton:first-child {
+	border-radius: 0 0 0 4px;
 }
 
 .boxfooter .listbutton .inner {
@@ -1498,6 +1509,7 @@ a.menuselector {
 	text-decoration: none;
 	color: #333;
 	cursor: pointer;
+	white-space: nowrap;
 }
 
 a.menuselector .handle {

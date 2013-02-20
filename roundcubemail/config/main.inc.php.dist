@@ -219,11 +219,12 @@ $rcmail_config['use_https'] = false;
 // 0 - disabled, 1 - username and host only, 2 - username, host, password
 $rcmail_config['login_autocomplete'] = 0;
 
-// If users authentication is not case sensitive this must be enabled.
-// You can also use it to force conversion of logins to lower case.
+// Forces conversion of logins to lower case.
+// 0 - disabled, 1 - only domain part, 2 - domain and local part.
+// If users authentication is not case-sensitive this must be enabled.
 // After enabling it all user records need to be updated, e.g. with query:
 // UPDATE users SET username = LOWER(username);
-$rcmail_config['login_lc'] = false;
+$rcmail_config['login_lc'] = 0;
 
 // Includes should be interpreted as PHP files
 $rcmail_config['skin_include_php'] = false;
@@ -355,7 +356,7 @@ $rcmail_config['identities_level'] = 0;
 $rcmail_config['client_mimetypes'] = null;  # null == default
 
 // mime magic database
-$rcmail_config['mime_magic'] = '/usr/share/misc/magic';
+$rcmail_config['mime_magic'] = null;
 
 // path to imagemagick identify binary
 $rcmail_config['im_identify_path'] = null;
@@ -381,15 +382,15 @@ $rcmail_config['plugins'] = array();
 // ----------------------------------
 
 // default messages sort column. Use empty value for default server's sorting, 
-// or 'arrival', 'date', 'subject', 'from', 'to', 'size', 'cc'
+// or 'arrival', 'date', 'subject', 'from', 'to', 'fromto', 'size', 'cc'
 $rcmail_config['message_sort_col'] = '';
 
 // default messages sort order
 $rcmail_config['message_sort_order'] = 'DESC';
 
 // These cols are shown in the message list. Available cols are:
-// subject, from, to, cc, replyto, date, size, status, flag, attachment, 'priority'
-$rcmail_config['list_cols'] = array('subject', 'status', 'from', 'date', 'size', 'flag', 'attachment');
+// subject, from, to, fromto, cc, replyto, date, size, status, flag, attachment, 'priority'
+$rcmail_config['list_cols'] = array('subject', 'status', 'fromto', 'date', 'size', 'flag', 'attachment');
 
 // the default locale setting (leave empty for auto-detection)
 // RFC1766 formatted language name like en_US, de_DE, de_CH, fr_FR, pt_BR
