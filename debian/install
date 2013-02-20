@@ -1,0 +1,16 @@
+config		    		usr/share/igestis/modules/Roundcube
+controllers     		usr/share/igestis/modules/Roundcube
+entities     			usr/share/igestis/modules/Roundcube
+lang     				usr/share/igestis/modules/Roundcube
+templates     			usr/share/igestis/modules/Roundcube
+
+
+install/database/mysql/upgrade/*	usr/share/dbconfig-common/data/igestis-roundcube/upgrade/mysql
+install/database/mysql/install/*	usr/share/dbconfig-common/data/igestis-roundcube/install
+install/apache2/apache.conf			etc/igestis/igestis-roundcube
+
+roundcubemail/plugins			usr/share/igestis/modules/Roundcube/roundcubemail
+roundcubemail/program			usr/share/igestis/modules/Roundcube/roundcubemail
+roundcubemail/skins				usr/share/igestis/modules/Roundcube/roundcubemail
+
+roundcubemail_plugins/*   usr/share/igestis/modules/Roundcube/roundcubemail/plugins
