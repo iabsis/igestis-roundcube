@@ -64,7 +64,7 @@ class sieverules extends rcube_plugin
 			$this->current_ruleset = false;
 		else
 			$this->current_ruleset = $rcmail->config->get('sieverules_ruleset_name');
-
+                
 		// override default values
 		if ($rcmail->config->get('sieverules_default_headers'))
 			$this->headers = $rcmail->config->get('sieverules_default_headers');
@@ -74,14 +74,17 @@ class sieverules extends rcube_plugin
 
 		if ($rcmail->config->get('sieverules_default_flags'))
 			$this->flags = $rcmail->config->get('sieverules_default_flags');
-
+                
 		$this->action = $rcmail->action;
 
 		$this->add_texts('localization/', array('filters', 'managefilters'));
+                
 		$this->include_stylesheet($this->local_skin_path() . '/tabstyles.css');
+                
 		$this->include_script('sieverules.js');
 
-		$this->register_action('plugin.sieverules', array($this, 'init_html'));
+                
+		$this->register_action('plugin.sieverules', array($this, 'init_html'));                
 		$this->register_action('plugin.sieverules.add', array($this, 'init_html'));
 		$this->register_action('plugin.sieverules.edit', array($this, 'init_html'));
 		$this->register_action('plugin.sieverules.setup', array($this, 'init_setup'));
@@ -99,8 +102,9 @@ class sieverules extends rcube_plugin
 
 	function init_html()
 	{
+                die($this->action);
 		$rcmail = rcmail::get_instance();
-
+                
 		// always include all identities when creating vacation messages
 		if ($rcmail->config->get('sieverules_force_vacto'))
 			$this->force_vacto = $rcmail->config->get('sieverules_force_vacto');
@@ -112,7 +116,7 @@ class sieverules extends rcube_plugin
 		// include the 'handle' option when creating vacation messages
 		if ($rcmail->config->get('sieverules_show_vachandle'))
 			$this->show_vachandle = $rcmail->config->get('sieverules_show_vachandle');
-
+                
 		$this->_startup();
 
 		if ($rcmail->config->get('sieverules_multiplerules') && $this->current_ruleset === false) {
