@@ -18,6 +18,11 @@ class ConfigHookListener implements \Igestis\Interfaces\HookListenerInterface  {
                 \Igestis\Utils\Debug::addDump("$HookName catched");
                 return true;
                 break;
+            case "loginSuccess" :
+                $_SESSION['roundcubeAuthkey'] = \Igestis\Utils\Encryption::EncryptString($params->get("postLogin") . "\n" . $params->get("postPassword") . "\n" . uniqid());
+                \Igestis\Utils\Debug::addDump("$HookName catched");
+                return true;
+                break;
         
             default:
                 break;

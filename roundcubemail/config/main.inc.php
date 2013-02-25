@@ -688,4 +688,6 @@ $rcmail_config['dsn_default'] = 0;
 // Place replies in the folder of the message being replied to
 $rcmail_config['reply_same_folder'] = false;
 
+$rcmail_config['igestis_root_folder'] = "/usr/share/igestis";
+
 // end of config file
