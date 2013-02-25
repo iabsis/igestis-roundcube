@@ -1,0 +1,20 @@
+{
+  "name": "johndoh/sieverules",
+  "description": "Control sieve filter settings from within Roundcube",
+  "license": "GPL-3.0",
+  "type": "roundcube-plugin",
+  "require": {
+    "roundcube/jqueryui": ">=1.8.14"
+  },
+  "authors": [
+    {
+      "name": "Philip Weir",
+      "email": "roundcube@tehinterweb.co.uk",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "roundcube@tehinterweb.co.uk",
+    "issues": "http://github.com/JohnDoh/Roundcube-Plugin-SieveRules-Managesieve/issues"
+  }
+}
