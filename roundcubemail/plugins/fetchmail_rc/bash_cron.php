@@ -4,6 +4,10 @@
 /**
  * This a script that should be added in your crontab. It will parse all the user's account and retrive their mails
  * into the local server with fetchmail.
+ * 
+ * @author Gilles Hemmerlé (iabsis) <giloux@gmail.com> 
+ * @version 1.0.0
+ * @license http://www.gnu.org/licenses/gpl.html
  */
 
 if(php_sapi_name() !== "cli") {
@@ -32,7 +36,6 @@ function console_show($msg) {
 
 
 ## Parse all the accounts ###########################################
-
 $accountsList = new fetchMailRcList($RCMAIL->db);
 foreach ($accountsList as $currentAccount) {
     /* @var $currentAccount fetchMailRc */

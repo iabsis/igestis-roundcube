@@ -1,14 +1,14 @@
 /**
- * SieveRules plugin styles (tab styles)
+ * fetchmail_rc plugin styles (tab styles)
  */
 
-#settings-sections #settingstabpluginsieverules a
+#settings-sections #settingstabpluginfetchmail_rc a
 {
   background-image: url(listicons.png);
   background-position: 6px -2px;
 }
 
-#settings-sections #settingstabpluginsieverules.selected a
+#settings-sections #settingstabpluginfetchmail_rc.selected a
 {
   background-image: url(listicons.png);
   background-position: 6px -25px;

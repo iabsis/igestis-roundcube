@@ -2,7 +2,9 @@
 /**
  * fetchMailRcList is a list of fetchMailRc objects
  * 
- * @author Gilles Hemmerlé <giloux@gmail.com>
+ * @author Gilles Hemmerlé (iabsis) <giloux@gmail.com> 
+ * @version 1.0.0
+ * @license http://www.gnu.org/licenses/gpl.html
  */
 
 require_once dirname(__FILE__) . "/fetchMailRc.php";
@@ -21,6 +23,10 @@ class fetchMailRcList implements Iterator {
      */
     private $datas = array();
     
+    /**
+     * Instance of the database manager
+     * @var rcube_mdb2
+     */
     private $dbm;
 
 
@@ -53,23 +59,40 @@ class fetchMailRcList implements Iterator {
         
     }
 
-
+    /**
+     * Return current value
+     * @return mixed
+     */
     public function current() {
         return $this->datas[$this->position];
     }
 
+    /**
+     * Return current key
+     * @return int
+     */
     public function key() {
         return $this->position;
     }
 
+    /**
+     * Increment the cursor position
+     */
     public function next() {
         ++$this->position;
     }
 
+    /**
+     * Set the cursor on the first element
+     */
     public function rewind() {
         $this->position = 0;
     }
 
+    /**
+     * Check if row exists
+     * @return bool yes if exists, false else
+     */
     public function valid() {
         return isset($this->datas[$this->position]);
     }

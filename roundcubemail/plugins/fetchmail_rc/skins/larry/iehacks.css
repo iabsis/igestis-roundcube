@@ -1,35 +1,35 @@
 /**
- * SieveRules plugin styles (IE hacks)
+ * fetchmail_rc plugin styles (IE hacks)
  */
 
-#sieverules-list
+#fetchmail_rc-list
 {
   height: expression(parseInt(this.parentNode.offsetHeight)+'px');
 }
 
-.sieverules-boxcontent
+.fetchmail_rc-boxcontent
 {
   height: expression(parseInt(this.parentNode.offsetHeight)-25+'px');
 }
 
-#sieverules-list-filters
+#fetchmail_rc-list-filters
 {
   height: expression(parseInt(this.parentNode.offsetHeight)+'px');
   width: expression(parseInt(this.parentNode.offsetWidth)+'px');
 }
 
-#sieverules-list-examples
+#fetchmail_rc-list-examples
 {
   width: expression(parseInt(this.parentNode.offsetWidth)+'px');
 }
 
-#sieverules-details
+#fetchmail_rc-details
 {
   height: expression(parseInt(this.parentNode.offsetHeight)+'px');
   width: expression((parseInt(this.parentNode.offsetWidth)-270)+'px');
 }
 
-#sieverules-advanced
+#fetchmail_rc-advanced
 {
   height: expression((parseInt(document.documentElement.clientHeight)-130)+'px');
   width: expression((parseInt(document.documentElement.clientWidth)-40)+'px');
@@ -40,13 +40,13 @@ table.records-table td.vacdaysexp
   word-wrap: break-word;
 }
 
-#sieverules-advancedbox
+#fetchmail_rc-advancedbox
 {
   height: expression((parseInt(document.documentElement.clientHeight)-177)+'px');
   width: expression((parseInt(document.documentElement.clientWidth)-48)+'px');
 }
 
-#sieverules-advanced textarea
+#fetchmail_rc-advanced textarea
 {
   height: expression((parseInt(document.documentElement.clientHeight)-177)+'px');
   width: expression((parseInt(document.documentElement.clientWidth)-48)+'px');

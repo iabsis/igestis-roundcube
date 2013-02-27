@@ -3,7 +3,27 @@
 /**
  * fetchMailRc object allow you to persist and retrieve datas in/from the database.
  * It allows to retrieve mails and save thems in the local server
+ * 
+ * All setXXX methods return instance of itself to allow you to chain the sequences
+ * 
+ * Example:
+ * 
+ * <code>
+ * // Instanciate object and directly get the row with id 2
+ * $fetchMailRc = new fetchMailRc(2);
+ * 
+ * // Set new values and save the row
+ * $fetchMailRc
+ *   ->increment_count_errors()
+ *   ->set_error("Your error message")
+ *   ->save();
+ * </code>
+ * 
+ * @author Gilles Hemmerlé (iabsis) <giloux@gmail.com> 
+ * @version 1.0.0
+ * @license http://www.gnu.org/licenses/gpl.html
  */
+
 class fetchMailRc {
     
     const PROTOCOL_AUTO = "AUTO";
@@ -73,7 +93,10 @@ class fetchMailRc {
             ->set_mail_username($account['mail_username']);
     }
     
-    function reset_fields() {
+    /**
+     * Initialize object values
+     */
+    private function reset_fields() {
         $this->fk_user = null;
         $this->mail_host = "";
         $this->mail_username = "";
@@ -327,15 +350,15 @@ class fetchMailRc {
     }
     
     /**
-     * 
-     * @return type
+     * Return username of the mailbox
+     * @return string
      */
     public function get_mail_username (){
         return $this->mail_username;
     }
     
     /**
-     * 
+     * Set the username of the mailbox
      * @param type $mail_username
      * @return \fetchMailRc
      */
@@ -345,15 +368,15 @@ class fetchMailRc {
     }
 
     /**
-     * 
-     * @return type
+     * Get the password of the mailbox
+     * @return string
      */
     public function get_mail_password (){
         return $this->mail_password;
     }
     
     /**
-     * 
+     * Set the mailbox password
      * @param type $mail_password
      * @return \fetchMailRc
      */
@@ -363,16 +386,16 @@ class fetchMailRc {
     }
     
     /**
-     * 
-     * @return type
+     * Get the state of the account
+     * @return bool
      */
     public function get_enabled (){
         return $this->mail_enabled;
     }
 
     /**
-     * 
-     * @param type $enabled
+     * Set the state of the mailbox
+     * @param bool $enabled
      * @return \fetchMailRc
      */
     public function set_mail_enabled($enabled) {
@@ -381,16 +404,16 @@ class fetchMailRc {
     }
     
     /**
-     * 
-     * @return type
+     * Get the customs arguments to add to the command
+     * @return string
      */
     public function get_mail_arguments (){
         return $this->mail_arguments;
     }
     
     /**
-     * 
-     * @param type $mail_arguments
+     * Set the customs arguments to add to the command
+     * @param string $mail_arguments
      * @return \fetchMailRc
      */
     public function set_mail_arguments($mail_arguments) {
@@ -399,16 +422,16 @@ class fetchMailRc {
     }
     
     /**
-     * 
-     * @return type
+     * Return the ssl configuration of the mailbox
+     * @return bool
      */
     public function get_mail_ssl (){
         return $this->mail_ssl;
     }
     
     /**
-     * 
-     * @param type $mail_ssl
+     * Set  the ssl configuration of the mailbox
+     * @param bool $mail_ssl
      * @return \fetchMailRc
      */
     public function set_mail_ssl($mail_ssl) {
@@ -417,16 +440,16 @@ class fetchMailRc {
     }
     
     /**
-     * 
-     * @return type
+     * Get the protocol to retrieve the mailbox
+     * @return string
      */
     public function get_mail_protocol (){
         return $this->mail_protocol;
     }
     
     /**
-     * 
-     * @param type $mail_protocol
+     * Set the protocol to retrieve the mailbox
+     * @param string $mail_protocol
      * @return \fetchMailRc
      */
     public function set_mail_protocol($mail_protocol) {
@@ -435,16 +458,16 @@ class fetchMailRc {
     }
     
     /**
-     * 
-     * @return type
+     * Get the last retrieve date
+     * @return string yyyy-mm-dd H:i:s
      */
     public function get_date_last_retrieve (){
         return $this->mail_date_last_retrieve;
     }
     
     /**
-     * 
-     * @param type $last_retrieve
+     * Set the date and time of the last retrieve event
+     * @param string $last_retrieve Date and time of the last retrieve with format : yyyy-mm-dd H:i:s
      * @return \fetchMailRc
      */
     public function set_last_retrieve($last_retrieve) {
@@ -453,7 +476,7 @@ class fetchMailRc {
     }
     
     /**
-     * 
+     * Get number of consecutives errors which happened during synchronization process
      * @return type
      */
     public function get_count_errors (){
@@ -461,8 +484,8 @@ class fetchMailRc {
     }
     
     /**
-     * 
-     * @param type $nb_errors
+     * Set manually the number of consecutives errors  which happened during synchronization process
+     * @param int $nb_errors
      * @return \fetchMailRc
      */
     public function set_count_errors($nb_errors) {
@@ -471,7 +494,7 @@ class fetchMailRc {
     }
     
     /**
-     * 
+     * Increment the number of consecutives errors  which happened during synchronization process
      * @return \fetchMailRc
      */
     public function increment_count_errors() {
@@ -480,16 +503,16 @@ class fetchMailRc {
     }
     
     /**
-     * 
-     * @return type
+     * Get the last error message
+     * @return string
      */
     public function get_last_error (){
         return $this->last_error;
     }
     
     /**
-     * 
-     * @param type $error
+     * Set the message error that happened during import process
+     * @param string $error
      * @return \fetchMailRc
      */
     public function set_error($error) {
