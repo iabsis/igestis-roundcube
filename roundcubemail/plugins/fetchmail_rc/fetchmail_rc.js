@@ -101,7 +101,7 @@ if (window.rcmail) {
       // Event fired when ajax save process complete succesfully
       rcmail.addEventListener('plugin.save_success', function(vars) {
           // Mise à jour de l'id dans le formulaire
-          console.log(vars);
+          
           $("#_fetchmail_rc_id").val(vars.id);
           // Ajout ou mise à jour dans la liste des comptes
           if(vars.type === "add") {
@@ -131,7 +131,6 @@ if (window.rcmail) {
       // Event fired when ajax save process threws errors.
       rcmail.addEventListener('plugin.save_error', function(vars) {
           rcmail.display_message(rcmail.gettext('fetchmail_rc.save_error'), "error");  
-          console.log(vars);
       });
       
       // Event fired when an error occurs during deletion
@@ -197,7 +196,6 @@ if (window.rcmail) {
                   var id = arr[1];
                   
                   openFrame( rcmail.env.comm_path+'&_action=plugin.fetchmail_rc.add&_fetchmail_rc_id=' + id);     
-                  console.log(rcmail.env.comm_path+'&_action=plugin.fetchmail_rc.add&_fetchmail_rc_id=' + id);
                   $(this).addClass("selected focused");
               });
               
