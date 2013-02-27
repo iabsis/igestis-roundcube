@@ -102,7 +102,7 @@ class sieverules extends rcube_plugin
 
 	function init_html()
 	{
-                die($this->action);
+                
 		$rcmail = rcmail::get_instance();
                 
 		// always include all identities when creating vacation messages

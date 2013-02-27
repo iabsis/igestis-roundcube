@@ -265,7 +265,7 @@ function edit_do(){
 function accounts_edit($args){
 	$rcmail = rcmail::get_instance();
 	
-	$pop3fetcher_id = get_input_value('_pop3fetcher_id', RCUBE_INPUT_GET);
+	$pop3fetcher_id = get_input_value('_pop3fetcher_id', RCUBE_INPUT_GET); 
 
 	$arr = $this->get($pop3fetcher_id);
 

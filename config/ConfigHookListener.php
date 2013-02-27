@@ -19,9 +19,26 @@ class ConfigHookListener implements \Igestis\Interfaces\HookListenerInterface  {
                 return true;
                 break;
             case "loginSuccess" :
-                $_SESSION['roundcubeAuthkey'] = \Igestis\Utils\Encryption::EncryptString($params->get("postLogin") . "\n" . $params->get("postPassword") . "\n" . uniqid());
+                /* @var $logedContact \CoreContacts */
+                $logedContact = $params->get("logedContact");
+                $password = \Igestis\Utils\Encryption::DecryptString($logedContact->getSshPassword(), false);
+                $_SESSION['roundcubeAuthkey'] = \Igestis\Utils\Encryption::EncryptString($params->get("postLogin") . "\n" . $password . "\n" . uniqid());
                 \Igestis\Utils\Debug::addDump("$HookName catched");
                 return true;
+                break;
+            case "afterLogout" :
+                // Delete the roudcube session
+                if(empty($_COOKIE['roundcube_sessid'])) return true;
+                
+                $context = \Application::getInstance();
+                $currentRoundcubeSession = $context->entityManager->getRepository("RoundcubeSession")->find($_COOKIE['roundcube_sessid']);
+                if($currentRoundcubeSession != NULL) {
+                    $context->entityManager->remove($currentRoundcubeSession);
+                    $context->entityManager->flush();
+                    setcookie ("roudcube_sessid", "", time() - 100000);
+                }
+                
+                return true;                
                 break;
         
             default:

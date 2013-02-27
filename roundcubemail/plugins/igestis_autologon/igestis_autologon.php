@@ -43,10 +43,10 @@ class igestis_autologon extends rcube_plugin
       $passed = new DateTime($datetime);
       $difference = $now->diff($passed);
       $diffSec = ($difference->y * 365 * 24 * 60 * 60) +
-                 ($difference->m * 30 * 24 * 60 * 60) +
-                 ($difference->d * 24 * 60 * 60) +
-                 ($difference->h * 60 *60) +
-                 $difference->s;      
+                 ($difference->m * 30  * 24 * 60 * 60) +
+                 ($difference->d * 24  * 60 * 60) +
+                 ($difference->h * 60  * 60)+
+                  $difference->s;      
 
     if (!empty($_GET['_igestis_auth_key']) && $diffSec < 5) {
       $customAuth = explode("\n", \Igestis\Utils\Encryption::DecryptString($authKey));
