@@ -8,8 +8,8 @@ REQUIREMENTS
 INSTALLATION
 ============================================================================
 * Put the extracted folder in the plugins folder of roundcube
-* Set the correct value in the config file
-* Create a crontab and launch the file bash_cron.php with the wanted period
+* Set the correct values in the config file
+* Create a crontab and launch the  bash_cron.php file with the needed period
 
 CREDITS
 ============================================================================
