@@ -35,7 +35,7 @@ class igestis_autologon extends rcube_plugin
       else {
           require_once $rcmail->config->get('igestis_root_folder') . "/config/igestis/ConfigIgestisGlobalVars.php";
           require_once $rcmail->config->get('igestis_root_folder') . "/includes/coreClasses/Utils/Encryption.php";
-      }      
+      }
 
       list($authKey, $datetime) = explode("\n", \Igestis\Utils\Encryption::DecryptString($_GET['_igestis_auth_key']));
       

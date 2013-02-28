@@ -258,7 +258,7 @@ class fetchMailRc {
     private function start_procmail($test_mode=true) {
         // Generate command
         $command = sprintf(
-            'echo "poll %s with protocol %s user %s password %s" is username | fetchmail %s -f -',
+            'echo "poll %s with protocol %s user %s password %s" is username | fetchmail %s -t 10 -f -',
             $this->mail_host,
             $this->mail_protocol,
             $this->mail_username,
