@@ -59,3 +59,7 @@ $labels['test_account_success'] = 'The account test has ran without any errors. 
 $labels['notalreadyautoimported'] = 'The auto import has not been launched yet';
 $labels['fill_server_address'] = 'Thanks to set the mail host';
 $labels['fill_username'] = 'Thanks to set the username';
+
+
+$labels['authenticaction_error'] = 'Authentication error';
+$labels['error_during_user_retrieving'] = 'Error during the user datas retrieving from the database';

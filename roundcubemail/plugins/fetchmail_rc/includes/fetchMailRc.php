@@ -262,7 +262,7 @@ class fetchMailRc {
         );
         $user = $this->rcmail->db->fetch_assoc($sql_result);
         
-        if(empty($user)) throw new Exception("Error during user retrieving");
+        if(empty($user)) throw new Exception($this->rcmail->gettext('fetchmail_rc.error_during_user_retrieving'));
         
         // Generate command
         $command = sprintf(
@@ -285,7 +285,7 @@ class fetchMailRc {
             case "0" : case "1" :
                 break;
             case "3" :
-                throw new Exception("Authentication error");
+                throw new Exception($this->rcmail->gettext('fetchmail_rc.authenticaction_error'));
                 break;
             default : 
                 throw new Exception(implode("\n", $output_lines));

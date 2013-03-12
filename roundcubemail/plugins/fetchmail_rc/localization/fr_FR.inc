@@ -60,3 +60,6 @@ $labels['notalreadyautoimported'] = 'L\'import automatique ne s\'est pas encore 
 $labels['fill_server_address'] = 'Merci de saisir une adresse serveur';
 $labels['fill_username'] = 'Merci de saisir un nom d\'utilisateur';
 
+$labels['authenticaction_error'] = 'Erreur d\'authentification';
+$labels['error_during_user_retrieving'] = 'Une erreur s\'est produite pendant la récupération de l\'utilisateur dans la base de données';
+
