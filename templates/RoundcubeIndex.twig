@@ -10,6 +10,13 @@
 </div>
 <script>
 $(function(){
+    var hideTopLine = function() {
+        var $topline =  $("iframe").contents().find("#topline");
+        if(!$topline.length)  return;
+        $topline.hide();
+        clearInterval(interval);
+    };
+    var interval = setInterval(hideTopLine, 50);    
     resizeIframe();
 });
 
@@ -19,7 +26,7 @@ function resizeIframe() {
     $('#iframeMain').height(height);    
 }
 
-$(window).resize(function() {
+$(window).resize(function() {  
   resizeIframe();
 });
 </script>
