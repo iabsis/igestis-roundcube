@@ -12,6 +12,8 @@
 
 */
 
+require_once dirname(__FILE__) . "/../../../../config/igestis/ConfigIgestisGlobalVars.php";
+
 $rcmail_config = array();
 
 // ----------------------------------
@@ -319,7 +321,7 @@ $rcmail_config['email_dns_check'] = false;
 // ----------------------------------
 
 // List of active plugins (in plugins/ directory)
-$rcmail_config['plugins'] = array('fetchmail_rc');
+$rcmail_config['plugins'] = array('fetchmail_rc', 'igestis_autologon', 'sieverules');
 
 // ----------------------------------
 // USER INTERFACE
@@ -351,25 +353,25 @@ $rcmail_config['date_today'] = 'H:i';
 
 // store draft message is this mailbox
 // leave blank if draft messages should not be stored
-$rcmail_config['drafts_mbox'] = 'Brouillons';
+$rcmail_config['drafts_mbox'] = 'Drafts';
 
 // store spam messages in this mailbox
-$rcmail_config['junk_mbox'] = 'Spam';
+$rcmail_config['junk_mbox'] = 'Junk';
 
 // store sent message is this mailbox
 // leave blank if sent messages should not be stored
-$rcmail_config['sent_mbox'] = 'Envoyé';
+$rcmail_config['sent_mbox'] = 'Sent';
 
 // move messages to this folder when deleting them
 // leave blank if they should be deleted directly
-$rcmail_config['trash_mbox'] = 'Corbeille';
+$rcmail_config['trash_mbox'] = 'Trash';
 
 // display these folders separately in the mailbox list.
 // these folders will also be displayed with localized names
-$rcmail_config['default_imap_folders'] = array('INBOX', 'Brouillons', 'Envoyé', 'Spam', 'Corbeille');
+$rcmail_config['default_imap_folders'] = array('INBOX', 'Drafts', 'Sent', 'Junk', 'Trash');
 
 // automatically create the above listed default folders on login
-$rcmail_config['create_default_folders'] = false;
+$rcmail_config['create_default_folders'] = true;
 
 // protect the default folders from renames, deletes, and subscription changes
 $rcmail_config['protect_default_folders'] = true;
@@ -419,133 +421,84 @@ $rcmail_config['address_book_type'] = 'sql';
 // example further below. if you would like to test, simply uncomment the example.
 $rcmail_config['ldap_public'] = array();
 
-$rcmail_config['ldap_public']['Clients'] = array(
-  'name'          => 'Clients',
-  'hosts'         => array('127.0.0.1'),
-  'port'          => 389,
-  'use_tls'	    => false,
-  'user_specific' => false,   // If true the base_dn, bind_dn and bind_pass default to the user's IMAP login.
-  // %fu - The full username provided, assumes the username is an email
-  //       address, uses the username_domain value if not an email address.
-  // %u  - The username prior to the '@'.
-  // %d  - The domain name after the '@'.
-  'base_dn'       => 'ou=Customers,dc=domaine,dc=local',
-  'bind_dn'       => '',
-  'bind_pass'     => '',
-  'writable'      => false,   // Indicates if we can write to the LDAP directory or not.
-  // If writable is true then these fields need to be populated:
-  // LDAP_Object_Classes, required_fields, LDAP_rdn
-  'LDAP_Object_Classes' => array("top", "inetOrgPerson"), // To create a new contact these are the object classes to specify (or any other classes you wish to use).
-  'required_fields'     => array("cn", "sn", "mail"),     // The required fields needed to build a new contact as required by the object classes (can include additional fields not required by the object classes).
-  'LDAP_rdn'      => 'mail', // The RDN field that is used for new entries, this field needs to be one of the search_fields, the base of base_dn is appended to the RDN to insert into the LDAP directory.
-  'ldap_version'  => 3,       // using LDAPv3
-  'search_fields' => array('mail', 'cn'),  // fields to search in
-  'name_field'    => 'cn',    // this field represents the contact's name
-  'email_field'   => 'mail',  // this field represents the contact's e-mail
-  'surname_field' => 'sn',    // this field represents the contact's last name
-  'firstname_field' => 'gn',  // this field represents the contact's first name
-  'sort'          => 'cn',    // The field to sort the listing by.
-  'scope'         => 'sub',   // search mode: sub|base|list
-  'filter'        => '',      // used for basic listing (if not empty) and will be &'d with search queries. example: status=act
-  'fuzzy_search'  => true);   // server allows wildcard search
-
-$rcmail_config['ldap_public']['Employés'] = array(
-  'name'          => 'Employés',
-  'hosts'         => array('127.0.0.1'),
-  'port'          => 389,
-  'use_tls'         => false,
-  'user_specific' => false,   // If true the base_dn, bind_dn and bind_pass default to the user's IMAP login.
-  // %fu - The full username provided, assumes the username is an email
-  //       address, uses the username_domain value if not an email address.
-  // %u  - The username prior to the '@'.
-  // %d  - The domain name after the '@'.
-  'base_dn'       => 'ou=Users,dc=domaine,dc=local',
-  'bind_dn'       => '',
-  'bind_pass'     => '',
-  'writable'      => false,   // Indicates if we can write to the LDAP directory or not.
-  // If writable is true then these fields need to be populated:
-  // LDAP_Object_Classes, required_fields, LDAP_rdn
-  'LDAP_Object_Classes' => array("top", "inetOrgPerson"), // To create a new contact these are the object classes to specify (or any other classes you wish to use).
-  'required_fields'     => array("cn", "sn", "mail"),     // The required fields needed to build a new contact as required by the object classes (can include additional fields not required by the object classes).
-  'LDAP_rdn'      => 'mail', // The RDN field that is used for new entries, this field needs to be one of the search_fields, the base of base_dn is appended to the RDN to insert into the LDAP directory.
-  'ldap_version'  => 3,       // using LDAPv3
-  'search_fields' => array('mail', 'cn'),  // fields to search in
-  'name_field'    => 'cn',    // this field represents the contact's name
-  'email_field'   => 'mail',  // this field represents the contact's e-mail
-  'surname_field' => 'sn',    // this field represents the contact's last name
-  'firstname_field' => 'gn',  // this field represents the contact's first name
-  'sort'          => 'cn',    // The field to sort the listing by.
-  'scope'         => 'sub',   // search mode: sub|base|list
-  'filter'        => '',      // used for basic listing (if not empty) and will be &'d with search queries. example: status=act
-  'fuzzy_search'  => true);   // server allows wildcard search
-
-//
-// If you are going to use LDAP for individual address books, you will need to 
-// set 'user_specific' to true and use the variables to generate the appropriate DNs to access it.
-//
-// The recommended directory structure for LDAP is to store all the address book entries
-// under the users main entry, e.g.:
-//
-//  o=root
-//   ou=people
-//    uid=user@domain
-//  mail=contact@contactdomain
-//
-// So the base_dn would be uid=%fu,ou=people,o=root
-// The bind_dn would be the same as based_dn or some super user login.
-/* 
- * example config for Verisign directory
- *
-$rcmail_config['ldap_public']['Verisign'] = array(
-  'name'          => 'Verisign.com',
-  // Replacement variables supported in host names:
-  // %h - user's IMAP hostname
-  // %n - http hostname ($_SERVER['SERVER_NAME'])
-  // %d - domain (http hostname without the first part)
-  // %z - IMAP domain (IMAP hostname without the first part)
-  // For example %n = mail.domain.tld, %d = domain.tld
-  'hosts'         => array('directory.verisign.com'),
+$rcmail_config['ldap_public']['Customers'] = array(
+  'name'          => 'Customers',
+  'hosts'         => array(\ConfigIgestisGlobalVars::LDAP_URIS),
   'port'          => 389,
   'use_tls'	      => false,
-  'user_specific' => false,   // If true the base_dn, bind_dn and bind_pass default to the user's IMAP login.
-  // %fu - The full username provided, assumes the username is an email
-  //       address, uses the username_domain value if not an email address.
-  // %u  - The username prior to the '@'.
-  // %d  - The domain name after the '@'.
-  // %dc - The domain name hierarchal string e.g. "dc=test,dc=domain,dc=com"
-  // %dn - DN found by ldap search when search_filter/search_base_dn are used
-  'base_dn'       => '',
-  'bind_dn'       => '',
-  'bind_pass'     => '',
-  // It's possible to bind for an individual address book
-  // The login name is used to search for the DN to bind with
-  'search_base_dn' => '',
-  'search_filter'  => '',   // e.g. '(&(objectClass=posixAccount)(uid=%u))'
-
-  'writable'      => false,   // Indicates if we can write to the LDAP directory or not.
-  // If writable is true then these fields need to be populated:
-  // LDAP_Object_Classes, required_fields, LDAP_rdn
-  'LDAP_Object_Classes' => array("top", "inetOrgPerson"), // To create a new contact these are the object classes to specify (or any other classes you wish to use).
-  'required_fields'     => array("cn", "sn", "mail"),     // The required fields needed to build a new contact as required by the object classes (can include additional fields not required by the object classes).
-  'LDAP_rdn'      => 'mail', // The RDN field that is used for new entries, this field needs to be one of the search_fields, the base of base_dn is appended to the RDN to insert into the LDAP directory.
-  'ldap_version'  => 3,       // using LDAPv3
-  'search_fields' => array('mail', 'cn'),  // fields to search in
-  'name_field'    => 'cn',    // this field represents the contact's name
-  'email_field'   => 'mail',  // this field represents the contact's e-mail
-  'surname_field' => 'sn',    // this field represents the contact's last name
-  'firstname_field' => 'gn',  // this field represents the contact's first name
-  'sort'          => 'cn',    // The field to sort the listing by.
-  'scope'         => 'sub',   // search mode: sub|base|list
-  'filter'        => '',      // used for basic listing (if not empty) and will be &'d with search queries. example: status=act
-  'fuzzy_search'  => true,    // server allows wildcard search
-  'sizelimit'     => '0',     // Enables you to limit the count of entries fetched. Setting this to 0 means no limit. 
-  'timelimit'     => '0',     // Sets the number of seconds how long is spend on the search. Setting this to 0 means no limit. 
+  'user_specific' => false,
+  'base_dn'       => \ConfigIgestisGlobalVars::LDAP_CUSTOMERS_OU,
+  'bind_dn'       => \ConfigIgestisGlobalVars::LDAP_ADMIN,
+  'bind_pass'     => \ConfigIgestisGlobalVars::LDAP_PASSWORD,
+  'writable'      => false,
+  'LDAP_Object_Classes' => array("top", "inetOrgPerson"),
+  'required_fields'     => array("cn", "sn", "mail"),
+  'LDAP_rdn'      => 'mail',
+  'ldap_version'  => 3,
+  'search_fields' => array('mail', 'cn'),
+  'name_field'    => 'cn',
+  'email_field'   => 'mail',
+  'surname_field' => 'sn',
+  'firstname_field' => 'gn',
+  'sort'          => 'cn',
+  'scope'         => 'sub',
+  'filter'        => '(objectClass=inetOrgPerson)',
+  'fuzzy_search'  => true
 );
-*/
+
+$rcmail_config['ldap_public']['Employees'] = array(
+  'name'          => 'Employees',
+  'hosts'         => array(\ConfigIgestisGlobalVars::LDAP_URIS),
+  'port'          => 389,
+  'use_tls'       => false,
+  'user_specific' => false,
+  'base_dn'       => \ConfigIgestisGlobalVars::LDAP_USERS_OU,
+  'bind_dn'       => \ConfigIgestisGlobalVars::LDAP_ADMIN,
+  'bind_pass'     => \ConfigIgestisGlobalVars::LDAP_PASSWORD,
+  'writable'      => false,
+  'LDAP_Object_Classes' => array("top", "inetOrgPerson"),
+  'required_fields'     => array("cn", "sn", "mail"),
+  'LDAP_rdn'      => 'mail',
+  'ldap_version'  => 3,
+  'search_fields' => array('mail', 'cn'),
+  'name_field'    => 'cn',
+  'email_field'   => 'mail',
+  'surname_field' => 'sn',
+  'firstname_field' => 'gn',
+  'sort'          => 'cn',
+  'scope'         => 'sub',
+  'filter'        => '(|(objectClass=user)(objectClass=posixAccount))',
+  'fuzzy_search'  => true
+);
+
+$rcmail_config['ldap_public']['Suppliers'] = array(
+  'name'          => 'Suppliers',
+  'hosts'         => array(\ConfigIgestisGlobalVars::LDAP_URIS),
+  'port'          => 389,
+  'use_tls'       => false,
+  'user_specific' => false,
+  'base_dn'       => \ConfigIgestisGlobalVars::LDAP_SUPPLIERS_OU,
+  'bind_dn'       => \ConfigIgestisGlobalVars::LDAP_ADMIN,
+  'bind_pass'     => \ConfigIgestisGlobalVars::LDAP_PASSWORD,
+  'writable'      => false,
+  'LDAP_Object_Classes' => array("top", "inetOrgPerson"),
+  'required_fields'     => array("cn", "sn", "mail"),
+  'LDAP_rdn'      => 'mail',
+  'ldap_version'  => 3,
+  'search_fields' => array('mail', 'cn'),
+  'name_field'    => 'cn',
+  'email_field'   => 'mail',
+  'surname_field' => 'sn',
+  'firstname_field' => 'gn',
+  'sort'          => 'cn',
+  'scope'         => 'sub',
+  'filter'        => '(objectClass=inetOrgPerson)',
+  'fuzzy_search'  => true
+);
 
 // An ordered array of the ids of the addressbooks that should be searched
 // when populating address autocomplete fields server-side. ex: array('sql','Verisign');
-$rcmail_config['autocomplete_addressbooks'] = array('sql', 'Clients', 'Employés' );
+$rcmail_config['autocomplete_addressbooks'] = array('sql', 'Customers', 'Employees', 'Suppliers' );
 
 // The minimum number of characters required to be typed in an autocomplete field
 // before address books will be searched. Most useful for LDAP directories that
