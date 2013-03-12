@@ -9,6 +9,7 @@ INSTALLATION
 ============================================================================
 * Put the extracted folder in the plugins folder of roundcube
 * Set the correct values in the config file
+* Launch the sql file
 * Create a crontab and launch the  bash_cron.php file with the needed period
 
 CREDITS
