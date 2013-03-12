@@ -266,13 +266,13 @@ class fetchMailRc {
         
         // Generate command
         $command = sprintf(
-            'echo "poll %s %s with protocol %s user %s password %s" is %s | fetchmail %s -t 10 -f - 2>&1',
-            $this->mail_ssl,
+            'echo "poll %s with protocol %s user %s password %s" is %s %s | fetchmail %s -t 10 -f - 2>&1',
             $this->mail_host,
             $this->mail_protocol,
             $this->mail_username,
             $this->mail_password,
             $user['username'],
+			$this->mail_ssl,
             ($test_mode ? '--check' : '')
         );
         // Launch command
