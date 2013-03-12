@@ -272,7 +272,7 @@ class fetchMailRc {
             $this->mail_username,
             $this->mail_password,
             $user['username'],
-	    $this->mail_ssl ? "ssl" : "",
+	    ($this->mail_ssl == 1 ? 'ssl' : ''),
             ($test_mode ? '--check' : '')
         );
         // Launch command
