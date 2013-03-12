@@ -256,19 +256,29 @@ class fetchMailRc {
      * @throws Exception if the fetchmail command give back an error code
      */
     private function start_procmail($test_mode=true) {
+        $sql_result = $this->rcmail->db->query(
+            "SELECT * FROM " . get_table_name('users') . " WHERE user_id=?",
+            $this->fk_user      
+        );
+        $user = $this->rcmail->db->fetch_assoc($sql_result);
+        
+        if(empty($user)) throw new Exception("Error during user retrieving");
+        
         // Generate command
         $command = sprintf(
-            'echo "poll %s with protocol %s user %s password %s" is username | fetchmail %s -t 10 -f -',
+            'echo "poll %s %s with protocol %s user %s password %s" is %s | fetchmail %s -t 10 -f - 2>&1',
+            $this->mail_ssl,
             $this->mail_host,
             $this->mail_protocol,
             $this->mail_username,
             $this->mail_password,
+            $user['username'],
             ($test_mode ? '--check' : '')
         );
         // Launch command
         $output_lines = $returned_code = null;
-        @exec($command, $output_lines, $returned_code);
-        
+        exec($command, $output_lines, $returned_code);
+
         // Throw errors if necessary
         switch ($returned_code) {
             case "0" : case "1" :

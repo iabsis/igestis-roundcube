@@ -39,12 +39,15 @@ function console_show($msg) {
 $accountsList = new fetchMailRcList($RCMAIL->db);
 foreach ($accountsList as $currentAccount) {
     /* @var $currentAccount fetchMailRc */
-    console_show("Parse account" . $currentAccount->get_mail_host());
+    
+    // Don't manage disabled accounts
+    if(!$currentAccount->get_enabled())  continue;
+    console_show("Parse account " . $currentAccount->get_mail_host());
     
     try {
         // Start mail retrieving
         $currentAccount->ignore_authenticated_user_security(true);
-        if($currentAccount->test_account()) {
+        if($currentAccount->retrieve_mails()) {
             // If account has been retrieved, reset errers and set the update date
             $currentAccount->set_error('')->set_count_errors(0)->set_last_retrieve(date("Y-m-d H:i:s"))->save();
         }

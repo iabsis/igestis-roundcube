@@ -158,8 +158,9 @@ if (window.rcmail) {
       // Event fired when retrieve / test has finished
       rcmail.addEventListener('plugin.retrieve_account_finished', function(vars) {
             hideWaiting();
+            console.log(vars);
             if(vars.error !== undefined) {
-                rcmail.display_message(rcmail.gettext('fetchmail_rc.error_during_process'), "error");
+                rcmail.display_message(rcmail.gettext('fetchmail_rc.error_during_process :<br />\n' + vars.error), "error");
             }
             else {
                 switch (vars.type) {
