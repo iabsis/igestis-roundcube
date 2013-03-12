@@ -11,8 +11,6 @@ CREATE  TABLE IF NOT EXISTS `ROUNDCUBE_fetchmail_rc` (
   `mail_date_last_retrieve` DATETIME NOT NULL ,
   `count_error` MEDIUMINT(9) NOT NULL ,
   `label_error` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ,
-  `ROUNDCUBE_fetchmail_rccol` VARCHAR(45) NULL ,
-  `ROUNDCUBE_fetchmail_rccol1` VARCHAR(45) NULL ,
   PRIMARY KEY (`fetchmail_rc_id`) ,
   INDEX `fk_ROUNDCUBE_fetchmail_rc_ROUNDCUBE_users_idx` (`fk_user` ASC) ,
   CONSTRAINT `fk_ROUNDCUBE_fetchmail_rc_ROUNDCUBE_users`
