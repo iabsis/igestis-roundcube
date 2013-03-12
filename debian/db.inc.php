@@ -57,6 +57,7 @@ $rcmail_config['db_table_cache'] = 'ROUNDCUBE_cache';
 
 $rcmail_config['db_table_messages'] = 'ROUNDCUBE_messages';
 
+$rcmail_config['db_table_fetchmail_rc'] = 'ROUNDCUBE_fetchmail_rc';
 
 // you can define specific sequence names used in PostgreSQL
 $rcmail_config['db_sequence_users'] = 'user_ids';
