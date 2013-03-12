@@ -20,6 +20,8 @@ $rcmail_config = array();
 // LOGGING/DEBUGGING
 // ----------------------------------
 
+$rcmail_config['igestis_root_folder'] = \ConfigIgestisGlobalVars::SERVER_FOLDER . "/" . \ConfigIgestisGlobalVars::APPLI_FOLDER;
+
 // system error reporting: 1 = log; 2 = report (not implemented yet), 4 = show, 8 = trace
 $rcmail_config['debug_level'] = 1;
 
@@ -498,7 +500,7 @@ $rcmail_config['ldap_public']['Suppliers'] = array(
 
 // An ordered array of the ids of the addressbooks that should be searched
 // when populating address autocomplete fields server-side. ex: array('sql','Verisign');
-$rcmail_config['autocomplete_addressbooks'] = array('sql', 'Customers', 'Employees', 'Suppliers' );
+$rcmail_config['autocomplete_addressbooks'] = array('sql', 'Employees', 'Customers', 'Suppliers' );
 
 // The minimum number of characters required to be typed in an autocomplete field
 // before address books will be searched. Most useful for LDAP directories that

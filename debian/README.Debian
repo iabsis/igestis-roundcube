@@ -1,7 +1,7 @@
 igestis for Debian
 ------------------
 
-Thanks using the igestis-ajaxplorer package.
+Thanks using the igestis-roundcube package.
 
 This base package can be now be used alone as before it's need to have
 several others package to have igestis working.

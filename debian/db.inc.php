@@ -46,35 +46,18 @@ $rcmail_config['db_persistent'] = FALSE;
 
 // you can define specific table names used to store webmail data
 $rcmail_config['db_table_users'] = 'ROUNDCUBE_users';
-
 $rcmail_config['db_table_identities'] = 'ROUNDCUBE_identities';
-
 $rcmail_config['db_table_contacts'] = 'ROUNDCUBE_contacts';
-
 $rcmail_config['db_table_contactgroups'] = 'ROUNDCUBE_contactgroups';
-
 $rcmail_config['db_table_contactgroupmembers'] = 'ROUNDCUBE_contactgroupmembers';
-
 $rcmail_config['db_table_session'] = 'ROUNDCUBE_session';
-
 $rcmail_config['db_table_cache'] = 'ROUNDCUBE_cache';
-
-$rcmail_config['db_table_messages'] = 'ROUNDCUBE_messages';
-
+$rcmail_config['db_table_cache_index'] = 'ROUNDCUBE_cache_index';
+$rcmail_config['db_table_cache_thread'] = 'ROUNDCUBE_cache_thread';
+$rcmail_config['db_table_cache_messages'] = 'ROUNDCUBE_cache_messages';
 $rcmail_config['db_table_fetchmail_rc'] = 'ROUNDCUBE_fetchmail_rc';
 
-// you can define specific sequence names used in PostgreSQL
-$rcmail_config['db_sequence_users'] = 'user_ids';
 
-$rcmail_config['db_sequence_identities'] = 'identity_ids';
-
-$rcmail_config['db_sequence_contacts'] = 'contact_ids';
-
-$rcmail_config['db_sequence_contactgroups'] = 'contactgroups_ids';
-
-$rcmail_config['db_sequence_cache'] = 'cache_ids';
-
-$rcmail_config['db_sequence_messages'] = 'message_ids';
 
 
 // end db config file
