@@ -258,7 +258,7 @@ class fetchMailRc {
     private function start_procmail($test_mode=true) {
         $sql_result = $this->rcmail->db->query(
             "SELECT * FROM " . get_table_name('users') . " WHERE user_id=?",
-            $this->fk_user      
+            $this->fk_user
         );
         $user = $this->rcmail->db->fetch_assoc($sql_result);
         
@@ -266,15 +266,15 @@ class fetchMailRc {
         
         // Generate command
         $command = sprintf(
-            'echo "poll %s with protocol %s user %s password %s" is %s %s | LANG="fr_FR" fetchmail %s -t 10 --pidfile /tmp/fetchmail_rc-%s.pid -f - 2>&1',
+            'echo "poll %s with protocol %s user %s password %s" is %s %s | LANG="' . $user['language'] . '" fetchmail %s -t 10 --pidfile /tmp/fetchmail_rc-%s.pid -f - 2>&1',
             $this->mail_host,
             $this->mail_protocol,
             $this->mail_username,
             $this->mail_password,
             $user['username'],
-	    	($this->mail_ssl == 1 ? 'ssl' : ''),
+            ($this->mail_ssl == 1 ? 'ssl' : ''),
             ($test_mode ? '--check' : ''),
-			$user['username']
+            $user['username']
         );
         // Launch command
         $output_lines = $returned_code = null;
@@ -392,7 +392,7 @@ class fetchMailRc {
      * @return \fetchMailRc
      */
     public function set_mail_password($mail_password) {
-        $this->mail_password = $mail_password;
+        if($mail_password) $this->mail_password = $mail_password;
         return $this;
     }
     

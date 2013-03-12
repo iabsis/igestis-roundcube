@@ -24,6 +24,22 @@ if (window.rcmail) {
         var $loader = $("#fetchmail_rc_loader");
         $loader.fadeOut();
     };
+  
+  // This function will test all fields of the form and return true if all ok, false else
+  var valid_fetchmail_rc_form = function() {
+      if(!$("#_mail_host").val()) {
+          alert(rcmail.gettext('fetchmail_rc.fill_server_address'));
+          $("#_mail_host").focus();
+          return false;
+      }
+      
+      if(!$("#_mail_username").val()) {
+          alert(rcmail.gettext('fetchmail_rc.fill_username'));
+          $("#_mail_username").focus();
+          return false;
+      }
+      return true;
+  };
 
     
   rcmail.addEventListener('init', function(evt) {
@@ -64,6 +80,7 @@ if (window.rcmail) {
       
       // Validation formulaire
       rcmail.register_command('plugin.fetchmail_rc.save', function() {
+        if(!valid_fetchmail_rc_form()) return;
         var params = $("#fetchmail_rc_form").serialize();
 	rcmail.http_post('plugin.fetchmail_rc.save', params);            
       }, true);
@@ -85,6 +102,7 @@ if (window.rcmail) {
       
       //Test account command
       rcmail.register_command('plugin.fetchmail_rc.test_account', function() {
+        if(!valid_fetchmail_rc_form()) return;
         showWaiting(rcmail.gettext('fetchmail_rc.please_wait'));
         var params = $("#fetchmail_rc_form").serialize();
 	rcmail.http_post('plugin.fetchmail_rc.test_account', params);      
@@ -160,7 +178,7 @@ if (window.rcmail) {
             hideWaiting();
             console.log(vars);
             if(vars.error !== undefined) {
-                rcmail.display_message(rcmail.gettext('fetchmail_rc.error_during_process :<br />\n' + vars.error), "error");
+                rcmail.display_message(rcmail.gettext('fetchmail_rc.error_during_process')  + ' :<br />\n' + vars.error, "error");
             }
             else {
                 switch (vars.type) {

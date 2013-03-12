@@ -411,9 +411,8 @@ input.inputmask
     left: 65px;
 }
 
-form#fetchmail_rc_form label {
-    width: 180px;
-    display: inline-block;
+form#fetchmail_rc_form .required {
+    color: #FF3333;
 }
 
 form#fetchmail_rc_form input, form#fetchmail_rc_form select {

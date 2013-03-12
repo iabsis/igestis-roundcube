@@ -62,7 +62,7 @@ class fetchmail_rc extends rcube_plugin {
      * Initialize the plugin html
      */
     public function init_html() {   
-        $this->rcmail->output->add_label('fetchmail_rc.please_wait');
+        $this->rcmail->output->add_label('fetchmail_rc.please_wait', 'fetchmail_rc.fill_server_address', 'fetchmail_rc.fill_username');
         
         $this->api->output->add_handlers(array(
             // Show the iframe part
@@ -123,7 +123,7 @@ class fetchmail_rc extends rcube_plugin {
         
         // Mail host
         $field_name = "_mail_host";
-        $formToReturn .= '<tr><td class="title">' . html::label($field_name, Q($this->gettext('mail_host'))) . '</td><td>' ;
+        $formToReturn .= '<tr><td class="title">' . html::label($field_name, Q($this->gettext('mail_host'))) . ' <span class="required">*</span></td><td>' ;
         $input_name = new html_inputfield(array('name' => $field_name, 'id' => $field_name, 'value' => $fetchmailDatas->get_mail_host()));          
         $formToReturn .= $input_name->show() . "</td></tr>";
         
@@ -135,14 +135,14 @@ class fetchmail_rc extends rcube_plugin {
         
         // Mail Login
         $field_name = "_mail_username";
-        $formToReturn .= '<tr><td class="title">' . html::label($field_name, Q($this->gettext('mail_username'))) . '</td><td>' ;
+        $formToReturn .= '<tr><td class="title">' . html::label($field_name, Q($this->gettext('mail_username'))) . ' <span class="required">*</span></td><td>' ;
         $input_username = new html_inputfield(array('name' => $field_name, 'id' => $field_name, 'value' => $fetchmailDatas->get_mail_username()));                
         $formToReturn .= $input_username->show() . "</td></tr>";       
         
         // Mail password
         $field_name = "_mail_password";
-        $formToReturn .= '<tr><td class="title">' . html::label($field_name, Q($this->gettext('mail_password'))) . '</td><td>' ;
-        $input_password = new html_passwordfield(array('name' => $field_name, 'id' => $field_name, 'value' => $fetchmailDatas->get_mail_password()));        
+        $formToReturn .= '<tr><td class="title">' . html::label($field_name, Q($this->gettext('mail_password'))) . ' <span class="required">*</span></td><td>' ;
+        $input_password = new html_passwordfield(array('name' => $field_name, 'id' => $field_name));        
         $formToReturn .= $input_password->show() . "</td></tr>";
         
         // Mail arguments
@@ -153,7 +153,7 @@ class fetchmail_rc extends rcube_plugin {
         
         // Mail protocol
         $field_name = "_mail_protocol";
-        $formToReturn .= '<tr><td class="title">' . html::label($field_name, Q($this->gettext('mail_protocol'))) . '</td><td>' ;
+        $formToReturn .= '<tr><td class="title">' . html::label($field_name, Q($this->gettext('mail_protocol'))) . ' <span class="required">*</span></td><td>' ;
         $input_protocol = new html_select(array('name' => $field_name, 'id' => $field_name));  
         $input_protocol->add(fetchMailRc::PROTOCOL_AUTO,fetchMailRc::PROTOCOL_AUTO);
         $input_protocol->add(fetchMailRc::PROTOCOL_IMAP,fetchMailRc::PROTOCOL_IMAP);
@@ -190,7 +190,7 @@ class fetchmail_rc extends rcube_plugin {
             $statusMessage = "<b>" . $this->gettext("errorlabel") . "</b> : " . $fetchmailDatas->get_last_error() . "<br />";
             $statusMessage .= "<b>" . $this->gettext("nbconsecutiveserrors") . "</b> : " . $fetchmailDatas->get_count_errors();
         }
-        $formToReturn .= "<td>" . $statusMessage . "</td>";
+        $formToReturn .= "<td>" . ($fetchmailDatas->get_date_last_retrieve() == "0000-00-00 00:00:00" ? $this->gettext("notalreadyautoimported") : $statusMessage) . "</td>";
         $formToReturn .= "</tr>";
         
         $formToReturn .= '<tr>';
@@ -348,6 +348,7 @@ class fetchmail_rc extends rcube_plugin {
         try {
             $fetchmailRc = new fetchMailRc($id);
             $fetchmailRc
+                ->set_fk_user($this->rcmail->user->data['user_id'])
                 ->set_mail_host(get_input_value('_mail_host', RCUBE_INPUT_POST))
                 ->set_mail_username(get_input_value('_mail_username', RCUBE_INPUT_POST))
                 ->set_mail_password(get_input_value('_mail_password', RCUBE_INPUT_POST))

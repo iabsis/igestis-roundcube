@@ -52,8 +52,11 @@ $labels['please_wait'] = 'Merci de patienter, cette opération peut prendre quel
 $labels['nbconsecutiveserrors'] = 'Nombre d\'erreurs successives';
 $labels['status_successful'] = 'L\'import s\'est déroulé avec succès';
 
-$labels['error_during_process'] = 'Une erreur inconnue est survenue pendant le processus';
+$labels['error_during_process'] = 'Une erreur s\'est produite pendant le processus';
 $labels['retrieve_account_success'] = 'La récupération du compte s\'est effectuée avec succès';
 $labels['test_account_success'] = 'Le compte a été testé et fonctionne correctement';
 
+$labels['notalreadyautoimported'] = 'L\'import automatique ne s\'est pas encore executé';
+$labels['fill_server_address'] = 'Merci de saisir une adresse serveur';
+$labels['fill_username'] = 'Merci de saisir un nom d\'utilisateur';
 
