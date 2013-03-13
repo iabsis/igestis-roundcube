@@ -14,9 +14,9 @@ $(function(){
         var $topline =  $("iframe").contents().find("#topline");
         if(!$topline.length)  return;
         $topline.hide();
-        clearInterval(interval);
+        //clearInterval(interval);
     };
-    var interval = setInterval(hideTopLine, 50);    
+    var interval = setInterval(hideTopLine, 200);    
     resizeIframe();
 });
 
