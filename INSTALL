@@ -1,0 +1,38 @@
+How to install igestis-roundcube
+================================
+
+From apt-get
+------------
+
+Under Debian Squeeze add the Backports repository into /etc/apt/sources.list :
+
+> deb http://backports.debian.org/debian-backports squeeze-backports main
+
+Install Dovecot with sieve and imap support :
+
+apt-get install -t squeeze-backports dovecot-sieve dovecot-managesieved dovecot-imapd
+
+Then install igestis-roundcube :
+
+> apt-get install igestis-roundcube
+
+If you need the autologin , enable clear authentication 
+by creating a file in /etc/dovecot/local.conf. Also, activate sieve
+and managesieved plugins in dovecot :
+
+mail_location = maildir:~/.Maildir
+disable_plaintext_auth = no
+
+service managesieve-login {
+  inet_listener sieve {
+    port = 4190
+  }
+}
+
+protocol lda {
+  mail_plugins = $mail_plugins sieve
+}
+
+Specify to postfix that you want to use dovecot as lda and restart postfix :
+
+postconf -e "mailbox_command = /usr/lib/dovecot/deliver"

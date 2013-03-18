@@ -74,7 +74,7 @@ binary-arch: build install
 #	dh_installmime
 #	dh_python
 #	dh_installinit
-#	dh_installcron
+	dh_installcron
 #	dh_installinfo
 	find debian/igestis-roundcube -name *.svn | xargs -r rm -r
 	mkdir -p debian/igestis-roundcube/usr/share/igestis/modules/Roundcube/roundcubemail/config/

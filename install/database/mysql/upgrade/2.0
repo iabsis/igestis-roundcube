@@ -129,3 +129,6 @@ CREATE  TABLE IF NOT EXISTS `ROUNDCUBE_fetchmail_rc` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
+
+# Missing fields
+ALTER TABLE `ROUNDCUBE_identities` ADD `changed` datetime NOT NULL DEFAULT '1000-01-01 00:00:00';

@@ -167,7 +167,7 @@ $rcmail_config['enable_installer'] = false;
 
 // use this folder to store log files (must be writeable for apache user)
 // This is used by the 'file' log driver.
-$rcmail_config['log_dir'] = 'logs/';
+$rcmail_config['log_dir'] = '/var/log/igestis/';
 
 // use this folder to store temp files (must be writeable for apache user)
 $rcmail_config['temp_dir'] = 'temp/';

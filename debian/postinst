@@ -4,7 +4,7 @@
 # see: dh_installdeb(1)
 
 module=igestis-roundcube
-
+CACHE_FOLDER="/var/cache/igestis/"
 
 
 if [ -e /etc/igestis/debian-db.php ] ; then
@@ -31,7 +31,7 @@ if [ -e /etc/igestis/debian-db.php ] ; then
         if [ -z "$file" ] ; then
             mysql -u$dbuser -p$dbpass $dbname < /usr/share/dbconfig-common/data/$module/install/$i || true
             mysql -u$dbuser -p$dbpass $dbname \
-			  -e "INSERT INTO MYSQL_UPDATES (sql_file, \`date\`) VALUES ('$module-$i', NOW());"
+			  -e "INSERT INTO MYSQL_UPDATES (sql_file, \`date\`) VALUES ('$module-$i', NOW());" 2> /dev/null
         fi
     done
 
@@ -42,7 +42,7 @@ if [ -e /etc/igestis/debian-db.php ] ; then
         if [ -z "$file" ] ; then
             mysql -u$dbuser -p$dbpass $dbname < /usr/share/dbconfig-common/data/$module/upgrade/mysql/$i || true
             mysql -u$dbuser -p$dbpass $dbname \
-			  -e "INSERT INTO MYSQL_UPDATES (sql_file, \`date\`) VALUES ('$module-$i', NOW());"
+			  -e "INSERT INTO MYSQL_UPDATES (sql_file, \`date\`) VALUES ('$module-$i', NOW());" 2> /dev/null
         fi
     done
 
@@ -51,6 +51,15 @@ fi
 
 postconf -e 'message_size_limit = 30000000'
 /etc/init.d/postfix reload
+
+## We setup the cache folder to the right location
+mkdir -p $CACHE_FOLDER
+if [ ! -z "$CACHE_FOLDER" ] ; then rm -rf $CACHE_FOLDER/* ; fi
+
+## We regenerate the language cache
+php /usr/share/doc/igestis/regenLocales.php /usr/share/igestis
+chown www-data -R $CACHE_FOLDER
+chmod 700 -R $CACHE_FOLDER
 
 
 
