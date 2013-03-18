@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: igestis-roundcube
 Architecture: all
-Depends: igestis (>= 2.3.3)
+Depends: igestis (>= 2.3.3), dovecot-managesieved, dovecot-sieve
 Description: File Explorer for iGestis
  This module also the users to access to
  their mail through a sexy and modern
