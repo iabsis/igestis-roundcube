@@ -80,6 +80,7 @@ binary-arch: build install
 	mkdir -p debian/igestis-roundcube/usr/share/igestis/modules/Roundcube/roundcubemail/config/
 	install -m 0755 debian/main.inc.php debian/igestis-roundcube/usr/share/igestis/modules/Roundcube/roundcubemail/config/
 	install -m 0755 debian/db.inc.php debian/igestis-roundcube/usr/share/igestis/modules/Roundcube/roundcubemail/config/
+	install -m 0755 debian/config.inc-identiteam.php debian/igestis-roundcube/usr/share/igestis/modules/Roundcube/roundcubemail/plugins/identiteam/config.inc.php
 	dh_installman
 	dh_link
 	dh_strip
