@@ -323,7 +323,7 @@ $rcmail_config['email_dns_check'] = false;
 // ----------------------------------
 
 // List of active plugins (in plugins/ directory)
-$rcmail_config['plugins'] = array('fetchmail_rc', 'igestis_autologon', 'sieverules');
+$rcmail_config['plugins'] = array('fetchmail_rc', 'igestis_autologon', 'sieverules', 'identiteam');
 
 // ----------------------------------
 // USER INTERFACE
