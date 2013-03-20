@@ -28,13 +28,15 @@ class igestis_autologon extends rcube_plugin
 
   function authenticate($args)
   {
+      return $args;
       $rcmail = rcmail::get_instance();
-      if(!$rcmail->config->get('igestis_root_folder') && !is_dir($rcmail->config->get('igestis_root_folder'))) {
+      $igestisFolder = realpath(dirname(__FILE__) . "/../../../../");
+      if(! !is_dir($igestisFolder)) {
           return $args;
       }
       else {
-          require_once $rcmail->config->get('igestis_root_folder') . "/config/igestis/ConfigIgestisGlobalVars.php";
-          require_once $rcmail->config->get('igestis_root_folder') . "/includes/coreClasses/Utils/Encryption.php";
+          require_once $igestisFolder . "/config/igestis/ConfigIgestisGlobalVars.php";
+          require_once $igestisFolder . "/includes/coreClasses/Utils/Encryption.php";
       }
 
       list($authKey, $datetime) = explode("\n", \Igestis\Utils\Encryption::DecryptString($_GET['_igestis_auth_key']));
