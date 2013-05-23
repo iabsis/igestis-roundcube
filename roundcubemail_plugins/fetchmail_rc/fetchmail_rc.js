@@ -165,7 +165,7 @@ if (window.rcmail) {
           // Disable delete button
           rcmail.enable_command('plugin.fetchmail_rc.delete', false);
           // Suppression de l'entrée dans le menu
-          $("#rcmrow"+vars.id, window.parent.document).remove();
+          $("#rcmrow"+vars.id).remove(); //, window.parent.document).remove();
           
           if(!$("#fetchmail-rc-table", window.parent.document).find("tbody tr").length) {
               $("#fetchmail-rc-table", window.parent.document).find("tbody").append('<tr><td colspan="2">' + rcmail.gettext('fetchmail_rc.noaccounts') + '</td></tr>');
