@@ -28,10 +28,9 @@ class igestis_autologon extends rcube_plugin
 
   function authenticate($args)
   {
-      return $args;
       $rcmail = rcmail::get_instance();
       $igestisFolder = realpath(dirname(__FILE__) . "/../../../../");
-      if(! !is_dir($igestisFolder)) {
+      if(!is_dir($igestisFolder)) {
           return $args;
       }
       else {
@@ -52,6 +51,7 @@ class igestis_autologon extends rcube_plugin
 
     if (!empty($_GET['_igestis_auth_key']) && $diffSec < 5) {
       $customAuth = explode("\n", \Igestis\Utils\Encryption::DecryptString($authKey));
+      var_dump($customAuth);
       $args['user'] = $customAuth[0];
       $args['pass'] = $customAuth[1];
       $args['host'] = 'localhost';
