@@ -51,7 +51,6 @@ class igestis_autologon extends rcube_plugin
 
     if (!empty($_GET['_igestis_auth_key']) && $diffSec < 5) {
       $customAuth = explode("\n", \Igestis\Utils\Encryption::DecryptString($authKey));
-      var_dump($customAuth);
       $args['user'] = $customAuth[0];
       $args['pass'] = $customAuth[1];
       $args['host'] = 'localhost';
