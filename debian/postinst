@@ -49,8 +49,8 @@ if [ -e /etc/igestis/debian-db.php ] ; then
 fi
 
 
-postconf -e 'message_size_limit = 30000000'
-/etc/init.d/postfix reload
+#postconf -e 'message_size_limit = 30000000'
+#/etc/init.d/postfix reload
 
 ## We setup the cache folder to the right location
 mkdir -p $CACHE_FOLDER
