@@ -1,0 +1,10 @@
+server_host = localhost
+port = 389
+version = 3
+scope = sub
+# we search through the Aliases base...
+search_base = ou=Aliases,dc=domain,dc=tld
+# ...for the recipient email address (%s) specified under mailRoutingAddress field
+query_filter = mailRoutingAddress=%s
+# If we find anything, return memberUid, that can be accounts, groups, or aliases
+result_attribute = memberUid

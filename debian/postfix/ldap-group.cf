@@ -1,0 +1,8 @@
+server_host = localhost
+port = 389
+version = 3
+scope = sub
+# Same as aliases, but in a different base
+search_base = ou=Groups,dc=domain,dc=tld
+query_filter = mailRoutingAddress=%s
+result_attribute = memberUid
