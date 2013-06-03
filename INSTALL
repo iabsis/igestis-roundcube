@@ -56,3 +56,8 @@ applicable (check the content to see if there is useful information) :
 	.procmail-vacation
 	.procmail-log
 
+
+Configure Cyrus
+---------------
+
+You can configure to use Cyrus as well.

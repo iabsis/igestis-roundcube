@@ -1,8 +1,9 @@
 igestis-roundcube (2.0.1) wheezy; urgency=low
 
   * Dependency fixe.
+  * Sample of config files.
 
- -- Olivier Bitsch <olivierb@olivier-laptop>  Fri, 31 May 2013 22:20:51 +0200
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Fri, 31 May 2013 22:20:51 +0200
 
 igestis-roundcube (2.0.0) wheezy; urgency=low
 
