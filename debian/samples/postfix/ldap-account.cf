@@ -1,5 +1,7 @@
 # Sample founded at http://blog.wains.be/2010/01/25/postfix-virtual-usersgroupsaliases-stored-in-ldap/
 # Other sample page http://www.legeektechno.fr/serveurs/postfix-courier-et-active-directory.html
+# Test with : postmap -q email@sample.fr ldap:/etc/postfix/ldap-account.cf (this should return the username).
+# If working add the line virtual_mailbox_maps = ldap:/etc/postfix/ldap-users.cf
 server_host = localhost
 port = 389
 version = 3

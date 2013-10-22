@@ -1,3 +1,12 @@
+igestis-roundcube (2.0.2) UNRELEASED; urgency=low
+
+  * Issue : Apache configuration wrong configuration.
+  * Issue #260 : Mysql update to fix wrong constraint avoiding to add a contact.
+  * Issue #268 : Autologin fixed that didn't work with keep igestis connection.
+  * Feature #237 : See account fetchmail status in the list of account.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 22 Oct 2013 12:04:00 +0200
+
 igestis-roundcube (2.0.1) wheezy; urgency=low
 
   * Dependency fixe.

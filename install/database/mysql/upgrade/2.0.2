@@ -1,0 +1,4 @@
+ALTER TABLE `ROUNDCUBE_contacts` DROP FOREIGN KEY `user_id_fk_contacts`;
+
+ALTER TABLE `ROUNDCUBE_contacts` ADD CONSTRAINT `user_id_fk_contacts` FOREIGN KEY (`user_id`)
+   REFERENCES `ROUNDCUBE_users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
