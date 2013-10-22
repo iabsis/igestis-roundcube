@@ -1,4 +1,4 @@
-igestis-roundcube (2.0.2) UNRELEASED; urgency=low
+igestis-roundcube (2.0.2) wheezy; urgency=low
 
   * Issue : Apache configuration wrong configuration.
   * Issue #260 : Mysql update to fix wrong constraint avoiding to add a contact.
