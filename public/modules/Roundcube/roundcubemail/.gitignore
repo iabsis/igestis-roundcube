@@ -1,4 +1,3 @@
 # ignore files added to these directories
 logs/*
 temp/*
-config/*

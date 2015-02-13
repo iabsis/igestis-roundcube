@@ -30,7 +30,7 @@ class igestis_autologon extends rcube_plugin
   {
       
       $rcmail = rcmail::get_instance();
-      $igestisFolder = realpath(dirname(__FILE__) . "/../../../../../");
+      $igestisFolder = realpath(dirname(__FILE__) . "/../../../../../../");
       
       
       if(!is_dir($igestisFolder)) {
