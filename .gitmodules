@@ -1,0 +1,3 @@
+[submodule "public/modules/Roundcube/roundcubemail/plugins/fetchmail_rc"]
+	path = public/modules/Roundcube/roundcubemail/plugins/fetchmail_rc
+	url = https://github.com/iabsis/roundcube-fetchmail-rc.git
