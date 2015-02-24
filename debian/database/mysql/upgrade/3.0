@@ -1,0 +1,2 @@
+INSERT INTO `MYSQL_MIGRATION` (`module`, `file`, `imported_at`) VALUES
+('Roundcube', '20141007-1511-initial', '2015-02-17 13:41:01');

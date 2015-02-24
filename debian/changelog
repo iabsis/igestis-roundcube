@@ -1,3 +1,9 @@
+igestis-roundcube (3.0.0) wheezy; urgency=medium
+
+  * New update for compatibility.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 24 Feb 2015 10:33:47 +0100
+
 igestis-roundcube (2.0.2) wheezy; urgency=low
 
   * Issue : Apache configuration wrong configuration.
