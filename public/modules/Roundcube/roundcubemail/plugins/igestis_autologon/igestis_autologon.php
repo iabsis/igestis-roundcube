@@ -6,6 +6,7 @@
  * @license GNU GPLv3+
  * @author Thomas Bruederli
  */
+
 class igestis_autologon extends rcube_plugin
 {
   public $task = 'login';
@@ -42,10 +43,10 @@ class igestis_autologon extends rcube_plugin
       }
 
       list($authKey, $datetime) = explode("\n", \Igestis\Utils\Encryption::DecryptString($_GET['_igestis_auth_key']));
-      
-      $now = new DateTime();
-      $passed = new DateTime($datetime);
+      $now = new \DateTime();
+      $passed = new \DateTime($datetime);
       $difference = $now->diff($passed);
+
       $diffSec = ($difference->y * 365 * 24 * 60 * 60) +
                  ($difference->m * 30  * 24 * 60 * 60) +
                  ($difference->d * 24  * 60 * 60) +

@@ -20,10 +20,10 @@ class ConfigHookListener implements \Igestis\Interfaces\HookListenerInterface  {
                 break;
             case "loginSuccess" :
                 /* @var $logedContact \CoreContacts */
-                /*$logedContact = $params->get("logedContact");
-                $password = \Igestis\Utils\Encryption::DecryptString($logedContact->getSshPassword(), false);
+                $logedContact = $params->get("logedContact");
+                $password = $params->get("postPassword");
                 $_SESSION['roundcubeAuthkey'] = \Igestis\Utils\Encryption::EncryptString($params->get("postLogin") . "\n" . $password . "\n" . uniqid());
-                \Igestis\Utils\Debug::addDump("$HookName catched");*/
+                \Igestis\Utils\Debug::addDump("$HookName catched");
                 return true;
                 break;
             case "afterLogout" :
