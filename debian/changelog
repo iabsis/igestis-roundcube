@@ -1,10 +1,22 @@
-igestis-roundcube (3.0.0) wheezy; urgency=medium
+igestis-roundcube (3.0.2) testing; urgency=medium
 
-  * New update for compatibility.
+  * Fix: autologin issue.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 07 Apr 2015 08:17:15 +0200
+
+igestis-roundcube (3.0.1) testing; urgency=medium
+
+  * Fix: issues with fetchmail when virtual user are used in postfix.
+
+ -- Olivier Bitsch <olivier.b@iabsis.com>  Fri, 20 Mar 2015 14:47:33 +0100
+
+igestis-roundcube (3.0.0) testing; urgency=medium
+
+  * Feature: new update for compatibility.
 
  -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 24 Feb 2015 10:33:47 +0100
 
-igestis-roundcube (2.0.2) wheezy; urgency=low
+igestis-roundcube (2.0.2) stable; urgency=low
 
   * Issue : Apache configuration wrong configuration.
   * Issue #260 : Mysql update to fix wrong constraint avoiding to add a contact.
@@ -13,7 +25,7 @@ igestis-roundcube (2.0.2) wheezy; urgency=low
 
  -- Olivier Bitsch <olivier.b@iabsis.com>  Tue, 22 Oct 2013 12:04:00 +0200
 
-igestis-roundcube (2.0.1) wheezy; urgency=low
+igestis-roundcube (2.0.1) stable; urgency=low
 
   * Dependency fixe.
   * Sample of config files.
